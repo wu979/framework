@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.Version;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.time.LocalDateTime;
-
 /**
  * 父级实体
  *
@@ -28,11 +26,11 @@ public class BaseEntity {
 
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建时间")
-    private LocalDateTime createTime;
+    private Long createTime;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     @ApiModelProperty(value = "修改时间")
-    private LocalDateTime updateTime;
+    private Long updateTime;
 
     @TableLogic(value = "1", delval = "0")
     @ApiModelProperty(value = "是否有效（0否1是）")
@@ -66,19 +64,19 @@ public class BaseEntity {
         this.updateId = updateId;
     }
 
-    public LocalDateTime getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(LocalDateTime createTime) {
+    public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
 
-    public LocalDateTime getUpdateTime() {
+    public Long getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(LocalDateTime updateTime) {
+    public void setUpdateTime(Long updateTime) {
         this.updateTime = updateTime;
     }
 
