@@ -46,6 +46,8 @@
         <swagger.models.version>1.5.21</swagger.models.version>
 
         <!-- 基础依赖 -->
+        <javax.validation.version>2.0.1.Final</javax.validation.version>
+        <org.hibernate.validator.version>6.1.5.Final</org.hibernate.validator.version>
         <servlet.version>4.0.1</servlet.version>
         <commons.pool2.version>2.6.2</commons.pool2.version>
         <commons.lang3.version>3.9</commons.lang3.version>
@@ -192,6 +194,17 @@
             </dependency>
 
             <!-- 基础依赖 -->
+            <!-- validation -->
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${javax.validation.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${org.hibernate.validator.version}</version>
+            </dependency>
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
