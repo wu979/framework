@@ -4,11 +4,10 @@ import java.text.MessageFormat;
 import java.util.regex.Pattern;
 
 /**
- * @program: wsw-starter-cloud
- * @description: 正则工具类
- * @author: wsw
- * @create: 2021-09-07 15:30
- **/
+ * 正则
+ *
+ * @author wusiwei
+ */
 public class RegexUtil {
 
     /**

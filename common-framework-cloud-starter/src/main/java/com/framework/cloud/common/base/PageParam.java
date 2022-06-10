@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.List;
 
 /**
- *
+ * 分页条件构造
  *
  * @author wusiwei
  */

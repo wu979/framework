@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 import java.lang.annotation.*;
 
 /**
- *
+ * 自定义Mapper扫描 支持表达式
  *
  * @author wusiwei
  */

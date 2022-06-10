@@ -10,7 +10,7 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
 /**
- *
+ * Druid 监控配置
  *
  * @author wusiwei
  */

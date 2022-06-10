@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *
+ * Mybatis 配置
  *
  * @author wusiwei
  */
@@ -84,57 +84,25 @@ public class MyBatisConfiguration {
         // 加入拦截器
         sqlSessionFactoryBean.setPlugins(mybatisPlusInterceptor());
         // 加入hander
-        sqlSessionFactoryBean.setTypeHandlers(dateTime(), date());
+        sqlSessionFactoryBean.setTypeHandlers(new MybatisLocalDateTimeTypeHandler(), new MybatisLocalDateTypeHandler());
         return sqlSessionFactoryBean;
-    }
-
-    /**
-     * 分页插件拦截器
-     */
-    public PaginationInnerInterceptor paginationInterceptor() {
-        PaginationInnerInterceptor interceptor = new PaginationInnerInterceptor();
-        interceptor.setDbType(DbType.MYSQL);
-        interceptor.setMaxLimit(1000L);
-        return interceptor;
-    }
-
-    /**
-     * 乐观锁拦截器
-     */
-    public OptimisticLockerInnerInterceptor optimisticLockerInnerInterceptor() {
-        return new OptimisticLockerInnerInterceptor();
-    }
-
-    /**
-     * 防止全表更新与删除插件
-     */
-    public BlockAttackInnerInterceptor blockAttackInnerInterceptor() {
-        return new BlockAttackInnerInterceptor();
     }
 
     /**
      * 插件
      */
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        PaginationInnerInterceptor paginationInnerInterceptor = new PaginationInnerInterceptor();
+        paginationInnerInterceptor.setDbType(DbType.MYSQL);
+        paginationInnerInterceptor.setMaxLimit(1000L);
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        interceptor.addInnerInterceptor(paginationInterceptor());
-        interceptor.addInnerInterceptor(optimisticLockerInnerInterceptor());
-        interceptor.addInnerInterceptor(blockAttackInnerInterceptor());
+        //分页插件拦截器
+        interceptor.addInnerInterceptor(paginationInnerInterceptor);
+        //乐观锁拦截器
+        interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+        //防止全表更新与删除插件
+        interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
         return interceptor;
-    }
-
-    /**
-     * 时间处理
-     */
-    public MybatisLocalDateTimeTypeHandler dateTime() {
-        return new MybatisLocalDateTimeTypeHandler();
-    }
-
-    /**
-     * 时间处理
-     */
-    public MybatisLocalDateTypeHandler date() {
-        return new MybatisLocalDateTypeHandler();
     }
 
     @Bean(name = "sqlSessionTemplate")

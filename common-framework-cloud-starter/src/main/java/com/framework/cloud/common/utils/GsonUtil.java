@@ -10,11 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @program: wsw-starter-cloud
- * @description: gson
- * @author: wsw
- * @create: 2021-09-03 16:30
- **/
+ * gson
+ *
+ * @author wusiwei
+ */
 public class GsonUtil {
 
     private static final Gson GSON;

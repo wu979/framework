@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- *
+ * 自定义Mapper扫描 支持表达式
  *
  * @author wusiwei
  */

@@ -12,11 +12,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Created by 2022-05-20
+ * 流 工具类
  *
  * @author wusiwei
- * @version V1.0
- * @description: 流表达式工具类
  */
 @UtilityClass
 @SuppressWarnings({"varargs"})
