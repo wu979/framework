@@ -18,7 +18,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
@@ -33,7 +32,6 @@ import java.util.stream.Collectors;
  *
  * @author wusiwei
  */
-@Configuration
 @AllArgsConstructor
 @EnableConfigurationProperties(MybatisPlusProperties.class)
 @MapperScanner(basePackages = { "${mybatis-plus.mapperScanner}" }, sqlSessionTemplateRef = "sqlSessionTemplate")
@@ -46,7 +44,6 @@ public class MyBatisConfiguration {
     /**
      * plus配置
      */
-    @Bean
     @ConfigurationProperties(prefix = "mybatis-plus.global-config")
     public GlobalConfig globalConfig() {
         return new GlobalConfig();
@@ -55,7 +52,6 @@ public class MyBatisConfiguration {
     /**
      * plus配置
      */
-    @Bean
     @ConfigurationProperties(prefix = "mybatis-plus.configuration")
     public MybatisConfiguration mybatisConfiguration() {
         return new MybatisConfiguration();
@@ -95,7 +91,6 @@ public class MyBatisConfiguration {
     /**
      * 分页插件拦截器
      */
-    @Bean
     public PaginationInnerInterceptor paginationInterceptor() {
         PaginationInnerInterceptor interceptor = new PaginationInnerInterceptor();
         interceptor.setDbType(DbType.MYSQL);
@@ -106,7 +101,6 @@ public class MyBatisConfiguration {
     /**
      * 乐观锁拦截器
      */
-    @Bean
     public OptimisticLockerInnerInterceptor optimisticLockerInnerInterceptor() {
         return new OptimisticLockerInnerInterceptor();
     }
@@ -114,7 +108,6 @@ public class MyBatisConfiguration {
     /**
      * 防止全表更新与删除插件
      */
-    @Bean
     public BlockAttackInnerInterceptor blockAttackInnerInterceptor() {
         return new BlockAttackInnerInterceptor();
     }
@@ -122,7 +115,6 @@ public class MyBatisConfiguration {
     /**
      * 插件
      */
-    @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         interceptor.addInnerInterceptor(paginationInterceptor());
@@ -134,7 +126,6 @@ public class MyBatisConfiguration {
     /**
      * 时间处理
      */
-    @Bean
     public MybatisLocalDateTimeTypeHandler dateTime() {
         return new MybatisLocalDateTimeTypeHandler();
     }
@@ -142,7 +133,6 @@ public class MyBatisConfiguration {
     /**
      * 时间处理
      */
-    @Bean
     public MybatisLocalDateTypeHandler date() {
         return new MybatisLocalDateTypeHandler();
     }
