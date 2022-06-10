@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class BaseRepositoryImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> {
 
-    public T getInfoById(Serializable id) {
+    public T getByIdNotNull(Serializable id) {
         T info = super.getById(id);
         if (Objects.isNull(info)) {
             throw new NotFoundException(MybatisMessageEnum.NOT_FOUND.getCode(), MybatisMessageEnum.NOT_FOUND.getMsg());

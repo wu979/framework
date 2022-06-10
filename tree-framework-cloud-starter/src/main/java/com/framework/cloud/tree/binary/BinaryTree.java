@@ -1,6 +1,6 @@
-package com.framework.cloud.core.tree.binary;
+package com.framework.cloud.tree.binary;
 
-import com.framework.cloud.core.tree.Tree;
+import com.framework.cloud.tree.Tree;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

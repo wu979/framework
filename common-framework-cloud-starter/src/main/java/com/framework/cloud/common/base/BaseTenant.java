@@ -7,11 +7,14 @@ import com.baomidou.mybatisplus.annotation.Version;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * 父级实体 无租户
+ * 父级实体 有租户
  *
  * @author wusiwei
  */
-public class BaseEntity {
+public class BaseTenant {
+
+    @ApiModelProperty(value = "租户id")
+    private Long tenantId;
 
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建人id")
@@ -36,6 +39,14 @@ public class BaseEntity {
     @Version
     @ApiModelProperty(value = "并发版本控制")
     private Integer version;
+
+    public Long getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(Long tenantId) {
+        this.tenantId = tenantId;
+    }
 
     public Long getCreateId() {
         return createId;

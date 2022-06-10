@@ -1,7 +1,7 @@
-package com.framework.cloud.core.tree.utils;
+package com.framework.cloud.tree.utils;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.framework.cloud.core.tree.Tree;
+import com.framework.cloud.tree.Tree;
 
 import java.util.List;
 import java.util.stream.Collectors;

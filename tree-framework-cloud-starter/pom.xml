@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.framework.cloud</groupId>
-    <artifactId>core-framework-cloud-starter</artifactId>
+    <artifactId>tree-framework-cloud-starter</artifactId>
     <version>1.0.0</version>
-    <name>core-framework-cloud-starter</name>
+    <name>tree-framework-cloud-starter</name>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -34,6 +34,7 @@
             <artifactId>guava</artifactId>
         </dependency>
     </dependencies>
+
     <dependencyManagement>
         <dependencies>
             <dependency>

@@ -1,9 +1,9 @@
-package com.framework.cloud.core.tree.impl;
+package com.framework.cloud.tree.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.framework.cloud.core.tree.TreeFeature;
-import com.framework.cloud.core.tree.binary.BinaryTree;
-import com.framework.cloud.core.tree.utils.TreeUtil;
+import com.framework.cloud.tree.TreeFeature;
+import com.framework.cloud.tree.binary.BinaryTree;
+import com.framework.cloud.tree.utils.TreeUtil;
 import com.google.common.collect.Lists;
 
 import java.util.List;

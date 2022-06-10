@@ -1,4 +1,4 @@
-package com.framework.cloud.core.tree;
+package com.framework.cloud.tree;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
