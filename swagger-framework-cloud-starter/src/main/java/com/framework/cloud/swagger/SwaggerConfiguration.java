@@ -1,7 +1,9 @@
 package com.framework.cloud.swagger;
 
+import com.framework.cloud.swagger.properties.SwaggerProperties;
 import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.OAuthBuilder;
@@ -23,6 +25,7 @@ import java.util.Collections;
  */
 @EnableSwagger2
 @EnableSwaggerBootstrapUI
+@EnableConfigurationProperties(SwaggerProperties.class)
 public class SwaggerConfiguration {
 
     @Bean
