@@ -10,7 +10,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum MessageEnum {
 
-    /** 全局统一消息 */
+    /**
+     * 全局统一消息
+     */
     ERROR(500, "系统异常!"),
     SUCCESS(200, "操作成功!"),
     FAIL(0, "操作失败!"),

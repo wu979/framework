@@ -26,12 +26,11 @@ public class Tree<T extends Serializable, D, L> implements Serializable {
     private D parentId;
 
     @ApiModelProperty(value = "祖链id")
-    private D depTraceId;
+    private D traceId;
 
     @ApiModelProperty(value = "是否叶子节点")
     private Boolean isLeafNode;
 
     @ApiModelProperty(value = "子集")
     private List<T> childList = new ArrayList<>();
-
 }

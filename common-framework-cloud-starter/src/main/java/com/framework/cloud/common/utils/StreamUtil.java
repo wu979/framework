@@ -72,7 +72,7 @@ public class StreamUtil {
 
     /**
      * 集合转为为键值对
-     *
+     * <p>
      * ObjectUtils::firstNonNull 重复 取第一条
      */
     @SafeVarargs

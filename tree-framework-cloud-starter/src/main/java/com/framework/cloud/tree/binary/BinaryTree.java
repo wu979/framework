@@ -25,4 +25,15 @@ public class BinaryTree<T extends Serializable, D, L, N> extends Tree<T, D, L> i
     @ApiModelProperty(value = "右节点")
     private N right;
 
+    @Override
+    public Boolean getIsLeafNode() {
+        if (left instanceof Integer) {
+            return ((Integer) right) - 1 == ((Integer) left);
+        } else if (left instanceof Long) {
+            return ((Long) right) - 1 == ((Long) left);
+        } else {
+            return true;
+        }
+    }
+
 }

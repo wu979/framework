@@ -10,6 +10,10 @@
     <description>ORM</description>
     <packaging>jar</packaging>
 
+    <properties>
+        <holder.framework.cloud.starter.version>1.0.0</holder.framework.cloud.starter.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>io.swagger</groupId>
@@ -19,6 +23,17 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -29,6 +44,11 @@
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-typehandlers-jsr310</artifactId>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.framework.cloud</groupId>
+            <artifactId>holder-framework-cloud-starter</artifactId>
+            <version>${holder.framework.cloud.starter.version}</version>
         </dependency>
     </dependencies>
 

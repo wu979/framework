@@ -18,7 +18,10 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.StringUtils;
 
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -83,7 +86,7 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
         for (String pkg : annoAttrs.getStringArray("basePackages")) {
             if (StringUtils.hasText(pkg)) {
                 String value = parsePlaceHolder(pkg);
-                if(StringUtils.hasText(value)){
+                if (StringUtils.hasText(value)) {
                     basePackages.addAll(Arrays.asList(value.split(",")));
                 }
             }

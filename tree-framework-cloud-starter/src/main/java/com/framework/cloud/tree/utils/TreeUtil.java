@@ -13,7 +13,8 @@ import java.util.stream.Collectors;
  */
 public class TreeUtil {
 
-    private TreeUtil() {}
+    private TreeUtil() {
+    }
 
     public static <T extends Tree<T, D, L>, D, L> void childTree(T tree, D traceId, List<T> list) {
         //判断是否叶子节点
@@ -23,7 +24,7 @@ public class TreeUtil {
         //子节点
         List<T> childList = list.stream()
                 .filter(row -> tree.getId().equals(row.getParentId()))
-                .filter(row -> tree.getDepTraceId().equals(traceId))
+                .filter(row -> tree.getTraceId().equals(traceId))
                 .collect(Collectors.toList());
         if (CollectionUtil.isEmpty(childList)) {
             return;

@@ -12,12 +12,16 @@
 
     <modules>
         <module>common-framework-cloud-starter</module>
-        <module>tree-framework-cloud-starter</module>
+        <module>core-framework-cloud-starter</module>
         <module>datasource-framework-cloud-starter</module>
         <module>dependencies-framework-cloud-starter</module>
         <module>feign-framework-cloud-starter</module>
+        <module>holder-framework-cloud-starter</module>
+        <module>job-framework-cloud-starter</module>
         <module>mybatis-framework-cloud-starter</module>
         <module>pom-framework-cloud-starter</module>
+        <module>swagger-framework-cloud-starter</module>
+        <module>tree-framework-cloud-starter</module>
     </modules>
 
 </project>

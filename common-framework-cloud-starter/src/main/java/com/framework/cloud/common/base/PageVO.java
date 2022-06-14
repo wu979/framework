@@ -1,4 +1,5 @@
 package com.framework.cloud.common.base;
+
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

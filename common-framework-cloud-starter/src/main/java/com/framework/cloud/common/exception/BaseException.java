@@ -14,7 +14,8 @@ public class BaseException extends RuntimeException implements Serializable {
 
     private String msg;
 
-    private BaseException() {}
+    private BaseException() {
+    }
 
     public BaseException(String msg) {
         super(msg);

@@ -9,10 +9,12 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class StringUtil extends StringUtils {
 
-    private StringUtil() {}
+    private StringUtil() {
+    }
 
     /**
      * 任意相等
+     *
      * @param str 值
      * @param css 比较值
      * @return bool
@@ -30,6 +32,7 @@ public class StringUtil extends StringUtils {
 
     /**
      * 所有不相等
+     *
      * @param str 值
      * @param css 比较值
      * @return bool

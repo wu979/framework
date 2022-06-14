@@ -19,7 +19,8 @@ public class GsonUtil {
     private static final Gson GSON;
     private static final Gson GSON_NULL;
 
-    private GsonUtil() {}
+    private GsonUtil() {
+    }
 
     static {
         GSON = new GsonBuilder().enableComplexMapKeySerialization()

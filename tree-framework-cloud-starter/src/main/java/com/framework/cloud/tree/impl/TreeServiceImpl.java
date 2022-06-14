@@ -31,7 +31,7 @@ public class TreeServiceImpl<T extends BinaryTree<T, D, L, N>, D, L, N> implemen
         List<T> topTrees = groupTree.get(groupTree.firstKey());
         //遍历递归
         for (T tree : topTrees) {
-            TreeUtil.childTree(tree, tree.getDepTraceId(), list);
+            TreeUtil.childTree(tree, tree.getTraceId(), list);
         }
         return topTrees;
     }

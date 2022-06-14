@@ -1,6 +1,6 @@
 package com.framework.cloud.mybatis.annotation;
 
-import com.framework.cloud.mybatis.configuration.MyBatisConfiguration;
+import com.framework.cloud.mybatis.MyBatisConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;

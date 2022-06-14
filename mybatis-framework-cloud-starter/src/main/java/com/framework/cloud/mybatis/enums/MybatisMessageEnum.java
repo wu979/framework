@@ -10,7 +10,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum MybatisMessageEnum {
 
-    /** 全局统一消息 */
+    /**
+     * 全局统一消息
+     */
     NOT_FOUND(404, "数据不见了!"),
     ;
 

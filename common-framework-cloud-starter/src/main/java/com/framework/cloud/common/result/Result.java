@@ -24,7 +24,8 @@ public class Result<T> implements Serializable {
     @ApiModelProperty(value = "消息体")
     private T data;
 
-    public Result() {}
+    public Result() {
+    }
 
     public Result(String msg) {
         this.code = MessageEnum.FAIL.getCode();
