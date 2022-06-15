@@ -42,9 +42,10 @@
         <freemarker.version>2.1.5.RELEASE</freemarker.version>
 
         <!-- document -->
-        <swagger.version>3.0.0</swagger.version>
+        <swagger.version>2.9.2</swagger.version>
         <swagger.models.version>1.5.21</swagger.models.version>
-        <swagger.bootstrap.ui.version>1.9.6</swagger.bootstrap.ui.version>
+        <swagger.bootstrap.ui.version>1.9.2</swagger.bootstrap.ui.version>
+        <knife4j.spring.boot.starter.version>3.0.3</knife4j.spring.boot.starter.version>
 
         <!-- base -->
         <javax.validation.version>2.0.1.Final</javax.validation.version>
@@ -189,25 +190,35 @@
 
             <!-- swagger2 -->
             <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger2</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-annotations</artifactId>
-                <version>${swagger.models.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-models</artifactId>
-                <version>${swagger.models.version}</version>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.spring.boot.starter.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>swagger-bootstrap-ui</artifactId>
-                <version>${swagger.bootstrap.ui.version}</version>
+                <artifactId>knife4j-annotations</artifactId>
+                <version>${knife4j.spring.boot.starter.version}</version>
             </dependency>
+<!--            <dependency>-->
+<!--                <groupId>io.springfox</groupId>-->
+<!--                <artifactId>springfox-swagger2</artifactId>-->
+<!--                <version>${swagger.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>io.swagger</groupId>-->
+<!--                <artifactId>swagger-annotations</artifactId>-->
+<!--                <version>${swagger.models.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>io.swagger</groupId>-->
+<!--                <artifactId>swagger-models</artifactId>-->
+<!--                <version>${swagger.models.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>com.github.xiaoymin</groupId>-->
+<!--                <artifactId>swagger-bootstrap-ui</artifactId>-->
+<!--                <version>${swagger.bootstrap.ui.version}</version>-->
+<!--            </dependency>-->
 
             <!-- base -->
             <dependency>

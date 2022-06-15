@@ -1,10 +1,9 @@
 package com.framework.cloud.swagger.properties;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import java.util.List;
 
 /**
  * swagger配置文件
@@ -15,7 +14,10 @@ import java.util.List;
 @ConfigurationProperties(prefix = "swagger")
 public class SwaggerProperties {
 
-    @ApiModelProperty(value = "扫描包（未填写扫描注解）")
+    @ApiModelProperty(value = "作者信息")
+    private Contact contact;
+
+    @ApiModelProperty(value = "扫描路径")
     private String basePackage;
 
     @ApiModelProperty(value = "页面标题")
@@ -33,9 +35,18 @@ public class SwaggerProperties {
     @ApiModelProperty(value = "许可链接")
     private String licenseUrl;
 
-    @ApiModelProperty(value = "分组名称")
-    private String groupName;
+    @Data
+    @ApiModel(value = "作者信息")
+    public static class Contact {
 
-    @ApiModelProperty(value = "排除路径")
-    private List<String> excludePath;
+        @ApiModelProperty(value = "名称")
+        private String name;
+
+        @ApiModelProperty(value = "链接")
+        private String url;
+
+        @ApiModelProperty(value = "邮箱")
+        private String email;
+
+    }
 }
