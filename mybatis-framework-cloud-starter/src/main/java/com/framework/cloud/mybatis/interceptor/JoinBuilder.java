@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Mybatis 自定义查询 连接构造器
+ * 关联查询构造器
  *
  * @author wusiwei
  */

@@ -1,24 +1,22 @@
 package com.framework.cloud.mybatis;
 
 import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.core.MybatisConfiguration;
-import com.baomidou.mybatisplus.core.config.GlobalConfig;
+import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
 import com.framework.cloud.mybatis.annotation.MapperScanner;
-import com.framework.cloud.mybatis.hander.MybatisMetaObjectHandler;
 import com.framework.cloud.mybatis.hander.MybatisTenantLineHandler;
 import com.framework.cloud.mybatis.interceptor.JoinQueryInterceptor;
 import com.framework.cloud.mybatis.interceptor.SqlInterceptor;
-import com.framework.cloud.mybatis.primary.IdGenerator;
+import com.framework.cloud.mybatis.properties.MybatisProperties;
 import com.framework.cloud.mybatis.properties.TenantProperties;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 
 /**
  * Mybatis 配置
@@ -26,31 +24,17 @@ import org.springframework.context.annotation.Bean;
  * @author wusiwei
  */
 @AllArgsConstructor
-@EnableConfigurationProperties(TenantProperties.class)
-@MapperScanner(basePackages = {"${mybatis-plus.mapperScanner}"}, sqlSessionTemplateRef = "sqlSessionTemplate")
+@EnableConfigurationProperties({TenantProperties.class, MybatisProperties.class})
+@MapperScanner(basePackages = {"${framework.mybatisPlus.mapperScanner}"}, sqlSessionTemplateRef = "sqlSessionTemplate")
 public class MyBatisConfiguration {
 
     private final TenantProperties tenantProperties;
+    private final MybatisProperties mybatisProperties;
 
-    /**
-     * plus配置
-     */
+    @Primary
     @Bean
-    @ConfigurationProperties(prefix = "mybatis-plus.global-config")
-    public GlobalConfig globalConfig() {
-        GlobalConfig globalConfig = new GlobalConfig();
-        globalConfig.setMetaObjectHandler(new MybatisMetaObjectHandler());
-        globalConfig.setIdentifierGenerator(new IdGenerator());
-        return globalConfig;
-    }
-
-    /**
-     * plus配置
-     */
-    @Bean
-    @ConfigurationProperties(prefix = "mybatis-plus.configuration")
-    public MybatisConfiguration mybatisConfiguration() {
-        return new MybatisConfiguration();
+    public MybatisPlusProperties mybatisPlusProperties() {
+        return mybatisProperties.getMybatisPlus();
     }
 
     /**
@@ -78,5 +62,4 @@ public class MyBatisConfiguration {
         interceptor.addInnerInterceptor(new JoinQueryInterceptor());
         return interceptor;
     }
-
 }

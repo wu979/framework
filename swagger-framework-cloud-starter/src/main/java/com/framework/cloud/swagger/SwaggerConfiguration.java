@@ -2,6 +2,7 @@ package com.framework.cloud.swagger;
 
 import com.framework.cloud.swagger.properties.SwaggerProperties;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -35,14 +36,14 @@ import java.util.stream.Collectors;
 @EnableOpenApi
 @AllArgsConstructor
 @EnableConfigurationProperties(SwaggerProperties.class)
-@ConditionalOnProperty(prefix = "swagger", value = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "framework.knife4j", value = "enabled", havingValue = "true")
 public class SwaggerConfiguration {
 
     private final SwaggerProperties swaggerProperties;
 
     @Bean
     public Docket docket() {
-        return new Docket(DocumentationType.OAS_30)
+        Docket docket = new Docket(DocumentationType.OAS_30)
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()))
@@ -50,6 +51,10 @@ public class SwaggerConfiguration {
                 .build()
                 .securitySchemes(Collections.singletonList(securitySchemes()))
                 .securityContexts(Collections.singletonList(securityContexts()));
+        if (StringUtils.isNotBlank(swaggerProperties.getGroupName())) {
+            docket.groupName(swaggerProperties.getGroupName());
+        }
+        return docket;
     }
 
     @Bean

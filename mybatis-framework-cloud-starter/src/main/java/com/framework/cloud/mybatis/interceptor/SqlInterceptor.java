@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * sql 拦截器 select 字段加了 ``
+ *
  * @author wusiwei
  */
 @SuppressWarnings({"rawtypes", "all"})

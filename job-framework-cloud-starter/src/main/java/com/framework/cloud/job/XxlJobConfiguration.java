@@ -4,6 +4,7 @@ import com.framework.cloud.job.properties.XxlJobProperties;
 import com.xxl.job.core.executor.impl.XxlJobSpringExecutor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Bean;
  */
 @Slf4j
 @AllArgsConstructor
+@ConditionalOnProperty(prefix = "framework.xxl.job", value = "enabled", havingValue = "true")
 @EnableConfigurationProperties(XxlJobProperties.class)
 public class XxlJobConfiguration {
 

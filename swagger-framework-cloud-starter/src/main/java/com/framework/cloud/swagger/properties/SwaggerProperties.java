@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author wusiwei
  */
 @Data
-@ConfigurationProperties(prefix = "swagger")
+@ConfigurationProperties(prefix = "framework.knife4j")
 public class SwaggerProperties {
 
     @ApiModelProperty(value = "作者信息")
@@ -34,6 +34,9 @@ public class SwaggerProperties {
 
     @ApiModelProperty(value = "许可链接")
     private String licenseUrl;
+
+    @ApiModelProperty(value = "分组")
+    private String groupName;
 
     @Data
     @ApiModel(value = "作者信息")

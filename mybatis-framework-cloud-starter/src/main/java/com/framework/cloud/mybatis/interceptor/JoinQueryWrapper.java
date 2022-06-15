@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 关联查询 Wrapper
+ *
  * @author wusiwei
  */
 public class JoinQueryWrapper<T> extends QueryWrapper<T> {

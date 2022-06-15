@@ -15,6 +15,7 @@
         <module>core-framework-cloud-starter</module>
         <module>datasource-framework-cloud-starter</module>
         <module>dependencies-framework-cloud-starter</module>
+        <module>executors-framework-cloud-starter</module>
         <module>feign-framework-cloud-starter</module>
         <module>holder-framework-cloud-starter</module>
         <module>job-framework-cloud-starter</module>

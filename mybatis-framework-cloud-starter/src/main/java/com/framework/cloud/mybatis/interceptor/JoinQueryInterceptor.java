@@ -24,7 +24,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 /**
- * Mybatis 自定义关联拦截器
+ * 关联查询拦截器
  *
  * @author wusiwei
  */
