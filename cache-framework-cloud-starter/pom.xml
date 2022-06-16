@@ -4,31 +4,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.framework.cloud</groupId>
-    <artifactId>mybatis-framework-cloud-starter</artifactId>
+    <artifactId>cache-framework-cloud-starter</artifactId>
     <version>1.0.0</version>
-    <name>mybatis-framework-cloud-starter</name>
-    <description>ORM</description>
+    <name>cache-framework-cloud-starter</name>
     <packaging>jar</packaging>
 
     <properties>
-        <holder.framework.cloud.starter.version>1.0.0</holder.framework.cloud.starter.version>
+        <common.framework.cloud.starter.version>1.0.0</common.framework.cloud.starter.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-typehandlers-jsr310</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>com.framework.cloud</groupId>
-            <artifactId>holder-framework-cloud-starter</artifactId>
-            <version>${holder.framework.cloud.starter.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-annotations</artifactId>
-            <scope>compile</scope>
+            <artifactId>common-framework-cloud-starter</artifactId>
+            <version>${common.framework.cloud.starter.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -36,18 +25,38 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-data-20</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -1,7 +1,6 @@
 package com.framework.cloud.mybatis;
 
 import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
@@ -11,12 +10,10 @@ import com.framework.cloud.mybatis.annotation.MapperScanner;
 import com.framework.cloud.mybatis.hander.MybatisTenantLineHandler;
 import com.framework.cloud.mybatis.interceptor.JoinQueryInterceptor;
 import com.framework.cloud.mybatis.interceptor.SqlInterceptor;
-import com.framework.cloud.mybatis.properties.MybatisProperties;
 import com.framework.cloud.mybatis.properties.TenantProperties;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 
 /**
  * Mybatis 配置
@@ -24,18 +21,11 @@ import org.springframework.context.annotation.Primary;
  * @author wusiwei
  */
 @AllArgsConstructor
-@EnableConfigurationProperties({TenantProperties.class, MybatisProperties.class})
-@MapperScanner(basePackages = {"${framework.mybatisPlus.mapperScanner}"}, sqlSessionTemplateRef = "sqlSessionTemplate")
+@EnableConfigurationProperties(TenantProperties.class)
+@MapperScanner(basePackages = {"${mybatisPlus.mapperScanner}"}, sqlSessionTemplateRef = "sqlSessionTemplate")
 public class MyBatisConfiguration {
 
     private final TenantProperties tenantProperties;
-    private final MybatisProperties mybatisProperties;
-
-    @Primary
-    @Bean
-    public MybatisPlusProperties mybatisPlusProperties() {
-        return mybatisProperties.getMybatisPlus();
-    }
 
     /**
      * 插件

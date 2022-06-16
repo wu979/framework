@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.annotation.AliasFor;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.lang.annotation.*;
 
@@ -18,6 +19,7 @@ import java.lang.annotation.*;
 @Documented
 @Inherited
 @ComponentScan
+@EnableAsync
 @EnableFeignClients
 @EnableAutoConfiguration
 @EnableConfigurationProperties

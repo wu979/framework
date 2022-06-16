@@ -1,14 +1,14 @@
 package com.framework.cloud.executors;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
- * 线程池配置
+ * 开启线程池
  *
  * @author wusiwei
  */
-@ConditionalOnProperty(prefix = "swagger", value = "enabled", havingValue = "true")
 @EnableAsync(proxyTargetClass = true)
 public class ExecutorsConfiguration {
+
+
 }
