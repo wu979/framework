@@ -1,11 +1,12 @@
 package com.framework.cloud.cache.annotation;
 
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.framework.cloud.cache.enums.CacheTypeEnum;
 import com.framework.cloud.cache.lock.AsuraLock;
 import com.framework.cloud.cache.lock.DistributedLock;
 import com.framework.cloud.cache.lock.RedisDistributedLock;
+import com.framework.cloud.cache.lock.ZkDistributedLock;
 import com.framework.cloud.common.exception.LockException;
+import jodd.util.StringPool;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -13,7 +14,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
@@ -21,31 +21,28 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 /**
- * 分布式锁切面
+ * aop method for intercepting lock annotation
  *
  * @author wusiwei
  */
 @Slf4j
 @Aspect
 @AllArgsConstructor
-@ConditionalOnBean(DistributedLock.class)
 public class LockAspect {
 
     private final RedisDistributedLock redisDistributedLock;
+    private final ZkDistributedLock zkDistributedLock;
 
     /**
-     * 表达式解析
+     * spEl
      */
     private static final SpelExpressionParser parser = new SpelExpressionParser();
 
     /**
-     * 用于获取方法参数定义名字
+     * parameters
      */
     private static final DefaultParameterNameDiscoverer discoverer = new DefaultParameterNameDiscoverer();
 
-    /**
-     * 注解切面
-     */
     @Around(value = "@annotation(lock)", argNames = "point, lock")
     public Object processTest(ProceedingJoinPoint point, Lock lock) throws Throwable {
         if (lock == null) {
@@ -67,7 +64,6 @@ public class LockAspect {
         }
         if (lockKey.contains(StringPool.HASH)) {
             MethodSignature methodSignature = (MethodSignature) point.getSignature();
-            // 获取方法参数值
             Object[] args = point.getArgs();
             lockKey = getValBySpEl(lockKey, methodSignature, args);
         }
@@ -93,7 +89,7 @@ public class LockAspect {
             if (asuraLock != null) {
                 return point.proceed();
             } else {
-                throw new LockException("锁等待超时");
+                throw new LockException("Lock wait timeout");
             }
         } finally {
             distributedLock.unlock(asuraLock);
@@ -102,7 +98,7 @@ public class LockAspect {
 
 
     /**
-     * 解析 spEL 表达式
+     * 解析 spEL
      */
     private String getValBySpEl(String lockKeyEl, MethodSignature methodSignature, Object[] args) {
         // 获取方法形参名数组

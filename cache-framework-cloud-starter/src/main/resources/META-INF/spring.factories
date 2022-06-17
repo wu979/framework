@@ -1,3 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.framework.cloud.cache.CacheAutoConfiguration,\
-com.framework.cloud.cache.annotation.LockAspect
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.framework.cloud.cache.CacheAutoConfiguration

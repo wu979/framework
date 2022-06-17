@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 集群 配置
- *
  * @author wusiwei
  */
 @AllArgsConstructor

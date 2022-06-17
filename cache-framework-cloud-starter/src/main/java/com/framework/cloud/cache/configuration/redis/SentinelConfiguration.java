@@ -1,5 +1,6 @@
 package com.framework.cloud.cache.configuration.redis;
 
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
@@ -24,8 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 哨兵 配置
- *
  * @author wusiwei
  */
 @AllArgsConstructor
@@ -72,10 +71,10 @@ public class SentinelConfiguration {
 
     private static List<RedisNode> createSentinels(List<String> nodes) {
         List<RedisNode> redisNodeList = new ArrayList<>();
-        boolean flag = nodes.stream().allMatch(node -> node.contains(":"));
-        Assert.isTrue(flag, "Redis哨兵模式：地址不合法!");
+        boolean flag = nodes.stream().allMatch(node -> node.contains(StringPool.COLON));
+        Assert.isTrue(flag, "Redis Sentinel：Illegal address!");
         nodes.forEach(node -> {
-            String[] parts = node.split(":");
+            String[] parts = node.split(StringPool.COLON);
             redisNodeList.add(new RedisNode(parts[0], Integer.parseInt(parts[1])));
         });
         return redisNodeList;

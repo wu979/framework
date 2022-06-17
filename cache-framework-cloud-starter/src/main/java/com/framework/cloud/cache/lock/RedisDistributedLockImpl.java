@@ -2,22 +2,17 @@ package com.framework.cloud.cache.lock;
 
 import com.framework.cloud.common.exception.LockException;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.redisson.api.RLock;
 import org.redisson.api.RReadWriteLock;
 import org.redisson.api.RedissonClient;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * redisson 分布式锁
- *
  * @author wusiwei
  */
-@Component
 @AllArgsConstructor
-@ConditionalOnBean(RedissonClient.class)
 public class RedisDistributedLockImpl implements RedisDistributedLock {
 
     private static final String LOCK_KEY_PREFIX = "REDIS_KEY_PREFIX:";
@@ -25,14 +20,15 @@ public class RedisDistributedLockImpl implements RedisDistributedLock {
     private final RedissonClient redissonClient;
 
     @Override
-    public AsuraLock lock(String key, long leaseTime, TimeUnit unit, boolean isFair) throws Exception {
+    public AsuraLock lock(String key, long leaseTime, TimeUnit unit, boolean isFair) {
         RLock lock = getLock(key, isFair);
         lock.lock(leaseTime, unit);
         return new AsuraLock(lock, this);
     }
 
+    @SneakyThrows
     @Override
-    public AsuraLock tryLock(String key, long waitTime, long leaseTime, TimeUnit unit, boolean isFair) throws Exception {
+    public AsuraLock tryLock(String key, long waitTime, long leaseTime, TimeUnit unit, boolean isFair) {
         RLock lock = getLock(key, isFair);
         if (!lock.tryLock(waitTime, leaseTime, unit)) {
             return null;
@@ -41,21 +37,21 @@ public class RedisDistributedLockImpl implements RedisDistributedLock {
     }
 
     @Override
-    public AsuraLock readLock(String key, long leaseTime, TimeUnit unit) throws Exception {
+    public AsuraLock readLock(String key, long leaseTime, TimeUnit unit) {
         RLock lock = getReadWriteLock(key, Boolean.TRUE);
         lock.lock(leaseTime, unit);
         return new AsuraLock(lock, this);
     }
 
     @Override
-    public AsuraLock writeLock(String key, long leaseTime, TimeUnit unit) throws Exception {
+    public AsuraLock writeLock(String key, long leaseTime, TimeUnit unit) {
         RLock lock = getReadWriteLock(key, Boolean.FALSE);
         lock.lock(leaseTime, unit);
         return new AsuraLock(lock, this);
     }
 
     @Override
-    public void unlock(Object lock) throws Exception {
+    public void unlock(Object lock) {
         if (lock != null) {
             RLock rLock = null;
             if (lock instanceof RLock) {

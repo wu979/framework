@@ -1,5 +1,6 @@
 package com.framework.cloud.cache.configuration.redis;
 
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -18,8 +19,6 @@ import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 
 /**
- * 单机 配置
- *
  * @author wusiwei
  */
 @AllArgsConstructor
@@ -45,7 +44,7 @@ public class StandaloneConfiguration {
     @Bean(destroyMethod = "shutdown")
     @ConditionalOnProperty(prefix = "spring.redis.lock-type.redis", value = "enable", havingValue = "true")
     public RedissonClient redissonClient(RedisProperties redisProperties) {
-        String address = "redis://" + redisProperties.getHost() + ":" + redisProperties.getPort();
+        String address = "redis://" + redisProperties.getHost() + StringPool.COLON + redisProperties.getPort();
         Config config = new Config();
         SingleServerConfig single = config.useSingleServer()
                 .setAddress(address)

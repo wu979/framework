@@ -2,8 +2,8 @@ package com.framework.cloud.feign.interceptor;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.alibaba.fastjson.JSON;
 import com.framework.cloud.common.constant.HeaderConstant;
+import com.framework.cloud.common.utils.FastJsonUtil;
 import com.framework.cloud.holder.TenantContextHolder;
 import com.framework.cloud.holder.UserContextHolder;
 import com.framework.cloud.holder.UserRoleContextHolder;
@@ -39,7 +39,7 @@ public class FeignAuthInterceptor implements RequestInterceptor {
         if (StringUtils.isBlank(user)) {
             LoginUser userDetail = UserContextHolder.getInstance().getUser();
             if (ObjectUtil.isNotNull(userDetail)) {
-                requestTemplate.header(HeaderConstant.X_USER_HEADER, JSON.toJSONString(userDetail));
+                requestTemplate.header(HeaderConstant.X_USER_HEADER, FastJsonUtil.toJSONString(userDetail));
             }
         }
         //传递 租户
@@ -47,7 +47,7 @@ public class FeignAuthInterceptor implements RequestInterceptor {
         if (StringUtils.isBlank(tenant)) {
             LoginTenant tenantDetail = TenantContextHolder.getInstance().getTenant();
             if (ObjectUtil.isNotNull(tenantDetail)) {
-                requestTemplate.header(HeaderConstant.X_TENANT_HEADER, JSON.toJSONString(tenantDetail));
+                requestTemplate.header(HeaderConstant.X_TENANT_HEADER, FastJsonUtil.toJSONString(tenantDetail));
             }
         }
         //传递 用户权限

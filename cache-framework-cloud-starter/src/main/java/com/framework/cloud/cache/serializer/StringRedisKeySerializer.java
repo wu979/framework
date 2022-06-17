@@ -7,7 +7,7 @@ import org.springframework.data.redis.serializer.SerializationException;
 import java.nio.charset.StandardCharsets;
 
 /**
- * key序列化规则 添加前缀
+ * Adding prefix to user-defined key serialization
  *
  * @author wusiwei
  */

@@ -3,7 +3,7 @@ package com.framework.cloud.cache.lock;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 分布式锁 顶级接口
+ * distributed Lock interface
  *
  * @author wusiwei
  */
@@ -18,7 +18,7 @@ public interface DistributedLock {
      * @param unit      锁时间单位
      * @param isFair    是否公平锁
      */
-    AsuraLock lock(String key, long leaseTime, TimeUnit unit, boolean isFair) throws Exception;
+    AsuraLock lock(String key, long leaseTime, TimeUnit unit, boolean isFair);
 
     /**
      * 获取锁 等待waitTime后释放锁
@@ -29,7 +29,7 @@ public interface DistributedLock {
      * @param unit      锁时间单位
      * @param isFair    是否公平锁
      */
-    AsuraLock tryLock(String key, long waitTime, long leaseTime, TimeUnit unit, boolean isFair) throws Exception;
+    AsuraLock tryLock(String key, long waitTime, long leaseTime, TimeUnit unit, boolean isFair);
 
     /**
      * 获取读锁
@@ -38,7 +38,7 @@ public interface DistributedLock {
      * @param leaseTime 加锁的时间，超过时间后自动解锁；-1，则保持锁定直到显式解锁
      * @param unit      锁时间单位
      */
-    AsuraLock readLock(String key, long leaseTime, TimeUnit unit) throws Exception;
+    AsuraLock readLock(String key, long leaseTime, TimeUnit unit);
 
     /**
      * 获取写锁
@@ -47,11 +47,11 @@ public interface DistributedLock {
      * @param leaseTime 加锁的时间，超过时间后自动解锁；-1，则保持锁定直到显式解锁
      * @param unit      锁时间单位
      */
-    AsuraLock writeLock(String key, long leaseTime, TimeUnit unit) throws Exception;
+    AsuraLock writeLock(String key, long leaseTime, TimeUnit unit);
 
     /**
      * 关闭锁
      */
-    void unlock(Object lock) throws Exception;
+    void unlock(Object lock);
 
 }

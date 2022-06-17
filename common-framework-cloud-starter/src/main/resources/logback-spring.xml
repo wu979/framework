@@ -6,9 +6,6 @@
     日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL，如果设置为WARN，则低于WARN的信息都不会输出
     -->
 <configuration debug="false" scan="true" scanPeriod="30 seconds" packagingData="true">
-    <contextName>${APP_NAME}</contextName>
-    <property name="LOG_HOME" value="C:"/>
-
     <!-- 彩色日志 -->
     <!-- 彩色日志依赖的渲染类 -->
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
@@ -33,7 +30,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.wsw.cloud" level="INFO" additivity="false">
+    <logger name="com.framework.cloud" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE_LOG"/>
     </logger>
 

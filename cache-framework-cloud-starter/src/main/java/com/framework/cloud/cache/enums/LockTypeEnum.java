@@ -1,8 +1,6 @@
 package com.framework.cloud.cache.enums;
 
 /**
- * 锁类型 枚举
- *
  * @author wusiwei
  */
 public enum LockTypeEnum {

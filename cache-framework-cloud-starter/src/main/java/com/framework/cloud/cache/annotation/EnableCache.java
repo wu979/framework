@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 缓存启动器
+ * enable cache configuration with annotations
  *
  * @author wusiwei
  */
