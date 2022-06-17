@@ -7,6 +7,8 @@ package com.framework.cloud.common.constant;
  */
 public class HeaderConstant {
 
+    public static final String AUTHORIZATION = "Authorization";
+
     /**
      * 租户信息头
      */

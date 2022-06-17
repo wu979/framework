@@ -32,6 +32,11 @@ public interface Cache {
     long delete(@NotNull Collection<String> keys);
 
     /**
+     * 删除缓存 返回成功数量
+     */
+    long delete(@NotNull String... key);
+
+    /**
      * key是否存在
      */
     boolean hasKey(@NotBlank String key);

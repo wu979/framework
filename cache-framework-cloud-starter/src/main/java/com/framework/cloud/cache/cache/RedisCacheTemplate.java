@@ -6,13 +6,17 @@ import com.framework.cloud.cache.properties.RedisAutoProperties;
 import com.framework.cloud.cache.utils.CacheUtil;
 import com.framework.cloud.common.utils.FastJsonUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.redisson.api.RBloomFilter;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 缓存模板
@@ -53,6 +57,13 @@ public class RedisCacheTemplate implements RedisCache {
 
     @Override
     public long delete(@NotNull Collection<String> keys) {
+        Long delete = stringRedisTemplate.delete(keys);
+        return null != delete ? delete : 0L;
+    }
+
+    @Override
+    public long delete(@NotNull String... key) {
+        List<String> keys = Stream.of(key).filter(StringUtils::isNotBlank).collect(Collectors.toList());
         Long delete = stringRedisTemplate.delete(keys);
         return null != delete ? delete : 0L;
     }
