@@ -1,6 +1,6 @@
 package com.framework.cloud.feign.fallback;
 
-import com.framework.cloud.common.enums.MessageEnum;
+import com.framework.cloud.common.enums.GlobalMessage;
 import com.framework.cloud.common.result.Result;
 import com.framework.cloud.feign.enums.FeignMessageEnum;
 import feign.FeignException;
@@ -29,7 +29,7 @@ public class OverallFeignFallback<T> implements MethodInterceptor {
 
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) {
-        return new Result<>(MessageEnum.ERROR.getCode(), getMsg());
+        return new Result<>(GlobalMessage.ERROR.getCode(), getMsg());
     }
 
     @Override
@@ -57,7 +57,7 @@ public class OverallFeignFallback<T> implements MethodInterceptor {
             msg = FeignMessageEnum.getMsg(status);
             msg = MessageFormat.format(msg, targetName);
         } else {
-            msg = StringUtils.isBlank(cause.getMessage()) ? MessageEnum.ERROR.getMsg() : cause.getMessage();
+            msg = StringUtils.isBlank(cause.getMessage()) ? GlobalMessage.ERROR.getMsg() : cause.getMessage();
         }
         return msg;
     }

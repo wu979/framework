@@ -14,7 +14,6 @@ import java.util.function.Supplier;
  */
 public class MybatisMetaObjectHandler implements MetaObjectHandler {
 
-    private static final String ID = "id";
     private static final String CREATE_ID = "createId";
     private static final String UPDATE_ID = "updateId";
     private static final String CREATE_TIME = "createTime";

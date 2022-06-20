@@ -1,7 +1,7 @@
 package com.framework.cloud.common.utils;
 
 import com.framework.cloud.common.constant.DateConstant;
-import com.framework.cloud.common.enums.NumberEnum;
+import com.framework.cloud.common.enums.GlobalNumber;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.*;
 import org.joda.time.format.DateTimeFormat;
@@ -117,7 +117,7 @@ public class JodaTimeUtil {
         if (null == date) {
             return null;
         }
-        days = null == days ? NumberEnum.ZERO.getIntValue() : days;
+        days = null == days ? GlobalNumber.ZERO.getIntValue() : days;
         DateTime dateTime = new DateTime(date);
         dateTime = dateTime.plusDays(days);
 
@@ -131,7 +131,7 @@ public class JodaTimeUtil {
         if (null == date) {
             return null;
         }
-        days = null == days ? NumberEnum.ZERO.getIntValue() : days;
+        days = null == days ? GlobalNumber.ZERO.getIntValue() : days;
         DateTime dateTime = new DateTime(date);
         dateTime = dateTime.minusDays(days);
         return dateTime.toDate();
@@ -145,7 +145,7 @@ public class JodaTimeUtil {
         if (null == date) {
             return null;
         }
-        minutes = null == minutes ? NumberEnum.ZERO.getIntValue() : minutes;
+        minutes = null == minutes ? GlobalNumber.ZERO.getIntValue() : minutes;
         DateTime dateTime = new DateTime(date);
         dateTime = dateTime.plusMinutes(minutes);
         return dateTime.toDate();
@@ -158,7 +158,7 @@ public class JodaTimeUtil {
         if (null == date) {
             return null;
         }
-        minutes = null == minutes ? NumberEnum.ZERO.getIntValue() : minutes;
+        minutes = null == minutes ? GlobalNumber.ZERO.getIntValue() : minutes;
         DateTime dateTime = new DateTime(date);
         dateTime = dateTime.minusMinutes(minutes);
         return dateTime.toDate();
@@ -171,7 +171,7 @@ public class JodaTimeUtil {
         if (null == date) {
             return null;
         }
-        months = null == months ? NumberEnum.ZERO.getIntValue() : months;
+        months = null == months ? GlobalNumber.ZERO.getIntValue() : months;
         DateTime dateTime = new DateTime(date);
         dateTime = dateTime.plusMonths(months);
         return dateTime.toDate();
@@ -184,7 +184,7 @@ public class JodaTimeUtil {
         if (null == date) {
             return null;
         }
-        months = null == months ? NumberEnum.ZERO.getIntValue() : months;
+        months = null == months ? GlobalNumber.ZERO.getIntValue() : months;
         DateTime dateTime = new DateTime(date);
         dateTime = dateTime.minusMonths(months);
         return dateTime.toDate();
@@ -197,7 +197,7 @@ public class JodaTimeUtil {
         if (null == date) {
             return null;
         }
-        minutes = null == minutes ? NumberEnum.ZERO.getIntValue() : minutes;
+        minutes = null == minutes ? GlobalNumber.ZERO.getIntValue() : minutes;
         DateTime dateTime = new DateTime(date);
         dateTime = dateTime.minusSeconds(minutes);
         return dateTime.toDate();
@@ -210,7 +210,7 @@ public class JodaTimeUtil {
         if (null == date) {
             return null;
         }
-        minutes = null == minutes ? NumberEnum.ZERO.getIntValue() : minutes;
+        minutes = null == minutes ? GlobalNumber.ZERO.getIntValue() : minutes;
         DateTime dateTime = new DateTime(date);
         dateTime = dateTime.minusSeconds(minutes);
         return dateTime.toDate();

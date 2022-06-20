@@ -72,6 +72,7 @@
         <http.client.version>4.5.12</http.client.version>
         <transmittable.thread.local.version>2.11.4</transmittable.thread.local.version>
         <sentinel.core.version>1.8.0</sentinel.core.version>
+        <jackson.version>2.13.3</jackson.version>
 
         <!-- third party -->
         <xxl.job.version>2.3.0</xxl.job.version>
@@ -143,16 +144,6 @@
                 <artifactId>spring-cloud-starter-oauth2</artifactId>
                 <version>${spring.cloud.starter.oauth2.version}</version>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.security.oauth</groupId>-->
-<!--                <artifactId>spring-security-oauth2</artifactId>-->
-<!--                <version>${spring.security.oauth2.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.security.oauth.boot</groupId>-->
-<!--                <artifactId>spring-security-oauth2-autoconfigure</artifactId>-->
-<!--                <version>${spring.security.oauth2.autoconfigure.version}</version>-->
-<!--            </dependency>-->
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-jwt</artifactId>
@@ -335,6 +326,41 @@
                 <groupId>com.alibaba.csp</groupId>
                 <artifactId>sentinel-core</artifactId>
                 <version>${sentinel.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-yaml</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jdk8</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.module</groupId>
+                <artifactId>jackson-module-parameter-names</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
 
             <!-- third party -->

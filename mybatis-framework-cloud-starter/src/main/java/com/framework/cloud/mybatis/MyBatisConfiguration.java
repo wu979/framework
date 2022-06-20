@@ -1,12 +1,14 @@
 package com.framework.cloud.mybatis;
 
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
 import com.framework.cloud.mybatis.annotation.MapperScanner;
+import com.framework.cloud.mybatis.hander.MybatisMetaObjectHandler;
 import com.framework.cloud.mybatis.hander.MybatisTenantLineHandler;
 import com.framework.cloud.mybatis.interceptor.JoinQueryInterceptor;
 import com.framework.cloud.mybatis.interceptor.SqlInterceptor;
@@ -27,9 +29,11 @@ public class MyBatisConfiguration {
 
     private final TenantProperties tenantProperties;
 
-    /**
-     * 插件
-     */
+    @Bean
+    public MetaObjectHandler metaObjectHandler() {
+        return new MybatisMetaObjectHandler();
+    }
+
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         PaginationInnerInterceptor paginationInnerInterceptor = new PaginationInnerInterceptor();

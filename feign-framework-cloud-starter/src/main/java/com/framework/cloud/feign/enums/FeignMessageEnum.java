@@ -1,6 +1,6 @@
 package com.framework.cloud.feign.enums;
 
-import com.framework.cloud.common.enums.MessageEnum;
+import com.framework.cloud.common.enums.GlobalMessage;
 import lombok.AllArgsConstructor;
 
 /**
@@ -36,6 +36,6 @@ public enum FeignMessageEnum {
                 return messageEnum.getMsg();
             }
         }
-        return MessageEnum.ERROR.getMsg();
+        return GlobalMessage.ERROR.getMsg();
     }
 }

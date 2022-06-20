@@ -16,7 +16,7 @@
         <feign.framework.cloud.starter.version>1.0.0</feign.framework.cloud.starter.version>
         <swagger.framework.cloud.starter.version>1.0.0</swagger.framework.cloud.starter.version>
         <executors.framework.cloud.starter.version>1.0.0</executors.framework.cloud.starter.version>
-        <cache.framework.cloud.starter.version>1.0.0</cache.framework.cloud.starter.version>
+        <common.framework.cloud.starter.version>1.0.0</common.framework.cloud.starter.version>
     </properties>
 
     <dependencies>
@@ -84,8 +84,8 @@
         </dependency>
         <dependency>
             <groupId>com.framework.cloud</groupId>
-            <artifactId>cache-framework-cloud-starter</artifactId>
-            <version>${cache.framework.cloud.starter.version}</version>
+            <artifactId>common-framework-cloud-starter</artifactId>
+            <version>${common.framework.cloud.starter.version}</version>
         </dependency>
     </dependencies>
 

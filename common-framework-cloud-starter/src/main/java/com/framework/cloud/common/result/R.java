@@ -1,6 +1,6 @@
 package com.framework.cloud.common.result;
 
-import com.framework.cloud.common.enums.MessageEnum;
+import com.framework.cloud.common.enums.GlobalMessage;
 
 import java.util.List;
 
@@ -12,19 +12,19 @@ import java.util.List;
 public class R<T> {
 
     public static Result<Void> success() {
-        return new Result<Void>(MessageEnum.SUCCESS.getCode(), MessageEnum.SUCCESS.getMsg());
+        return new Result<Void>(GlobalMessage.SUCCESS.getCode(), GlobalMessage.SUCCESS.getMsg());
     }
 
     public static <T> Result<T> success(T data) {
-        return new Result<T>(MessageEnum.SUCCESS.getCode(), MessageEnum.SUCCESS.getMsg(), data);
+        return new Result<T>(GlobalMessage.SUCCESS.getCode(), GlobalMessage.SUCCESS.getMsg(), data);
     }
 
     public static <T> Result<T> error() {
-        return error(MessageEnum.FAIL.getCode(), MessageEnum.FAIL.getMsg());
+        return error(GlobalMessage.FAIL.getCode(), GlobalMessage.FAIL.getMsg());
     }
 
     public static <T> Result<T> error(String msg) {
-        return error(MessageEnum.FAIL.getCode(), msg);
+        return error(GlobalMessage.FAIL.getCode(), msg);
     }
 
     public static <T> Result<T> error(Integer code, String msg) {
@@ -33,8 +33,8 @@ public class R<T> {
 
     public static <T> Result<List<T>> list(List<T> list) {
         Result<List<T>> result = new Result<List<T>>();
-        result.setCode(MessageEnum.SUCCESS.getCode());
-        result.setMsg(MessageEnum.SUCCESS.getMsg());
+        result.setCode(GlobalMessage.SUCCESS.getCode());
+        result.setMsg(GlobalMessage.SUCCESS.getMsg());
         result.setData(list);
         return result;
     }

@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
  * @author wusiwei
  */
 @AllArgsConstructor
-public enum MessageEnum {
+public enum GlobalMessage {
 
     /**
      * 全局统一消息

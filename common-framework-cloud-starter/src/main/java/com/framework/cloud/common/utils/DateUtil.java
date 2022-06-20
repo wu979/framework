@@ -1,7 +1,7 @@
 package com.framework.cloud.common.utils;
 
 import com.framework.cloud.common.constant.DateConstant;
-import com.framework.cloud.common.enums.NumberEnum;
+import com.framework.cloud.common.enums.GlobalNumber;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -155,7 +155,7 @@ public class DateUtil {
      * @param date 日期
      */
     public static String getYear(Date date) {
-        return format(date).substring(NumberEnum.ZERO.getIntValue(), NumberEnum.FOUR.getIntValue());
+        return format(date).substring(GlobalNumber.ZERO.getIntValue(), GlobalNumber.FOUR.getIntValue());
     }
 
 }

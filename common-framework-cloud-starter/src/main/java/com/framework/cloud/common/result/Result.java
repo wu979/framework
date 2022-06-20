@@ -1,6 +1,6 @@
 package com.framework.cloud.common.result;
 
-import com.framework.cloud.common.enums.MessageEnum;
+import com.framework.cloud.common.enums.GlobalMessage;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -28,7 +28,7 @@ public class Result<T> implements Serializable {
     }
 
     public Result(String msg) {
-        this.code = MessageEnum.FAIL.getCode();
+        this.code = GlobalMessage.FAIL.getCode();
         this.msg = msg;
     }
 
@@ -44,6 +44,6 @@ public class Result<T> implements Serializable {
     }
 
     public boolean success() {
-        return MessageEnum.SUCCESS.getCode().equals(this.code);
+        return GlobalMessage.SUCCESS.getCode().equals(this.code);
     }
 }

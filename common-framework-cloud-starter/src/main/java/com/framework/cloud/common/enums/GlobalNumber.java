@@ -10,11 +10,12 @@ import java.math.BigDecimal;
  * @author wusiwei
  */
 @AllArgsConstructor
-public enum NumberEnum {
+public enum GlobalNumber {
 
     /**
      * 数字类枚举
      */
+    MINUS_ONE(-1,-1L,"-1", -1.00, BigDecimal.valueOf(-1)),
     ZERO(0, 0L, "0", 0.00, BigDecimal.valueOf(0)),
     ONE(1, 1L, "1", 1.00, BigDecimal.valueOf(1)),
     TWO(2, 2L, "2", 2.00, BigDecimal.valueOf(2)),
