@@ -15,9 +15,7 @@ public class SnowflakeUtil {
      * 获取下一个 ID
      */
     public static long nextId() {
-        long l = SNOWFLAKE.nextId();
-        System.out.println(l);
-        return l;
+        return SNOWFLAKE.nextId();
     }
 
 
