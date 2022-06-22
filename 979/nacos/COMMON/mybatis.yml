@@ -1,0 +1,61 @@
+mybatisPlus:
+  #Mapper 扫描路径
+  mapperScanner: ${framework.mybatis.mapperScanner:com.framework.cloud.**.infrastructure.mapper}
+  #Mapper Xml 扫描路径
+  mapperLocations: ${framework.mybatis.mapperXmlLocations:classpath*:mapper/*Mapper.xml}
+  #实体 扫描路径
+  typeAliasesPackage: ${framework.mybatis.typeAliasesPackage:com.framework.cloud.**.infrastructure.entity}
+  #转换器 扫描路径
+  typeHandlersPackage: ${framework.mybatis.typeHandlersPackage:com.framework.cloud.mybatis.hander}
+  #枚举 扫描路径
+  typeEnumsPackage: ${framework.mybatis.typeEnumsPackage:com.framework.cloud.**.common.enums}
+  #配置
+  configuration:
+    #二级缓存
+    cache-enabled: ${framework.mybatis.configuration.cache-enabled:true}
+    #延迟加载全局开关
+    lazyLoadingEnabled: ${framework.mybatis.configuration.lazyLoadingEnabled:false}
+    #任一方法的调用都会加载该对象的所有延迟加载属性
+    aggressiveLazyLoading: ${framework.mybatis.configuration.aggressiveLazyLoading:false}
+    #驼峰命名
+    map-underscore-to-camel-case: ${framework.mybatis.configuration.map-underscore-to-camel-case:true}
+    #结果集中值为 null 的时候是否调用映射对象的setter
+    call-setters-on-nulls: ${framework.mybatis.configuration.call-setters-on-nulls:true}
+    #允许单个语句返回多结果集
+    multipleResultSetsEnabled: ${framework.mybatis.configuration.multipleResultSetsEnabled:true}
+    #使用列标签代替列名
+    useColumnLabel: ${framework.mybatis.configuration.useColumnLabel:true}
+    #允许JDBC支持自动生成主键
+    useGeneratedKeys: ${framework.mybatis.configuration.multipleResultSetsEnabled:false}
+    #自动映射列到字段或属性。 NONE：关闭映射 PARTIAL：映射没有定义嵌套结果映射的字段 FULL：映射任何复杂的结果集
+    autoMappingBehavior: ${framework.mybatis.configuration.autoMappingBehavior:PARTIAL}
+    #自动映射列到字段或属性异常行为 NONE:不做任何反应 WARNING:输出警告日志 FAILING: 映射失败抛出异常
+    autoMappingUnknownColumnBehavior: ${framework.mybatis.configuration.autoMappingUnknownColumnBehavior:NONE}
+    #执行器 SIMPLE：默认 REUSE：重用预处理语句 BATCH：重用语句并且执行批量更新。
+    defaultExecutorType: ${framework.mybatis.configuration.defaultExecutorType:SIMPLE}
+    #超时时间（秒）
+    defaultStatementTimeout: ${framework.mybatis.configuration.defaultStatementTimeout:30}
+  global-config:
+    #banner
+    banner: ${framework.mybatis.global.banner:false}
+    #初始化SqlRunner
+    enable-sql-runner: ${framework.mybatis.global.enable-sql-runner:true}
+    db-config:
+      #主键类型
+      id-type: ${framework.mybatis.global.db.id-type:ASSIGN_ID}
+      #表名前缀
+      tablePrefix: ${framework.mybatis.global.db.tablePrefix}
+      #表名使用驼峰转下划线命名
+      table-underline: ${framework.mybatis.global.db.table-underline:true}
+      #字段验证策略
+      insert-strategy: NOT_EMPTY
+      #字段验证策略
+      update-strategy: NOT_EMPTY
+      #字段验证策略
+      select-strategy: NOT_EMPTY
+      #逻辑删除字段属性名
+      logicDeleteField: deleted
+      #逻辑已删除值
+      logic-delete-value: 0
+      #逻辑未删除值
+      logic-not-delete-value: 1

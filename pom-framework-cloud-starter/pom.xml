@@ -38,7 +38,7 @@
         <!-- datasource -->
         <mysql.version>5.1.47</mysql.version>
         <druid.version>1.1.23</druid.version>
-        <sharding.version>4.1.1</sharding.version>
+        <shardingsphere.jdbc.version>5.1.2</shardingsphere.jdbc.version>
 
         <!-- cache -->
         <redisson.version>3.9.0</redisson.version>
@@ -164,15 +164,8 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.shardingsphere</groupId>
-                <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
-                <version>${sharding.version}</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.shardingsphere</groupId>
-                <artifactId>sharding-jdbc-spring-namespace</artifactId>
-                <version>${sharding.version}</version>
-                <scope>compile</scope>
+                <artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
+                <version>${shardingsphere.jdbc.version}</version>
             </dependency>
 
             <!-- cache -->

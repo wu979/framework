@@ -1,0 +1,21 @@
+framework:
+  swagger:
+    title: 支付
+    basePackage: com.framework.cloud.pay.api.controller
+  mybatis:
+    tenant:
+      is-open: true
+      ignore-table-names: 
+        - t_permission
+spring:
+  shardingsphere:
+    props:
+      sql-show: true
+    datasource:
+      names: user
+      user:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/framework-user?characterEncoding=utf8&useSSL=false&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&serverTimezone=Asia/Shanghai
+        username: root
+        password: 123456

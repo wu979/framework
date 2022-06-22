@@ -1,0 +1,14 @@
+framework:
+    executors:
+        #核心线程数量
+        core-pool-size: ${framework.executors.core:5}
+        #线程池维护线程的最大数量
+        max-pool-size: ${framework.executors.max:10}
+        #队列最大长度
+        queue-capacity: ${framework.executors.queue:20}
+        #线程存活时间(单位：秒)
+        keep-alive-seconds: ${framework.executors.keep-alive:60}
+        #等待终止(单位：毫秒)
+        await-termination-millis: ${framework.executors.await-termination:5000}
+        #是否等待任务完成关机
+        wait-for-tasks-to-complete-on-shutdown: ${framework.executors.wait-on-shutdown:true}

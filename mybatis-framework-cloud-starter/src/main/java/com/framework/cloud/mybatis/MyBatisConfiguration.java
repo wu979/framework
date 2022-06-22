@@ -10,7 +10,6 @@ import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerIntercept
 import com.framework.cloud.mybatis.annotation.MapperScanner;
 import com.framework.cloud.mybatis.hander.MybatisMetaObjectHandler;
 import com.framework.cloud.mybatis.hander.MybatisTenantLineHandler;
-import com.framework.cloud.mybatis.interceptor.JoinQueryInterceptor;
 import com.framework.cloud.mybatis.properties.TenantProperties;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -49,8 +48,6 @@ public class MyBatisConfiguration {
         if (tenantProperties.getIsOpen()) {
             interceptor.addInnerInterceptor(new TenantLineInnerInterceptor(new MybatisTenantLineHandler(tenantProperties)));
         }
-        //自定义拦截器（join）
-        interceptor.addInnerInterceptor(new JoinQueryInterceptor());
         return interceptor;
     }
 }

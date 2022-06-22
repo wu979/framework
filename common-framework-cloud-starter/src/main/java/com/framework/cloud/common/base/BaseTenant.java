@@ -5,12 +5,14 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.Version;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.experimental.FieldNameConstants;
 
 /**
  * 父级实体 有租户
  *
  * @author wusiwei
  */
+@FieldNameConstants
 public class BaseTenant {
 
     @ApiModelProperty(value = "租户id")

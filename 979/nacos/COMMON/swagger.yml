@@ -1,0 +1,28 @@
+framework:
+    knife4j:
+        #是否开启
+        enabled: ${framework.swagger.enabled:true}
+        #扫描路径
+        base-package: ${framework.swagger.base-package}
+        #页面标题
+        title: ${framework.swagger.title}
+        #描述
+        description: ${framework.swagger.description:文档}
+        #版本号
+        version: ${framework.swagger.version:2.0}
+        #许可
+        license: ${framework.swagger.license:暂无}
+        #许可链接
+        license-url: ${framework.swagger.license-url:暂无}
+        #分组
+        group-name: ${framework.swagger.group-name}
+        #作者信息
+        contact:
+            #名称
+            name: ${framework.swagger.contact.name:979}
+            #链接
+            url: ${framework.swagger.contact.url:无}
+            #邮箱
+            email: ${framework.swagger.contact.email:XXXXXXXXXX@163.com}
+    
+    

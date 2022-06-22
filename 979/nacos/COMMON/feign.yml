@@ -1,0 +1,25 @@
+feign:
+  sentinel:
+    enabled: ${framework.feign.enabled:true}
+  circuitbreaker:
+    enabled: true
+  okhttp:
+    enabled: true
+  httpclient:
+    enabled: false
+  client:
+    config:
+      #默认的超时时间 可以在指定服务配置文件 指定单个Feign的超时时间 default改为@FeignClient(contextId = "***")
+      default:
+        connectTimeout: ${framework.feign.client.connect-timeout:3000}
+        readTimeout: ${framework.feign.client.read-timeout:5000}
+  compression:
+    request:
+      #开启请求压缩
+      enabled: true
+      #设置压缩的数据类型
+      mime-types: text/html,application/xml,application/json
+      #设置触发压缩的大小下限
+      min-request-size: 2048
+    response:
+      enabled: true

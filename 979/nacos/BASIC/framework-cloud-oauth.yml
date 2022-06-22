@@ -1,0 +1,22 @@
+framework:
+  swagger:
+    title: 授权
+    base-package: com.framework.cloud.oauth.api.controller
+    group-name: oauth
+  redis:
+    prefix: authentication
+    host: 127.0.0.1
+    password: 123456
+  oauth2:
+    url:
+      cors-pattern: /**
+      logout-url: /oauth/logout
+      ignoring-url:
+        - /oauth/**
+    jwt:
+      #签名文件
+      key-path: classpath:oauth-servce.jks
+      #签名别名
+      alias: 979
+      #签名密码
+      password: wsw979

@@ -1,0 +1,94 @@
+framework:
+  swagger:
+    title: 用户
+    base-package: com.framework.cloud.user.api.controller
+    group-name: user
+  mybatis:
+    mapperScanner: com.framework.cloud.user.infrastructure.mapper
+    tenant:
+      is-open: true
+      ignore-table-names: 
+        - t_permission
+  redis:
+    prefix: user
+    host: 127.0.0.1
+    password: 123456
+spring:
+  shardingsphere:
+    props:
+      sql-show: true
+    datasource:
+      names: user
+      user:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/framework-user?characterEncoding=utf8&useSSL=false&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&serverTimezone=Asia/Shanghai
+        username: root
+        password: 123456
+    rules:
+      sharding:
+        #绑定表
+        bindingTables:
+          - t_user, t_user_auth
+        #默认key生成策略
+        default-key-generate-strategy:
+          column: id
+          key-generator-name: snowflake
+        tables:
+          t_user:
+            #定义表表名区间
+            actualDataNodes: user.t_user_$->{2022..2023}
+            #分片算法
+            tableStrategy:
+              standard:
+                #分片键
+                shardingColumn: create_time
+                #分片策略
+                shardingAlgorithmName: user_create_time
+          t_user_auth:
+            actualDataNodes: user.t_user_auth_$->{2022..2023}
+            tableStrategy:
+              standard:
+                shardingColumn: create_time
+                shardingAlgorithmName: user_create_time
+        #分片策略
+        sharding-algorithms:
+          #策略名称
+          user_create_time:
+            #采用哪种类型
+            type: CLASS_BASED
+            props:
+              #STANDARD、COMPLEX、HINT （ClassBasedShardingAlgorithmStrategyType）
+              strategy: STANDARD
+              algorithmClassName: com.framework.cloud.user.api.application.shading.UserTimePreciseShardingAlgorithm
+      encrypt:
+        query-with-cipher-column: true
+        encryptors:
+          encryptor_md5:
+            type: md5
+            props:
+              md5-key-value: 979
+          encryptor_aes:
+            type: aes
+            props:
+              aes-key-value: 979
+        tables:
+          t_user:
+            columns:
+              email:
+                cipherColumn: email
+                encryptorName: encryptor_aes
+              username:
+                cipherColumn: username
+                encryptorName: encryptor_aes
+              mobile:
+                cipherColumn: mobile
+                encryptorName: encryptor_aes
+          t_user_auth:
+            columns:
+              identifier:
+                cipherColumn: identifier
+                encryptorName: encryptor_aes
+              credential:
+                cipherColumn: credential
+                encryptorName: encryptor_md5

@@ -1,0 +1,22 @@
+xxl:
+  job:
+    #是否开启
+    enabled: ${framework.xxl-job.enabled:true}
+    #令牌
+    access-token: ${framework.xxl-job.access-token}
+    #调度中心地址 集群部署存在多个地址则用逗号分隔
+    admin-addresses: ${framework.xxl-job.admin-addresses}
+    #执行器
+    executor:
+      #执行器名称
+      app-name: ${framework.xxl-job.executor.app-name}
+      #自动注册不需要 地址 ip:port
+      address: ${framework.xxl-job.executor.address}
+      #自动注册不需要
+      ip: ${framework.xxl-job.executor.ip}
+      #端口
+      port: ${framework.xxl-job.executor.port}
+      #执行器运行日志文件存储的磁盘位置
+      log-path: ${framework.xxl-job.executor.job.log-path:/data/xxl-job/logs}
+      #执行器Log文件定期清理功能，指定日志保存天数
+      log-retention-days: ${framework.xxl-job.executor.job.log-retention-days:30}

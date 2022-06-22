@@ -1,0 +1,52 @@
+spring:
+  redis:
+    #单机
+    host: ${framework.redis.host:127.0.0.1}
+    port: ${framework.redis.port:6379}
+    password: ${framework.redis.password:123456}
+    #哨兵
+    sentinel:
+      master: ${framework.redis.sentinel.master}
+      nodes: ${framework.redis.sentinel.nodes}
+    #集群配置
+    cluster:
+      nodes: ${framework.redis.cluster.nodes}
+      max-redirects: ${framework.redis.cluster.max-redirects:3}
+    #超时时间
+    timeout: ${framework.redis.timeout:2000}
+    #连接超时
+    connectTimeout: ${framework.redis.connect-timeout:3000}
+    #默认缓存过期时间
+    cache-timeout: ${framework.redis.cache-timeout:30000}
+    #默认缓存过期时间单位 毫秒
+    cache-timeout-unit: ${framework.redis.cache-timeout-unit:MILLISECONDS}
+    #库
+    database: ${framework.redis.database:0}
+    #前缀
+    prefix: ${framework.redis.prefix}
+    #redis初始化类型 单机standalone  哨兵sentinel  集群cluster
+    type: ${framework.redis.type:standalone}
+    #客户端类型 lettuce jedis
+    client-type: ${framework.redis.client-type:lettuce}
+    #分布式锁类型
+    lock-type: 
+      redis: 
+        enable: ${framework.redis.lock-type.redis.enable:true}
+      zk:
+        enable: ${framework.redis.lock-type.redis.enable:false}
+    #lettuce配置
+    lettuce:
+      pool:
+        enabled: ${framework.redis.lettuce.enabled:true}
+        max-active: ${framework.redis.lettuce.max-active:8}
+        max-idle: ${framework.redis.lettuce.max-idle:8}
+        min-idle: ${framework.redis.lettuce.min-idle:0}
+        max-wait: ${framework.redis.lettuce.max-wait:-1}
+    #布隆过滤器
+    bloom-filter:
+      #名称
+      name: ${framework.redis.bloom.name:cache_bloom_filter}
+      #每个元素的预期插入量
+      expectedInsertions: ${framework.redis.bloom.expectedInsertions:64000}
+      #预期错误概率
+      falseProbability: ${framework.redis.bloom.falseProbability:0.03}
