@@ -7,18 +7,22 @@ package com.framework.cloud.common.constant;
  */
 public class HeaderConstant {
 
+    /**
+     * 令牌前缀
+     */
+    public static final String BEARER = "Bearer ";
+    /**
+     * 令牌
+     */
     public static final String AUTHORIZATION = "Authorization";
-
     /**
      * 租户信息头
      */
     public static final String X_TENANT_HEADER = "x-tenant-header";
-
     /**
      * 用户信息头
      */
     public static final String X_USER_HEADER = "x-user-header";
-
     /**
      * 用户权限头
      */
