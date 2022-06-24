@@ -1,4 +1,4 @@
-package com.framework.cloud.common.constant;
+package com.framework.cloud.holder.constant;
 
 /**
  * 认证 常量
@@ -23,6 +23,10 @@ public class HeaderConstant {
      * 用户信息头
      */
     public static final String X_USER_HEADER = "x-user-header";
+    /**
+     * 用户ID信息头
+     */
+    public static final String X_USER_ID_HEADER = "x-user-id-header";
     /**
      * 用户权限头
      */

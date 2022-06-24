@@ -45,4 +45,10 @@ public interface RedisCache extends Cache {
      */
     boolean put(@NotBlank String key, Object value, long timeout, TimeUnit unit);
 
+    /**
+     * 加入缓存 默认时间秒
+     */
+    default boolean put(@NotBlank String key, Object value, long timeout) {
+        return put(key, value, timeout, TimeUnit.SECONDS);
+    }
 }

@@ -1,10 +1,11 @@
-package com.framework.cloud.common.constant;
+package com.framework.cloud.holder.constant;
 
 /**
  * @author wusiwei
  */
 public class OauthConstant {
 
+    public static final String CREDENTIALS = "N/A";
     public static final String APPLICATION_JSON = "application/json;charset=UTF-8";
     /**
      * 授权码长度
@@ -61,4 +62,12 @@ public class OauthConstant {
      * 自定义令牌 用户权限上下文
      */
     public static final String AUTHORITIES = "authorities";
+    /**
+     * 授权码获取成功参数
+     */
+    public static final String CODE_PARAM = "{0}?appKey={1}&code={2}";
+    /**
+     * 授权码获取成功参数
+     */
+    public static final String CODE_PARAM_STATE = "{0}?appKey={1}&code={2}&state={3}";
 }

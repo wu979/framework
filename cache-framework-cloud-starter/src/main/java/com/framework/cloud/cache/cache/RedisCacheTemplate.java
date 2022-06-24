@@ -4,6 +4,7 @@ import com.framework.cloud.cache.lock.AsuraLock;
 import com.framework.cloud.cache.lock.RedisDistributedLock;
 import com.framework.cloud.cache.properties.RedisAutoProperties;
 import com.framework.cloud.cache.utils.CacheUtil;
+import com.framework.cloud.common.enums.GlobalNumber;
 import com.framework.cloud.common.utils.FastJsonUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -118,6 +119,11 @@ public class RedisCacheTemplate implements RedisCache {
     @Override
     public boolean put(@NotBlank String key, Object value, long timeout, TimeUnit unit) {
         String jsonValue = CacheUtil.isCacheTarget(value) ? FastJsonUtil.toJSONString(value) : (String) value;
+        if (timeout < GlobalNumber.ZERO.getIntValue()) {
+            stringRedisTemplate.opsForValue().set(key, jsonValue);
+            stringRedisTemplate.persist(key);
+            return true;
+        }
         stringRedisTemplate.opsForValue().set(key, jsonValue, timeout, unit);
         return true;
     }

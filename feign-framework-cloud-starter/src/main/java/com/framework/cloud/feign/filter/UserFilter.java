@@ -2,7 +2,7 @@ package com.framework.cloud.feign.filter;
 
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.framework.cloud.common.constant.HeaderConstant;
+import com.framework.cloud.holder.constant.HeaderConstant;
 import com.framework.cloud.holder.UserContextHolder;
 import com.framework.cloud.holder.UserRoleContextHolder;
 import com.framework.cloud.holder.model.LoginUser;

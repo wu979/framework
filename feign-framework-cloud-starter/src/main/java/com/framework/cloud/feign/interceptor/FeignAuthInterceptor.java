@@ -2,7 +2,7 @@ package com.framework.cloud.feign.interceptor;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.framework.cloud.common.constant.HeaderConstant;
+import com.framework.cloud.holder.constant.HeaderConstant;
 import com.framework.cloud.common.utils.FastJsonUtil;
 import com.framework.cloud.holder.TenantContextHolder;
 import com.framework.cloud.holder.UserContextHolder;
