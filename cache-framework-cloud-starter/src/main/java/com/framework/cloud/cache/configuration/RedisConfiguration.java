@@ -25,7 +25,6 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
@@ -76,13 +75,6 @@ public class RedisConfiguration {
     }
 
     @Bean
-    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        StringRedisTemplate redisTemplate = new StringRedisTemplate(redisConnectionFactory);
-        redisTemplate.setKeySerializer(new StringRedisKeySerializer(redisAutoProperties.getPrefix()));
-        return redisTemplate;
-    }
-
-    @Bean
     public RedissonConnectionFactory redissonConnectionFactory(RedissonClient redissonClient) {
         return new RedissonConnectionFactory(redissonClient);
     }
@@ -101,8 +93,8 @@ public class RedisConfiguration {
     }
 
     @Bean
-    public RedisCache redisCache(StringRedisTemplate stringRedisTemplate, RedisDistributedLock redisDistributedLock, RBloomFilter<String> bloomFilter) {
-        return new RedisCacheTemplate(stringRedisTemplate, redisDistributedLock, redisAutoProperties, bloomFilter);
+    public RedisCache redisCache(RedisTemplate<String, Object> redisTemplate, RedisDistributedLock redisDistributedLock, RBloomFilter<String> bloomFilter) {
+        return new RedisCacheTemplate(redisTemplate, redisDistributedLock, redisAutoProperties, bloomFilter);
     }
 
 }

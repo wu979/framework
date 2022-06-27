@@ -9,7 +9,7 @@ import com.framework.cloud.common.utils.FastJsonUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.redisson.api.RBloomFilter;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -28,18 +28,18 @@ import java.util.stream.Stream;
 public class RedisCacheTemplate implements RedisCache {
 
     private static final String LOCK_KEY = "redisCache_lock_get_key";
-    private final StringRedisTemplate stringRedisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
     private final RedisDistributedLock redisDistributedLock;
     private final RedisAutoProperties redisAutoProperties;
     private final RBloomFilter<String> cachePenetrationBloomFilter;
 
     @Override
     public <T> T get(@NotBlank String key, Class<T> clz) {
-        String value = stringRedisTemplate.opsForValue().get(key);
+        Object value = redisTemplate.opsForValue().get(key);
         if (CacheUtil.isNullOrBlank(value)) {
             return null;
         }
-        if (!CacheUtil.isCacheTarget(value)) {
+        if (!CacheUtil.isTarget(clz)) {
             return (T) value;
         }
         return FastJsonUtil.toJavaObject(value, FastJsonUtil.makeJavaType(clz));
@@ -52,26 +52,26 @@ public class RedisCacheTemplate implements RedisCache {
 
     @Override
     public boolean delete(@NotBlank String key) {
-        Boolean delete = stringRedisTemplate.delete(key);
+        Boolean delete = redisTemplate.delete(key);
         return null != delete && delete;
     }
 
     @Override
     public long delete(@NotNull Collection<String> keys) {
-        Long delete = stringRedisTemplate.delete(keys);
+        Long delete = redisTemplate.delete(keys);
         return null != delete ? delete : 0L;
     }
 
     @Override
     public long delete(@NotNull String... key) {
         List<String> keys = Stream.of(key).filter(StringUtils::isNotBlank).collect(Collectors.toList());
-        Long delete = stringRedisTemplate.delete(keys);
+        Long delete = redisTemplate.delete(keys);
         return null != delete ? delete : 0L;
     }
 
     @Override
     public boolean hasKey(@NotBlank String key) {
-        Boolean has =  stringRedisTemplate.hasKey(key);
+        Boolean has =  redisTemplate.hasKey(key);
         return null != has && has;
     }
 
@@ -118,13 +118,13 @@ public class RedisCacheTemplate implements RedisCache {
 
     @Override
     public boolean put(@NotBlank String key, Object value, long timeout, TimeUnit unit) {
-        String jsonValue = CacheUtil.isCacheTarget(value) ? FastJsonUtil.toJSONString(value) : (String) value;
+        String jsonValue = CacheUtil.isTarget(value) ? FastJsonUtil.toJSONString(value) : (String) value;
         if (timeout < GlobalNumber.ZERO.getIntValue()) {
-            stringRedisTemplate.opsForValue().set(key, jsonValue);
-            stringRedisTemplate.persist(key);
+            redisTemplate.opsForValue().set(key, jsonValue);
+            redisTemplate.persist(key);
             return true;
         }
-        stringRedisTemplate.opsForValue().set(key, jsonValue, timeout, unit);
+        redisTemplate.opsForValue().set(key, jsonValue, timeout, unit);
         return true;
     }
 

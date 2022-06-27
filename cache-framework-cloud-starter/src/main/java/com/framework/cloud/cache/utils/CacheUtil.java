@@ -1,6 +1,5 @@
 package com.framework.cloud.cache.utils;
 
-import com.framework.cloud.common.annotation.CacheTarget;
 import com.google.common.base.Strings;
 
 /**
@@ -9,17 +8,17 @@ import com.google.common.base.Strings;
 public class CacheUtil {
 
     /**
-     * 是否包含 CacheTarget 注解
+     * 是否对象
      */
-    public static boolean isCacheTarget(Object value) {
-        return null != value && isCacheTarget(value.getClass());
+    public static <T> boolean isTarget(Object obj) {
+        return isTarget(obj.getClass());
     }
 
     /**
-     * 是否包含 CacheTarget 注解
+     * 是否对象
      */
-    public static boolean isCacheTarget(Class<?> clz) {
-        return  null != clz && null != (clz.getAnnotation(CacheTarget.class));
+    public static <T> boolean isTarget(Class<T> clz) {
+        return clz != null && !clz.isPrimitive() && !isPackage(clz);
     }
 
     /**
@@ -27,5 +26,12 @@ public class CacheUtil {
      */
     public static boolean isNullOrBlank(Object cacheVal) {
         return cacheVal == null || (cacheVal instanceof String && Strings.isNullOrEmpty((String) cacheVal));
+    }
+
+    public static <T> boolean isPackage(Class<T> clz) {
+        return String.class.isAssignableFrom(clz) || Long.class.isAssignableFrom(clz) || Double.class.isAssignableFrom(clz)
+                || Boolean.class.isAssignableFrom(clz) || Character.class.isAssignableFrom(clz)
+                || Byte.class.isAssignableFrom(clz) || Short.class.isAssignableFrom(clz)
+                || Integer.class.isAssignableFrom(clz) || Float.class.isAssignableFrom(clz);
     }
 }

@@ -5,7 +5,6 @@ import com.framework.cloud.feign.filter.TenantFilter;
 import com.framework.cloud.feign.filter.UserFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -17,9 +16,8 @@ import org.springframework.context.annotation.Bean;
  */
 @AllArgsConstructor
 @SuppressWarnings({"rawtypes", "unchecked"})
-@AutoConfigureAfter(ObjectMapper.class)
+@AutoConfigureAfter(FeignConfiguration.class)
 @ConditionalOnWebApplication
-@ConditionalOnBean(FeignConfiguration.class)
 public class FeignContextConfiguration {
 
     private final ObjectMapper objectMapper;

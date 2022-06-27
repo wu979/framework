@@ -1,39 +1,30 @@
-package com.framework.cloud.core;
+package com.framework.cloud.feign.converter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.context.annotation.Bean;
+import org.springframework.cloud.openfeign.support.HttpMessageConverterCustomizer;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Http消息序列化
+ * Feign converter
  *
  * @author wusiwei
  */
 @AllArgsConstructor
-@AutoConfigureAfter(ObjectMapper.class)
-public class JacksonConfiguration {
+public class Jackson2HttpMessageConverter implements HttpMessageConverterCustomizer {
 
     private final ObjectMapper objectMapper;
 
-    @Bean
-    public StringHttpMessageConverter stringHttpMessageConverter() {
-        return new StringHttpMessageConverter(StandardCharsets.UTF_8);
-    }
-
-    @Bean
-    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
+    @Override
+    public void accept(List<HttpMessageConverter<?>> converters) {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(objectMapper);
         converter.setSupportedMediaTypes(getMediaType());
-        return converter;
     }
 
     private static List<MediaType> getMediaType() {
