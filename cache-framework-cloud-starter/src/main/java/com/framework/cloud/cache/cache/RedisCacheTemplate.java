@@ -118,14 +118,25 @@ public class RedisCacheTemplate implements RedisCache {
 
     @Override
     public boolean put(@NotBlank String key, Object value, long timeout, TimeUnit unit) {
-        String jsonValue = CacheUtil.isTarget(value) ? FastJsonUtil.toJSONString(value) : (String) value;
-        if (timeout < GlobalNumber.ZERO.getIntValue()) {
-            redisTemplate.opsForValue().set(key, jsonValue);
-            redisTemplate.persist(key);
-            return true;
+        if (CacheUtil.isTarget(value)) {
+            if (timeout < GlobalNumber.ZERO.getIntValue()) {
+                redisTemplate.opsForValue().set(key, FastJsonUtil.toJSONString(value));
+                redisTemplate.persist(key);
+                return true;
+            } else {
+                redisTemplate.opsForValue().set(key, FastJsonUtil.toJSONString(value), timeout, unit);
+                return true;
+            }
+        } else {
+            if (timeout < GlobalNumber.ZERO.getIntValue()) {
+                redisTemplate.opsForValue().set(key, value);
+                redisTemplate.persist(key);
+                return true;
+            } else {
+                redisTemplate.opsForValue().set(key, value, timeout, unit);
+                return true;
+            }
         }
-        redisTemplate.opsForValue().set(key, jsonValue, timeout, unit);
-        return true;
     }
 
     private <T> T loadAndSet(String key, CacheLoader<T> cacheLoader, long timeout, TimeUnit timeUnit) {

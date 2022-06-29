@@ -1,5 +1,8 @@
 package com.framework.cloud.core;
 
+import com.framework.cloud.common.exception.BizException;
+import com.framework.cloud.common.exception.EnumException;
+import com.framework.cloud.common.exception.LockException;
 import com.framework.cloud.common.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,30 @@ import java.util.Objects;
 @Slf4j
 @RestControllerAdvice
 public class BaseExceptionHandler {
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.OK)
+    public Result<Void> exceptionHandle(Exception e) {
+        return new Result<Void>(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+    }
+
+    @ExceptionHandler(BizException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public Result<Void> exceptionHandle(BizException e) {
+        return new Result<Void>(e.getCode(), e.getMessage());
+    }
+
+    @ExceptionHandler(EnumException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public Result<Void> exceptionHandle(EnumException e) {
+        return new Result<Void>(e.getCode(), e.getMessage());
+    }
+
+    @ExceptionHandler(LockException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public Result<Void> exceptionHandle(LockException e) {
+        return new Result<Void>(e.getCode(), e.getMessage());
+    }
 
     @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
     @ResponseStatus(HttpStatus.OK)
