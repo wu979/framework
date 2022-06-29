@@ -3,6 +3,7 @@ package com.framework.cloud.feign;
 import com.alibaba.csp.sentinel.SphU;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.framework.cloud.feign.converter.Jackson2HttpMessageConverter;
+import com.framework.cloud.feign.logger.FeignLogger;
 import com.framework.cloud.feign.sentinel.SentinelFeign;
 import feign.Feign;
 import feign.Logger;
@@ -42,6 +43,11 @@ public class FeignConfiguration {
     @Bean
     Logger.Level feignLoggerLevel() {
         return Logger.Level.FULL;
+    }
+
+    @Bean
+    FeignLogger feignInfoLevel() {
+        return new FeignLogger();
     }
 
     @Bean
