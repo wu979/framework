@@ -3,20 +3,20 @@ package com.framework.cloud.cache.enums;
 /**
  * @author wusiwei
  */
-public enum LockTypeEnum {
+public enum ReadWriteLock {
 
     /**
      * 默认
      */
-    REENTRANT_LOCK,
+    LOCK,
 
     /**
      * 读锁
      */
-    REENTRANT_READ,
+    READ,
 
     /**
      * 写锁
      */
-    REENTRANT_WRITE
+    WRITE
 }

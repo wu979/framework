@@ -1,8 +1,6 @@
 package com.framework.cloud.cache.cache;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.util.Collection;
 
 /**
  * cache
@@ -25,16 +23,6 @@ public interface Cache {
      * 删除缓存
      */
     boolean delete(@NotBlank String key);
-
-    /**
-     * 删除缓存 返回成功数量
-     */
-    long delete(@NotNull Collection<String> keys);
-
-    /**
-     * 删除缓存 返回成功数量
-     */
-    long delete(@NotNull String... key);
 
     /**
      * key是否存在

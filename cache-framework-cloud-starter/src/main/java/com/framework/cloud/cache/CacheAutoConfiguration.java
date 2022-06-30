@@ -1,6 +1,7 @@
 package com.framework.cloud.cache;
 
 import com.framework.cloud.cache.annotation.LockAspect;
+import com.framework.cloud.cache.configuration.CaffeineConfiguration;
 import com.framework.cloud.cache.configuration.RedisConfiguration;
 import com.framework.cloud.cache.configuration.ZookeeperConfiguration;
 import com.framework.cloud.cache.lock.RedisDistributedLock;
@@ -16,7 +17,7 @@ import org.springframework.context.annotation.Import;
  * @author wusiwei
  */
 @EnableCaching
-@Import({RedisConfiguration.class, ZookeeperConfiguration.class})
+@Import({RedisConfiguration.class, ZookeeperConfiguration.class, CaffeineConfiguration.class})
 public class CacheAutoConfiguration {
 
     @Bean

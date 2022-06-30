@@ -1,7 +1,7 @@
 package com.framework.cloud.cache.annotation;
 
-import com.framework.cloud.cache.enums.CacheTypeEnum;
-import com.framework.cloud.cache.enums.LockTypeEnum;
+import com.framework.cloud.cache.enums.LockMedium;
+import com.framework.cloud.cache.enums.ReadWriteLock;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -30,11 +30,23 @@ public @interface Lock {
      */
     long leaseTime() default -1;
 
+    /**
+     * 时间单位
+     */
     TimeUnit unit() default TimeUnit.SECONDS;
 
+    /**
+     * 是否公平锁
+     */
     boolean isFair() default false;
 
-    CacheTypeEnum cacheType() default CacheTypeEnum.REDIS;
+    /**
+     * 锁 介质 （redis、zk）
+     */
+    LockMedium cacheType() default LockMedium.REDIS;
 
-    LockTypeEnum lockType() default LockTypeEnum.REENTRANT_LOCK;
+    /**
+     * 默认、读写锁
+     */
+    ReadWriteLock lockType() default ReadWriteLock.LOCK;
 }

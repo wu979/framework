@@ -3,11 +3,15 @@ package com.framework.cloud.cache.enums;
 /**
  * @author wusiwei
  */
-public enum CacheTypeEnum {
+public enum LockMedium {
 
-    /** redisson */
+    /**
+     * redisson
+     */
     REDIS,
 
-    /** zookeeper */
+    /**
+     * zookeeper
+     */
     ZK
 }

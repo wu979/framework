@@ -2,22 +2,18 @@ package com.framework.cloud.cache.cache;
 
 import com.framework.cloud.cache.lock.AsuraLock;
 import com.framework.cloud.cache.lock.RedisDistributedLock;
-import com.framework.cloud.cache.properties.RedisAutoProperties;
+import com.framework.cloud.cache.properties.CacheAutoProperties;
 import com.framework.cloud.cache.utils.CacheUtil;
 import com.framework.cloud.common.enums.GlobalNumber;
 import com.framework.cloud.common.utils.FastJsonUtil;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.redisson.api.RBloomFilter;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * 缓存模板
@@ -30,7 +26,7 @@ public class RedisCacheTemplate implements RedisCache {
     private static final String LOCK_KEY = "redisCache_lock_get_key";
     private final RedisTemplate<String, Object> redisTemplate;
     private final RedisDistributedLock redisDistributedLock;
-    private final RedisAutoProperties redisAutoProperties;
+    private final CacheAutoProperties cacheAutoProperties;
     private final RBloomFilter<String> cachePenetrationBloomFilter;
 
     @Override
@@ -47,7 +43,7 @@ public class RedisCacheTemplate implements RedisCache {
 
     @Override
     public boolean put(@NotBlank String key, Object value) {
-        return put(key, value, redisAutoProperties.getCacheTimeout(), redisAutoProperties.getCacheTimeoutUnit());
+        return put(key, value, cacheAutoProperties.getCacheTimeout(), cacheAutoProperties.getCacheTimeoutUnit());
     }
 
     @Override
@@ -63,21 +59,14 @@ public class RedisCacheTemplate implements RedisCache {
     }
 
     @Override
-    public long delete(@NotNull String... key) {
-        List<String> keys = Stream.of(key).filter(StringUtils::isNotBlank).collect(Collectors.toList());
-        Long delete = redisTemplate.delete(keys);
-        return null != delete ? delete : 0L;
-    }
-
-    @Override
     public boolean hasKey(@NotBlank String key) {
-        Boolean has =  redisTemplate.hasKey(key);
+        Boolean has = redisTemplate.hasKey(key);
         return null != has && has;
     }
 
     @Override
     public <T> T get(@NotBlank String key, Class<T> clazz, CacheLoader<T> cacheLoader) {
-        return get(key, clazz, cacheLoader, redisAutoProperties.getCacheTimeout(), redisAutoProperties.getCacheTimeoutUnit());
+        return get(key, clazz, cacheLoader, cacheAutoProperties.getCacheTimeout(), cacheAutoProperties.getCacheTimeoutUnit());
     }
 
     @Override
@@ -91,7 +80,7 @@ public class RedisCacheTemplate implements RedisCache {
 
     @Override
     public <T> T safeGet(@NotBlank String key, Class<T> clazz, CacheLoader<T> cacheLoader) {
-        return safeGet(key, clazz, cacheLoader, redisAutoProperties.getCacheTimeout(), redisAutoProperties.getCacheTimeoutUnit());
+        return safeGet(key, clazz, cacheLoader, cacheAutoProperties.getCacheTimeout(), cacheAutoProperties.getCacheTimeoutUnit());
     }
 
     @Override
@@ -122,21 +111,18 @@ public class RedisCacheTemplate implements RedisCache {
             if (timeout < GlobalNumber.ZERO.getIntValue()) {
                 redisTemplate.opsForValue().set(key, FastJsonUtil.toJSONString(value));
                 redisTemplate.persist(key);
-                return true;
             } else {
                 redisTemplate.opsForValue().set(key, FastJsonUtil.toJSONString(value), timeout, unit);
-                return true;
             }
         } else {
             if (timeout < GlobalNumber.ZERO.getIntValue()) {
                 redisTemplate.opsForValue().set(key, value);
                 redisTemplate.persist(key);
-                return true;
             } else {
                 redisTemplate.opsForValue().set(key, value, timeout, unit);
-                return true;
             }
         }
+        return true;
     }
 
     private <T> T loadAndSet(String key, CacheLoader<T> cacheLoader, long timeout, TimeUnit timeUnit) {

@@ -8,7 +8,7 @@ import com.framework.cloud.cache.configuration.redis.SentinelConfiguration;
 import com.framework.cloud.cache.configuration.redis.StandaloneConfiguration;
 import com.framework.cloud.cache.lock.RedisDistributedLock;
 import com.framework.cloud.cache.lock.RedisDistributedLockImpl;
-import com.framework.cloud.cache.properties.RedisAutoProperties;
+import com.framework.cloud.cache.properties.CacheAutoProperties;
 import com.framework.cloud.cache.serializer.StringRedisKeySerializer;
 import lombok.AllArgsConstructor;
 import org.redisson.api.RBloomFilter;
@@ -33,19 +33,23 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import java.time.Duration;
 
 /**
- * Initialize the reids type according to the type specification (standalone、sentinel、cluster)
+ * Initialize the redis type according to the type specification (standalone、sentinel、cluster)
  *
  * @author wusiwei
  */
 @AllArgsConstructor
 @AutoConfigureAfter({ObjectMapper.class, RedisConnectionFactory.class})
-@EnableConfigurationProperties({RedisProperties.class, RedisAutoProperties.class})
+@EnableConfigurationProperties({RedisProperties.class, CacheAutoProperties.class})
 @Import({StandaloneConfiguration.class, SentinelConfiguration.class, ClusterConfiguration.class})
 public class RedisConfiguration {
 
     private final ObjectMapper objectMapper;
-    private final RedisAutoProperties redisAutoProperties;
+    private final CacheAutoProperties cacheAutoProperties;
 
+    /**
+     * CacheManager is implemented as {@link RedisCacheManager }
+     * spring cache is used for complex business without L2 cache
+     */
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
@@ -65,7 +69,7 @@ public class RedisConfiguration {
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         GenericJackson2JsonRedisSerializer serializer = new GenericJackson2JsonRedisSerializer();
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setKeySerializer(new StringRedisKeySerializer(redisAutoProperties.getPrefix()));
+        redisTemplate.setKeySerializer(new StringRedisKeySerializer(cacheAutoProperties.getPrefix()));
         redisTemplate.setValueSerializer(serializer);
         redisTemplate.setHashKeySerializer(new Jackson2JsonRedisSerializer<>(Object.class));
         redisTemplate.setHashValueSerializer(serializer);
@@ -86,7 +90,7 @@ public class RedisConfiguration {
 
     @Bean
     public RBloomFilter<String> bloomFilter(RedissonClient redissonClient) {
-        RedisAutoProperties.BloomFilterProperties bloomFilterProperties = redisAutoProperties.getBloomFilter();
+        CacheAutoProperties.BloomFilterProperties bloomFilterProperties = cacheAutoProperties.getBloomFilter();
         RBloomFilter<String> bloomFilter = redissonClient.getBloomFilter(bloomFilterProperties.getName());
         bloomFilter.tryInit(bloomFilterProperties.getExpectedInsertions(), bloomFilterProperties.getFalseProbability());
         return bloomFilter;
@@ -94,7 +98,7 @@ public class RedisConfiguration {
 
     @Bean
     public RedisCache redisCache(RedisTemplate<String, Object> redisTemplate, RedisDistributedLock redisDistributedLock, RBloomFilter<String> bloomFilter) {
-        return new RedisCacheTemplate(redisTemplate, redisDistributedLock, redisAutoProperties, bloomFilter);
+        return new RedisCacheTemplate(redisTemplate, redisDistributedLock, cacheAutoProperties, bloomFilter);
     }
 
 }

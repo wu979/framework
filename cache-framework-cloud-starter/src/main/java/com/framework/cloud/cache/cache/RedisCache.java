@@ -1,7 +1,13 @@
 package com.framework.cloud.cache.cache;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * redis
@@ -46,9 +52,21 @@ public interface RedisCache extends Cache {
     boolean put(@NotBlank String key, Object value, long timeout, TimeUnit unit);
 
     /**
+     * 删除缓存 返回成功数量
+     */
+    long delete(@NotNull Collection<String> keys);
+
+    /**
      * 加入缓存 默认时间秒
      */
     default boolean put(@NotBlank String key, Object value, long timeout) {
         return put(key, value, timeout, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 删除缓存 返回成功数量
+     */
+    default long delete(@NotNull String... key) {
+        return delete(Stream.of(key).filter(StringUtils::isNotBlank).collect(Collectors.toList()));
     }
 }

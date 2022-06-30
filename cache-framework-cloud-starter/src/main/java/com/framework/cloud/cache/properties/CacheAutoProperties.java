@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Data
 @ConfigurationProperties(prefix = "spring.redis")
-public class RedisAutoProperties {
+public class CacheAutoProperties {
 
     /**
      * redis key 前缀 按项目区分
@@ -33,8 +33,10 @@ public class RedisAutoProperties {
     private BloomFilterProperties bloomFilter;
 
     /**
-     * 布隆过期器
+     * 本地缓存
      */
+    private CaffeineCache caffeineCache;
+
     @Data
     public static class BloomFilterProperties {
 
@@ -53,5 +55,24 @@ public class RedisAutoProperties {
          */
         private Double falseProbability;
 
+    }
+
+    @Data
+    public static class CaffeineCache {
+
+        /**
+         * 缓存名称
+         */
+        private String name;
+
+        /**
+         * 初始化容量
+         */
+        private Integer initialCapacity;
+
+        /**
+         * 最大数量
+         */
+        private Integer maximumSize;
     }
 }

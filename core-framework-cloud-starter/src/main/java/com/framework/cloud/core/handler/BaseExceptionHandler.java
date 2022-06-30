@@ -1,4 +1,4 @@
-package com.framework.cloud.core;
+package com.framework.cloud.core.handler;
 
 import com.framework.cloud.common.exception.BizException;
 import com.framework.cloud.common.exception.EnumException;
@@ -27,24 +27,28 @@ public class BaseExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.OK)
     public Result<Void> exceptionHandle(Exception e) {
+        log.error("未知异常：{}" , e);
         return new Result<Void>(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
     }
 
     @ExceptionHandler(BizException.class)
     @ResponseStatus(HttpStatus.OK)
     public Result<Void> exceptionHandle(BizException e) {
+        log.error("业务异常：{}" , e);
         return new Result<Void>(e.getCode(), e.getMessage());
     }
 
     @ExceptionHandler(EnumException.class)
     @ResponseStatus(HttpStatus.OK)
     public Result<Void> exceptionHandle(EnumException e) {
+        log.error("枚举异常：{}" , e);
         return new Result<Void>(e.getCode(), e.getMessage());
     }
 
     @ExceptionHandler(LockException.class)
     @ResponseStatus(HttpStatus.OK)
     public Result<Void> exceptionHandle(LockException e) {
+        log.error("唯一异常：{}" , e);
         return new Result<Void>(e.getCode(), e.getMessage());
     }
 

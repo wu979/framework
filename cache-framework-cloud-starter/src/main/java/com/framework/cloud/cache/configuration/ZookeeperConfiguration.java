@@ -5,7 +5,7 @@ import com.framework.cloud.cache.lock.ZkDistributedLockImpl;
 import org.springframework.context.annotation.Bean;
 
 /**
- *
+ * Initialize the zookeeper type
  *
  * @author wusiwei
  */

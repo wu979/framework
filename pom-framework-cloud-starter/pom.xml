@@ -43,6 +43,7 @@
 
         <!-- cache -->
         <redisson.version>3.9.0</redisson.version>
+        <caffeine.version>2.9.3</caffeine.version>
 
         <!-- mybatis -->
         <mybatis.plus.version>3.5.2</mybatis.plus.version>
@@ -184,6 +185,11 @@
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson-spring-data-20</artifactId>
                 <version>${redisson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.ben-manes.caffeine</groupId>
+                <artifactId>caffeine</artifactId>
+                <version>${caffeine.version}</version>
             </dependency>
 
             <!-- mybatis -->

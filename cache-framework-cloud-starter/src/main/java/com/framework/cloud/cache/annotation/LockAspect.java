@@ -1,6 +1,6 @@
 package com.framework.cloud.cache.annotation;
 
-import com.framework.cloud.cache.enums.CacheTypeEnum;
+import com.framework.cloud.cache.enums.LockMedium;
 import com.framework.cloud.cache.lock.AsuraLock;
 import com.framework.cloud.cache.lock.DistributedLock;
 import com.framework.cloud.cache.lock.RedisDistributedLock;
@@ -56,8 +56,10 @@ public class LockAspect {
             throw new LockException("Lock key is null");
         }
         DistributedLock distributedLock = null;
-        if (CacheTypeEnum.REDIS.equals(lock.cacheType())) {
+        if (LockMedium.REDIS.equals(lock.cacheType())) {
             distributedLock = redisDistributedLock;
+        } else {
+            distributedLock = zkDistributedLock;
         }
         if (null == distributedLock) {
             throw new LockException("not init distributedLock");
@@ -70,17 +72,17 @@ public class LockAspect {
         AsuraLock asuraLock = null;
         try {
             switch (lock.lockType()) {
-                case REENTRANT_LOCK:
+                case LOCK:
                     if (lock.waitTime() > 0) {
                         asuraLock = distributedLock.tryLock(lockKey, lock.waitTime(), lock.leaseTime(), lock.unit(), lock.isFair());
                     } else {
                         asuraLock = distributedLock.lock(lockKey, lock.leaseTime(), lock.unit(), lock.isFair());
                     }
                     break;
-                case REENTRANT_READ:
+                case READ:
                     asuraLock = distributedLock.readLock(lockKey, lock.leaseTime(), lock.unit());
                     break;
-                case REENTRANT_WRITE:
+                case WRITE:
                     asuraLock = distributedLock.writeLock(lockKey, lock.leaseTime(), lock.unit());
                     break;
                 default:
