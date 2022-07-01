@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author wusiwei
@@ -31,8 +33,8 @@ public class LocalCacheTemplate implements LocalCache {
     }
 
     @Override
-    public <T> T get(@NotBlank String key, Class<T> clazz, CacheLoader<T> cacheLoader) {
-        T value = get(key, clazz);
+    public <T> T get(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader) {
+        T value = get(key, clz);
         if (!CacheUtil.isNullOrBlank(value)) {
             return value;
         }
@@ -47,6 +49,21 @@ public class LocalCacheTemplate implements LocalCache {
             cache.put(key, value);
         }
         return true;
+    }
+
+    @Override
+    public boolean putAll(Map<String, Object> map) {
+        cache.putAll(map);
+        return true;
+    }
+
+    @Override
+    public boolean putAll(String prefix, Map<String, Object> map) {
+        Map<String, Object> newMap = new HashMap<>();
+        for (Map.Entry<String, Object> row : map.entrySet()) {
+            newMap.put(prefix + row.getKey(), row.getValue());
+        }
+        return putAll(newMap);
     }
 
     @Override

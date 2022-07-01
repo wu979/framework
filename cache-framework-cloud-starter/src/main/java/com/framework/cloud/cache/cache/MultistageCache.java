@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
  *
  * @author wusiwei
  */
-public interface Cache {
+public interface MultistageCache {
 
     /**
      * 获取缓存

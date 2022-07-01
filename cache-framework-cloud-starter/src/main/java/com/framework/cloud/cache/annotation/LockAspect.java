@@ -5,20 +5,19 @@ import com.framework.cloud.cache.lock.AsuraLock;
 import com.framework.cloud.cache.lock.DistributedLock;
 import com.framework.cloud.cache.lock.RedisDistributedLock;
 import com.framework.cloud.cache.lock.ZkDistributedLock;
+import com.framework.cloud.cache.utils.SpElUtil;
 import com.framework.cloud.common.exception.LockException;
 import jodd.util.StringPool;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.core.DefaultParameterNameDiscoverer;
-import org.springframework.expression.EvaluationContext;
-import org.springframework.expression.Expression;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.core.Ordered;
+
+import java.lang.reflect.Method;
 
 /**
  * aop method for intercepting lock annotation
@@ -27,26 +26,19 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
  */
 @Slf4j
 @Aspect
-@AllArgsConstructor
-public class LockAspect {
+@RequiredArgsConstructor
+public class LockAspect implements Ordered {
 
     private final RedisDistributedLock redisDistributedLock;
     private final ZkDistributedLock zkDistributedLock;
 
-    /**
-     * spEl
-     */
-    private static final SpelExpressionParser parser = new SpelExpressionParser();
-
-    /**
-     * parameters
-     */
-    private static final DefaultParameterNameDiscoverer discoverer = new DefaultParameterNameDiscoverer();
-
-    @Around(value = "@annotation(lock)", argNames = "point, lock")
-    public Object processTest(ProceedingJoinPoint point, Lock lock) throws Throwable {
+    @Around(value = "@annotation(com.framework.cloud.cache.annotation.Lock)")
+    public Object doAround(ProceedingJoinPoint point) throws Throwable {
+        MethodSignature signature = (MethodSignature) point.getSignature();
+        Method method = signature.getMethod();
+        Lock lock = method.getAnnotation(Lock.class);
         if (lock == null) {
-            lock = point.getTarget().getClass().getDeclaredAnnotation(Lock.class);
+            lock = point.getTarget().getClass().getAnnotation(Lock.class);
         }
         if (lock == null) {
             throw new LockException("Lock is null");
@@ -55,19 +47,17 @@ public class LockAspect {
         if (StringUtils.isEmpty(lockKey)) {
             throw new LockException("Lock key is null");
         }
-        DistributedLock distributedLock = null;
-        if (LockMedium.REDIS.equals(lock.cacheType())) {
-            distributedLock = redisDistributedLock;
-        } else {
+        DistributedLock distributedLock;
+        if (LockMedium.ZK.equals(lock.cacheType())) {
             distributedLock = zkDistributedLock;
+        } else {
+            distributedLock = redisDistributedLock;
         }
         if (null == distributedLock) {
             throw new LockException("not init distributedLock");
         }
         if (lockKey.contains(StringPool.HASH)) {
-            MethodSignature methodSignature = (MethodSignature) point.getSignature();
-            Object[] args = point.getArgs();
-            lockKey = getValBySpEl(lockKey, methodSignature, args);
+            lockKey = SpElUtil.analysisValBySpEl(lockKey, signature, point.getArgs());
         }
         AsuraLock asuraLock = null;
         try {
@@ -98,24 +88,8 @@ public class LockAspect {
         }
     }
 
-
-    /**
-     * 解析 spEL
-     */
-    private String getValBySpEl(String lockKeyEl, MethodSignature methodSignature, Object[] args) {
-        // 获取方法形参名数组
-        String[] paramNames = discoverer.getParameterNames(methodSignature.getMethod());
-        if (paramNames != null && paramNames.length > 0) {
-            Expression expression = parser.parseExpression(lockKeyEl);
-            // spring 表达式上下文对象
-            EvaluationContext context = new StandardEvaluationContext();
-            // 给上下文赋值
-            for (int i = 0; i < args.length; i++) {
-                context.setVariable(paramNames[i], args[i]);
-            }
-            return expression.getValue(context).toString();
-        }
-        return null;
+    @Override
+    public int getOrder() {
+        return 90;
     }
-
 }

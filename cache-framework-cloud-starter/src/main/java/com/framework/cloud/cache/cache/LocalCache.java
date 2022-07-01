@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -13,14 +14,28 @@ import java.util.stream.Stream;
  *
  * @author wusiwei
  */
-public interface LocalCache extends Cache {
+public interface LocalCache extends MultistageCache {
 
     /**
      * 获取缓存
      *
      * @param cacheLoader 缓存加载
      */
-    <T> T get(@NotBlank String key, Class<T> clazz, CacheLoader<T> cacheLoader);
+    <T> T get(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader);
+
+    /**
+     * 加入缓存 Map<Key, Value>
+     *
+     * @return
+     */
+    boolean putAll(Map<String, Object> map);
+
+    /**
+     * 加入缓存 Map<Suffix, Value>
+     *
+     * @return
+     */
+    boolean putAll(String prefix, Map<String, Object> map);
 
     /**
      * 删除缓存

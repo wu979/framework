@@ -1,11 +1,12 @@
 package com.framework.cloud.cache.cache;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.framework.cloud.cache.lock.AsuraLock;
 import com.framework.cloud.cache.lock.RedisDistributedLock;
 import com.framework.cloud.cache.properties.CacheAutoProperties;
 import com.framework.cloud.cache.utils.CacheUtil;
-import com.framework.cloud.common.enums.GlobalNumber;
 import com.framework.cloud.common.utils.FastJsonUtil;
+import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RBloomFilter;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -13,6 +14,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -65,13 +68,13 @@ public class RedisCacheTemplate implements RedisCache {
     }
 
     @Override
-    public <T> T get(@NotBlank String key, Class<T> clazz, CacheLoader<T> cacheLoader) {
-        return get(key, clazz, cacheLoader, cacheAutoProperties.getCacheTimeout(), cacheAutoProperties.getCacheTimeoutUnit());
+    public <T> T get(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader) {
+        return get(key, clz, cacheLoader, cacheAutoProperties.getCacheTimeout(), cacheAutoProperties.getCacheTimeoutUnit());
     }
 
     @Override
-    public <T> T get(@NotBlank String key, Class<T> clazz, CacheLoader<T> cacheLoader, long timeout, TimeUnit timeUnit) {
-        T value = get(key, clazz);
+    public <T> T get(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader, long timeout, TimeUnit timeUnit) {
+        T value = get(key, clz);
         if (!CacheUtil.isNullOrBlank(value)) {
             return value;
         }
@@ -79,13 +82,30 @@ public class RedisCacheTemplate implements RedisCache {
     }
 
     @Override
-    public <T> T safeGet(@NotBlank String key, Class<T> clazz, CacheLoader<T> cacheLoader) {
-        return safeGet(key, clazz, cacheLoader, cacheAutoProperties.getCacheTimeout(), cacheAutoProperties.getCacheTimeoutUnit());
+    public <T> List<T> getAll(@NotBlank String key, Class<T> clz, long timeout, TimeUnit timeUnit) {
+        Object value = redisTemplate.opsForValue().get(key);
+        if (CacheUtil.isNullOrBlank(value)) {
+            return Lists.newArrayList();
+        }
+        return FastJsonUtil.toJavaList(value, clz);
     }
 
     @Override
-    public <T> T safeGet(@NotBlank String key, Class<T> clazz, CacheLoader<T> cacheLoader, long timeout, TimeUnit timeUnit) {
-        T result = get(key, clazz);
+    public boolean putAll(@NotBlank String prefix, Map<String, Object> map, long timeout, TimeUnit unit) {
+        for (Map.Entry<String, Object> row : map.entrySet()) {
+            redisTemplate.opsForValue().set(prefix + row.getKey(), row.getValue(), timeout, unit);
+        }
+        return true;
+    }
+
+    @Override
+    public <T> T safeGet(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader) {
+        return safeGet(key, clz, cacheLoader, cacheAutoProperties.getCacheTimeout(), cacheAutoProperties.getCacheTimeoutUnit());
+    }
+
+    @Override
+    public <T> T safeGet(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader, long timeout, TimeUnit timeUnit) {
+        T result = get(key, clz);
         if (!CacheUtil.isNullOrBlank(result)) {
             return result;
         }
@@ -95,7 +115,7 @@ public class RedisCacheTemplate implements RedisCache {
         }
         try (AsuraLock ignored = redisDistributedLock.lock(LOCK_KEY + key)) {
             // 双重判定锁，减轻数据库访问压力
-            if (CacheUtil.isNullOrBlank(result = get(key, clazz))) {
+            if (CacheUtil.isNullOrBlank(result = get(key, clz))) {
                 // 通过 load 接口加载为空，触发缓存穿透条件，把 key 放入布隆过滤器
                 if (CacheUtil.isNullOrBlank(result = loadAndSet(key, cacheLoader, timeout, timeUnit))) {
                     cachePenetrationBloomFilter.add(key);
@@ -108,24 +128,32 @@ public class RedisCacheTemplate implements RedisCache {
     @Override
     public boolean put(@NotBlank String key, Object value, long timeout, TimeUnit unit) {
         if (CacheUtil.isTarget(value)) {
-            if (timeout < GlobalNumber.ZERO.getIntValue()) {
-                redisTemplate.opsForValue().set(key, FastJsonUtil.toJSONString(value));
-                redisTemplate.persist(key);
-            } else {
-                redisTemplate.opsForValue().set(key, FastJsonUtil.toJSONString(value), timeout, unit);
-            }
+            redisTemplate.opsForValue().set(key, FastJsonUtil.toJSONString(value), timeout, unit);
         } else {
-            if (timeout < GlobalNumber.ZERO.getIntValue()) {
-                redisTemplate.opsForValue().set(key, value);
-                redisTemplate.persist(key);
-            } else {
-                redisTemplate.opsForValue().set(key, value, timeout, unit);
-            }
+            redisTemplate.opsForValue().set(key, value, timeout, unit);
         }
         return true;
     }
 
+    @Override
+    public boolean putAll(@NotBlank String key, List<Object> value, long timeout, TimeUnit unit) {
+        if (CollectionUtil.isEmpty(value)) {
+            return false;
+        }
+        redisTemplate.opsForValue().set(key, FastJsonUtil.toJSONString(value), timeout, unit);
+        return true;
+    }
+
+    @Override
+    public boolean persist(@NotBlank String key) {
+        Boolean persist = redisTemplate.persist(key);
+        return null != persist && persist;
+    }
+
     private <T> T loadAndSet(String key, CacheLoader<T> cacheLoader, long timeout, TimeUnit timeUnit) {
+        if (null == cacheLoader) {
+            return null;
+        }
         T value = cacheLoader.load();
         if (CacheUtil.isNullOrBlank(value)) {
             return value;
