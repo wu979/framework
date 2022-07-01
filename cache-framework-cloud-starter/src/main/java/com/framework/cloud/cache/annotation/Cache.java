@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CloudCache {
+public @interface Cache {
 
     String key();
 
