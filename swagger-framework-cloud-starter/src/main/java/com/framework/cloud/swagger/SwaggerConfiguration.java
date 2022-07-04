@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Swagger配置
+ * swagger configuration initializing
  *
  * @author wusiwei
  */

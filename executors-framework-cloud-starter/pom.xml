@@ -7,6 +7,7 @@
     <artifactId>executors-framework-cloud-starter</artifactId>
     <version>1.0.0</version>
     <name>executors-framework-cloud-starter</name>
+    <description>线程池管理</description>
     <packaging>jar</packaging>
 
     <dependencies>

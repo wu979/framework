@@ -10,7 +10,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
 /**
- * 上下文配置
+ * application context filter configuration initializing
  *
  * @author wusiwei
  */

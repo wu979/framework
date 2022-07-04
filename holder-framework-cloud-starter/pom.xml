@@ -7,6 +7,8 @@
     <artifactId>holder-framework-cloud-starter</artifactId>
     <version>1.0.0</version>
     <name>holder-framework-cloud-starter</name>
+    <description>应用上下文</description>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>

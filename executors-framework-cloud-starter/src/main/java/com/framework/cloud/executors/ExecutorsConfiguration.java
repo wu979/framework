@@ -3,7 +3,7 @@ package com.framework.cloud.executors;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
- * 开启线程池
+ * executors configuration initializing
  *
  * @author wusiwei
  */

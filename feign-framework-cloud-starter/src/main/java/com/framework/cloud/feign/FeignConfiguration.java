@@ -30,7 +30,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Feign 配置
+ * feign configuration initializing
  *
  * @author wusiwei
  */

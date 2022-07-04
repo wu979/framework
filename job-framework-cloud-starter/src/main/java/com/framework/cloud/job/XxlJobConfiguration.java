@@ -3,17 +3,15 @@ package com.framework.cloud.job;
 import com.framework.cloud.job.properties.XxlJobProperties;
 import com.xxl.job.core.executor.impl.XxlJobSpringExecutor;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
 /**
- * Xxl-job配置
+ * xxl job configuration initializing
  *
  * @author wusiwei
  */
-@Slf4j
 @AllArgsConstructor
 @ConditionalOnProperty(prefix = "xxl.job", value = "enabled", havingValue = "true")
 @EnableConfigurationProperties(XxlJobProperties.class)
@@ -23,7 +21,6 @@ public class XxlJobConfiguration {
 
     @Bean
     public XxlJobSpringExecutor xxlJobExecutor() {
-        log.info(">>>>>>>>>>> xxl-job config init.");
         XxlJobProperties.ExecutorProperties executor = xxlJobProperties.getExecutor();
         XxlJobSpringExecutor xxlJobSpringExecutor = new XxlJobSpringExecutor();
         xxlJobSpringExecutor.setAdminAddresses(xxlJobProperties.getAdminAddresses());

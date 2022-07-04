@@ -16,7 +16,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 
 /**
- * Mybatis 配置
+ * mybatis configuration initializing
  *
  * @author wusiwei
  */

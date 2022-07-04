@@ -4,10 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.framework.cloud</groupId>
-    <artifactId>core-framework-cloud-starter</artifactId>
+    <artifactId>elasticsearch-framework-cloud-starter</artifactId>
     <version>1.0.0</version>
-    <name>core-framework-cloud-starter</name>
-    <description>应用初始化组件</description>
+    <name>elasticsearch-framework-cloud-starter</name>
+    <description>ES检索</description>
     <packaging>jar</packaging>
 
     <properties>
@@ -22,37 +22,22 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-openfeign-core</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-commons</artifactId>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-client</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-annotations</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -68,5 +53,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
 </project>
