@@ -1,6 +1,7 @@
 package com.framework.cloud.elasticsearch.proxy;
 
-import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.index.query.QueryBuilder;
 
 import java.util.List;
 
@@ -9,10 +10,19 @@ import java.util.List;
  */
 public interface Elastic {
 
-    <T> T getById(Long id, Class<T> clz);
+    <T> ElasticResponse<T> getById(String id, Class<T> clz);
 
-    <T> T queryOne(SearchSourceBuilder sourceBuilder, Class<T> clz);
+    <T> ElasticResponse<T> queryOne(QueryBuilder queryBuilder, Class<T> clz);
 
-    <T> List<T> queryList(SearchSourceBuilder sourceBuilder, Class<T> clz);
+    <T> ElasticResponse<List<T>> queryList(QueryBuilder  queryBuilder, Class<T> clz);
 
+    <T> ElasticResponse<List<T>> queryList(SearchRequest searchRequest, Class<T> clz);
+
+    <T> ElasticResponse<Long> getTotalCount(QueryBuilder queryBuilder, Class<T> clz);
+
+    <T> ElasticResponse<Boolean> save(T t);
+
+    default <T> ElasticResponse<T> getById(Long id, Class<T> clz) {
+        return getById(String.valueOf(id), clz);
+    }
 }

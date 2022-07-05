@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
  * @author wusiwei
  */
 @AllArgsConstructor
-public enum FeignMessageEnum {
+public enum FeignMessage {
 
     /**
      * 异常消息
@@ -31,7 +31,7 @@ public enum FeignMessageEnum {
     }
 
     public static String getMsg(Integer code) {
-        for (FeignMessageEnum messageEnum : FeignMessageEnum.values()) {
+        for (FeignMessage messageEnum : FeignMessage.values()) {
             if (messageEnum.getCode().equals(code)) {
                 return messageEnum.getMsg();
             }

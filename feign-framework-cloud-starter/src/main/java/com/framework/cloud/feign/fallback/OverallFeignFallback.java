@@ -2,7 +2,7 @@ package com.framework.cloud.feign.fallback;
 
 import com.framework.cloud.common.enums.GlobalMessage;
 import com.framework.cloud.common.result.Result;
-import com.framework.cloud.feign.enums.FeignMessageEnum;
+import com.framework.cloud.feign.enums.FeignMessage;
 import feign.FeignException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +54,7 @@ public class OverallFeignFallback<T> implements MethodInterceptor {
         if (cause instanceof FeignException) {
             FeignException exception = (FeignException) cause;
             int status = exception.status();
-            msg = FeignMessageEnum.getMsg(status);
+            msg = FeignMessage.getMsg(status);
             msg = MessageFormat.format(msg, targetName);
         } else {
             msg = StringUtils.isBlank(cause.getMessage()) ? GlobalMessage.ERROR.getMsg() : cause.getMessage();

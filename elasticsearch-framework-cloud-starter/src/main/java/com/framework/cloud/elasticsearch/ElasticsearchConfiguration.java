@@ -3,6 +3,8 @@ package com.framework.cloud.elasticsearch;
 import com.framework.cloud.elasticsearch.callback.ClientCallback;
 import com.framework.cloud.elasticsearch.callback.RequestCallback;
 import com.framework.cloud.elasticsearch.properties.ElasticsearchProperties;
+import com.framework.cloud.elasticsearch.proxy.Elastic;
+import com.framework.cloud.elasticsearch.proxy.ElasticTemplate;
 import com.framework.cloud.elasticsearch.utils.HttpHostUtil;
 import lombok.AllArgsConstructor;
 import org.apache.http.Header;
@@ -38,4 +40,8 @@ public class ElasticsearchConfiguration {
         return new RestHighLevelClient(builder);
     }
 
+    @Bean
+    public Elastic elastic(RestHighLevelClient restHighLevelClient) {
+        return new ElasticTemplate(restHighLevelClient);
+    }
 }

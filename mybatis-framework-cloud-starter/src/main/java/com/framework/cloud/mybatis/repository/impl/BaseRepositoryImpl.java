@@ -2,7 +2,7 @@ package com.framework.cloud.mybatis.repository.impl;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.framework.cloud.mybatis.enums.MybatisMessageEnum;
+import com.framework.cloud.mybatis.enums.MybatisMessage;
 import com.framework.cloud.mybatis.exception.NotFoundException;
 
 import java.io.Serializable;
@@ -18,7 +18,7 @@ public class BaseRepositoryImpl<M extends BaseMapper<T>, T> extends ServiceImpl<
     public T getByIdNotNull(Serializable id) {
         T info = super.getById(id);
         if (Objects.isNull(info)) {
-            throw new NotFoundException(MybatisMessageEnum.NOT_FOUND.getCode(), MybatisMessageEnum.NOT_FOUND.getMsg());
+            throw new NotFoundException(MybatisMessage.NOT_FOUND.getCode(), MybatisMessage.NOT_FOUND.getMsg());
         }
         return info;
     }

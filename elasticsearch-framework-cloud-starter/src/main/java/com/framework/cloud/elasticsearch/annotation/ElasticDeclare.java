@@ -3,8 +3,6 @@ package com.framework.cloud.elasticsearch.annotation;
 import java.lang.annotation.*;
 
 /**
- *
- *
  * @author wusiwei
  */
 @Documented
@@ -15,5 +13,10 @@ public @interface ElasticDeclare {
     /**
      * 索引
      */
-    String index() default "";
+    String indexName() default "";
+
+    /**
+     * 类型
+     */
+    String indexType() default  "";
 }

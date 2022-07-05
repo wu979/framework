@@ -3,8 +3,6 @@ package com.framework.cloud.elasticsearch.annotation;
 import java.lang.annotation.*;
 
 /**
- *
- *
  * @author wusiwei
  */
 @Documented
