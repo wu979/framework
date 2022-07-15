@@ -15,6 +15,9 @@ import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.convert.MappingElasticsearchConverter;
+import org.springframework.data.elasticsearch.core.mapping.SimpleElasticsearchMappingContext;
 
 /**
  * elasticsearch configuration initializing
@@ -41,7 +44,12 @@ public class ElasticsearchConfiguration {
     }
 
     @Bean
-    public Elastic elastic(RestHighLevelClient restHighLevelClient) {
-        return new ElasticTemplate(restHighLevelClient);
+    public ElasticsearchRestTemplate elasticsearchRestTemplate(RestHighLevelClient restHighLevelClient) {
+        return new ElasticsearchRestTemplate(restHighLevelClient, new MappingElasticsearchConverter(new SimpleElasticsearchMappingContext()));
+    }
+
+    @Bean
+    public Elastic elastic(RestHighLevelClient restHighLevelClient, ElasticsearchRestTemplate elasticsearchRestTemplate) {
+        return new ElasticTemplate(restHighLevelClient, elasticsearchRestTemplate);
     }
 }

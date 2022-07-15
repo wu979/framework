@@ -5,10 +5,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,14 +17,9 @@ import java.util.List;
  */
 @AllArgsConstructor
 @AutoConfigureAfter(ObjectMapper.class)
-public class JacksonConfiguration {
+public class HttpMessageConfiguration {
 
     private final ObjectMapper objectMapper;
-
-    @Bean
-    public StringHttpMessageConverter stringHttpMessageConverter() {
-        return new StringHttpMessageConverter(StandardCharsets.UTF_8);
-    }
 
     @Bean
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {

@@ -16,7 +16,12 @@ public @interface ElasticDeclare {
     String indexName() default "";
 
     /**
-     * 类型
+     * 分片
      */
-    String indexType() default  "";
+    short shards() default 1;
+
+    /**
+     * 副本
+     */
+    short replicas() default 1;
 }

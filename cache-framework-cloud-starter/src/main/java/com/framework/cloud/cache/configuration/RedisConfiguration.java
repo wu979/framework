@@ -18,17 +18,22 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.util.ObjectUtils;
 
 import java.time.Duration;
 
@@ -99,6 +104,38 @@ public class RedisConfiguration {
     @Bean
     public RedisCache redisCache(RedisTemplate<String, Object> redisTemplate, RedisDistributedLock redisDistributedLock, RBloomFilter<String> bloomFilter) {
         return new RedisCacheTemplate(redisTemplate, redisDistributedLock, cacheAutoProperties, bloomFilter);
+    }
+
+    @Bean
+    public HashOperations<String, Object, Object> hashOperations(RedisTemplate<String, Object> redisTemplate) {
+        return redisTemplate.opsForHash();
+    }
+
+    @Bean
+    public ListOperations<String, Object> listOperations(RedisTemplate<String, Object> redisTemplate) {
+        return redisTemplate.opsForList();
+    }
+
+    @Bean
+    public SetOperations<String, Object> setOperations(RedisTemplate<String, Object> redisTemplate) {
+        return redisTemplate.opsForSet();
+    }
+
+    @Bean
+    public KeyGenerator keyGenerator() {
+        return (target, method, objects) -> {
+            StringBuilder sb = new StringBuilder();
+            sb.append(target.getClass().getName());
+            sb.append(":");
+            sb.append(method.getName());
+            sb.append(":");
+            for (Object obj : objects) {
+                if (!ObjectUtils.isEmpty(obj)) {
+                    sb.append(obj.toString());
+                }
+            }
+            return sb.toString();
+        };
     }
 
 }
