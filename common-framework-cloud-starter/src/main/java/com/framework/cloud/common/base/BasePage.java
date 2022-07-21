@@ -13,27 +13,27 @@ import java.util.List;
 public class BasePage {
 
     @ApiModelProperty(value = "当前页码")
-    private Integer current = 1;
+    private Long current = 1L;
 
     @ApiModelProperty(value = "每页条数")
-    private Integer size = 10;
+    private Long size = 10L;
 
     @ApiModelProperty(value = "排序")
     private List<OrderItem> orders = OrderItem.descs("create_time");
 
-    public Integer getCurrent() {
+    public Long getCurrent() {
         return current;
     }
 
-    public void setCurrent(Integer current) {
+    public void setCurrent(Long current) {
         this.current = current;
     }
 
-    public Integer getSize() {
+    public Long getSize() {
         return size;
     }
 
-    public void setSize(Integer size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 

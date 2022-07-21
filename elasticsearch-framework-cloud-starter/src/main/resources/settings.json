@@ -1,0 +1,31 @@
+{
+  "settings": {
+    "index.number_of_shards": 3,
+    "index.number_of_replicas": 1,
+    "index.max_result_window": 20000000,
+    "index.highlight.max_analyzed_offset": "10000",
+    "analysis": {
+      "analyzer": {
+        "custom_analyzer": {
+          "tokenizer": "ik_max_word",
+          "char_filter": [
+            "camel_case_filter",
+            "special_character_filter"
+          ]
+        }
+      },
+      "char_filter": {
+        "camel_case_filter": {
+          "type": "pattern_replace",
+          "pattern": "(?<=-\\p{Lower})(?=-\\p{Upper})",
+          "replacement": " "
+        },
+        "special_character_filter": {
+          "type": "pattern_replace",
+          "pattern": "(?:-\\p{Punct})",
+          "replacement" : " "
+        }
+      }
+    }
+  }
+}

@@ -12,6 +12,11 @@ public enum ElasticMessage {
     SOURCE_NULL("Source cannot be null"),
     ELASTIC_DECLARE_NULL("ElasticDeclare annotation cannot be null"),
     CREATE_INDEX_ERROR("Create index error"),
+    SAVE_SOURCE_ERROR("Document create error"),
+    UPDATE_SOURCE_ERROR("Document update error"),
+    UPDATE_MAPPING_ERROR("Update index mapping error"),
+    DOCUMENT_NULL("Document not found"),
+    SEARCH_TOTAL_ERROR("Search total error"),
 
     GET_DATA_ERROR("Failed to get data"),
     NOT_FOUND_ID("Please mark the primary key ID"),

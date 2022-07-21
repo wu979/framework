@@ -2,9 +2,11 @@ package com.framework.cloud.elasticsearch.utils;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Pair;
-import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.framework.cloud.common.base.BasePage;
 import com.framework.cloud.common.exception.ElasticException;
+import com.framework.cloud.common.utils.UUIDUtil;
 import com.framework.cloud.elasticsearch.annotation.ElasticDeclare;
 import com.framework.cloud.elasticsearch.annotation.ElasticId;
 import com.framework.cloud.elasticsearch.enums.ElasticMessage;
@@ -13,14 +15,23 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author wusiwei
  */
 public class ElasticUtil {
+
+    public static <T> String indexName(T source) {
+        return elasticDeclare(source.getClass()).indexName();
+    }
 
     public static <T> String indexName(Class<T> source) {
         return elasticDeclare(source).indexName();
@@ -40,6 +51,24 @@ public class ElasticUtil {
         }
         return elasticDeclare;
     }
+
+    public static <T extends BasePage> List<SortBuilder<FieldSortBuilder>> sortBuilders(T request) {
+        List<OrderItem> orders = request.getOrders();
+        List<SortBuilder<FieldSortBuilder>> sortBuilders = new ArrayList<>(orders.size());
+        for (OrderItem order : orders) {
+            sortBuilders.add(SortBuilders.fieldSort(order.getColumn()).order(sortOrder(order.isAsc())));
+        }
+        return sortBuilders;
+    }
+
+    public static SortOrder sortOrder(boolean isAsc) {
+        return isAsc ? SortOrder.ASC : SortOrder.DESC;
+    }
+
+
+
+
+
 
     public static Pair<String, String> check(String id, Class<?> clz) {
         if (StringUtils.isBlank(id)) {
@@ -96,9 +125,9 @@ public class ElasticUtil {
      * 获取标注了 {@link ElasticId }  值
      */
     @SneakyThrows
-    public static <T> String getDocumentId(T t) {
-        String documentId = UUID.randomUUID().toString().replaceAll("-", "");
-        List<Field> listWithAnnotation = FieldUtils.getFieldsListWithAnnotation(t.getClass(), ElasticId.class);
+    public static <T> String getDocumentId(T source) {
+        String documentId = UUIDUtil.uuid();
+        List<Field> listWithAnnotation = FieldUtils.getFieldsListWithAnnotation(source.getClass(), ElasticId.class);
         if (CollectionUtil.isEmpty(listWithAnnotation)) {
             return documentId;
         }
@@ -107,7 +136,7 @@ public class ElasticUtil {
             return documentId;
         }
         field.setAccessible(true);
-        Object obj = FieldUtils.readField(field, t);
+        Object obj = FieldUtils.readField(field, source);
         if (null == obj) {
             return documentId;
         }

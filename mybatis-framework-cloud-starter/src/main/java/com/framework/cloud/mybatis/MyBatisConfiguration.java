@@ -38,16 +38,16 @@ public class MyBatisConfiguration {
         paginationInnerInterceptor.setDbType(DbType.MYSQL);
         paginationInnerInterceptor.setMaxLimit(1000L);
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        //租户拦截器
+        if (tenantProperties.getIsOpen()) {
+            interceptor.addInnerInterceptor(new TenantLineInnerInterceptor(new MybatisTenantLineHandler(tenantProperties)));
+        }
         //分页插件拦截器
         interceptor.addInnerInterceptor(paginationInnerInterceptor);
         //乐观锁拦截器
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
         //防止全表更新与删除拦截器
         interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
-        //租户拦截器
-        if (tenantProperties.getIsOpen()) {
-            interceptor.addInnerInterceptor(new TenantLineInnerInterceptor(new MybatisTenantLineHandler(tenantProperties)));
-        }
         return interceptor;
     }
 }
