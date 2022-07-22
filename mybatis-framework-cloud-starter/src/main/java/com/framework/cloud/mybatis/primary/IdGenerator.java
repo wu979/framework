@@ -11,7 +11,7 @@ import com.framework.cloud.mybatis.utils.SnowflakeUtil;
 public class IdGenerator implements IdentifierGenerator {
 
     @Override
-    public Number nextId(Object entity) {
+    public Long nextId(Object entity) {
         return SnowflakeUtil.nextId();
     }
 }

@@ -1,6 +1,6 @@
 package com.framework.cloud.mybatis.utils;
 
-import com.baomidou.mybatisplus.core.toolkit.Sequence;
+import cn.hutool.core.lang.Snowflake;
 
 /**
  * 临时的雪花ID生成
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.toolkit.Sequence;
  */
 public class SnowflakeUtil {
 
-    private final static Sequence SNOWFLAKE = new Sequence(getRandom(1, 31), getRandom(1, 31));
+    private final static Snowflake SNOWFLAKE = new Snowflake(getRandom(0, 31), getRandom(0, 31));
 
     /**
      * 获取下一个 ID
