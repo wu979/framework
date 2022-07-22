@@ -17,6 +17,7 @@ public enum ElasticMessage {
     UPDATE_MAPPING_ERROR("Update index mapping error"),
     DOCUMENT_NULL("Document not found"),
     SEARCH_TOTAL_ERROR("Search total error"),
+    AGGREGATIONS_ERROR("Aggregations statistics error"),
 
     GET_DATA_ERROR("Failed to get data"),
     NOT_FOUND_ID("Please mark the primary key ID"),

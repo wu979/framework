@@ -5,9 +5,9 @@ import com.framework.cloud.common.base.PageVO;
 import com.framework.cloud.elasticsearch.utils.ElasticUtil;
 import lombok.NonNull;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
-import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 
 import java.util.List;
@@ -112,13 +112,19 @@ public interface Elastic {
     <T extends BasePage, R, S extends SortBuilder<S>> PageVO<R> page(@NonNull String indexName, QueryBuilder queryBuilder, @NonNull T request, @NonNull Class<R> source, @NonNull List<SortBuilder<S>> sortBuilders);
 
     /**
-     * 分页
+     * 聚合统计
      * @param indexName 索引名
-     * @param source 文档
-     * @param query 查询条件
-     * @return 分页
+     * @param queryBuilder 聚合条件 {@link org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder }
+     *
+     * Aggregation query is recommended
+     *
+     * NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
+     * BoolQueryBuilder bool = new BoolQueryBuilder();
+     * nativeSearchQueryBuilder.withQuery(bool);
+     * nativeSearchQueryBuilder.addAggregation(AggregationBuilders.sum(resultSet).field(sumField).valueType());
+     * nativeSearchQueryBuilder.addAggregation................
      */
-    <R> PageVO<R> page(@NonNull String indexName, Query query, @NonNull Class<R> source);
+    ElasticResponse<Aggregations> aggregation(@NonNull String indexName, QueryBuilder queryBuilder);
 
     /**
      * 根据ID查询

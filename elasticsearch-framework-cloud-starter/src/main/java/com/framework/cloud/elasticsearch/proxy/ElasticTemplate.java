@@ -12,6 +12,7 @@ import com.framework.cloud.elasticsearch.enums.ElasticMessage;
 import com.framework.cloud.elasticsearch.utils.ElasticUtil;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -38,11 +39,11 @@ import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.index.reindex.DeleteByQueryRequest;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.IndexOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -313,7 +314,11 @@ public class ElasticTemplate implements Elastic {
                     .withPageable(PageRequest.of(request.getCurrent().intValue() - 1, request.getSize().intValue()))
                     .withSorts(sortBuilders.toArray(new SortBuilder[0]))
                     .build();
-            page = page(indexName, query, source);
+            SearchHits<R> search = elasticsearchRestTemplate.search(query, source, IndexCoordinates.of(indexName));
+            if (search.hasSearchHits()) {
+                List<R> list = search.getSearchHits().stream().map(org.springframework.data.elasticsearch.core.SearchHit::getContent).collect(Collectors.toList());
+                page = new PageVO<>(request.getCurrent(), request.getSize(), search.getTotalHits(), list);
+            }
         } catch (Exception e) {
             log.error("分页查询失败，索引名称：{}，错误：{}", indexName, e);
         }
@@ -321,21 +326,26 @@ public class ElasticTemplate implements Elastic {
     }
 
     @Override
-    public <R> PageVO<R> page(String indexName, Query query, Class<R> source) {
-        Pageable pageable = query.getPageable();
-        long current = (pageable.getPageNumber() + 1);
-        long size = pageable.getPageSize();
-        PageVO<R> page = new PageVO<R>(current, size);
+    public ElasticResponse<Aggregations> aggregation(@NonNull String indexName, QueryBuilder queryBuilder) {
+        ElasticResponse<Aggregations> elasticResponse ;
         try {
-            SearchHits<R> search = elasticsearchRestTemplate.search(query, source, IndexCoordinates.of(indexName));
-            if (search.hasSearchHits()) {
-                List<R> list = search.getSearchHits().stream().map(org.springframework.data.elasticsearch.core.SearchHit::getContent).collect(Collectors.toList());
-                page = new PageVO<>(current, size, search.getTotalHits(), list);
+            SearchRequest searchRequest = new SearchRequest(indexName);
+            SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+            sourceBuilder.size(0);
+            sourceBuilder.from(0);
+            sourceBuilder.query(queryBuilder);
+            searchRequest.source(sourceBuilder);
+            searchRequest.searchType(SearchType.QUERY_THEN_FETCH);
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            if (ObjectUtil.isNotNull(searchResponse.getAggregations())) {
+                elasticResponse = ElasticResponse.success(searchResponse.getAggregations());
+            } else {
+                elasticResponse = ElasticResponse.error(ElasticMessage.AGGREGATIONS_ERROR.getMsg());
             }
         } catch (Exception e) {
-            log.error("分页查询失败，索引名称：{}，错误：{}", indexName, e);
+            elasticResponse = ElasticResponse.error(e.getMessage());
         }
-        return page;
+        return elasticResponse;
     }
 
     @Override
