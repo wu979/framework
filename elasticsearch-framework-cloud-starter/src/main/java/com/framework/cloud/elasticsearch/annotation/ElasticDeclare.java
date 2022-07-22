@@ -24,4 +24,9 @@ public @interface ElasticDeclare {
      * 副本
      */
     short replicas() default 1;
+
+    /**
+     * 索引配置路径
+     */
+    String settingPath() default "";
 }

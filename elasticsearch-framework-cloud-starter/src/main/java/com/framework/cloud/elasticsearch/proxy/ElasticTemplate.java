@@ -6,6 +6,7 @@ import com.framework.cloud.common.base.BasePage;
 import com.framework.cloud.common.base.PageVO;
 import com.framework.cloud.common.exception.ElasticException;
 import com.framework.cloud.common.utils.FastJsonUtil;
+import com.framework.cloud.common.utils.StringUtil;
 import com.framework.cloud.elasticsearch.annotation.ElasticDeclare;
 import com.framework.cloud.elasticsearch.enums.ElasticMessage;
 import com.framework.cloud.elasticsearch.utils.ElasticUtil;
@@ -51,6 +52,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -84,11 +86,18 @@ public class ElasticTemplate implements Elastic {
             ElasticDeclare elasticDeclare = ElasticUtil.elasticDeclare(source);
             short shards = elasticDeclare.shards();
             short replicas = elasticDeclare.replicas();
+            String settingPath = elasticDeclare.settingPath();
+            Settings settings ;
+            if (StringUtil.isNotBlank(settingPath)) {
+                InputStream in = ElasticTemplate.class.getClassLoader().getResourceAsStream(settingPath);
+                settings = Settings.builder().loadFromStream(settingPath, in, true).build();
+            } else {
+                settings = Settings.builder().put("index.number_of_shards", shards).put("index.number_of_replicas", replicas).build();
+            }
             CreateIndexRequest createIndexRequest = new CreateIndexRequest(indexName);
             IndexOperations indexOperations = elasticsearchRestTemplate.indexOps(source);
             Document mapping = indexOperations.createMapping(source);
-            Settings.Builder put = Settings.builder().put("index.number_of_shards", shards).put("index.number_of_replicas", replicas);
-            createIndexRequest.settings(put);
+            createIndexRequest.settings(settings);
             createIndexRequest.mapping(mapping);
             CreateIndexResponse createIndexResponse = restHighLevelClient.indices().create(createIndexRequest, RequestOptions.DEFAULT);
             if (createIndexResponse != null) {
