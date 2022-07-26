@@ -1,9 +1,13 @@
 package com.framework.cloud.core;
 
+import com.alibaba.fastjson2.JSONWriter;
+import com.alibaba.fastjson2.support.config.FastJsonConfig;
+import com.alibaba.fastjson2.support.spring.http.converter.FastJsonHttpMessageConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
@@ -15,18 +19,28 @@ import java.util.List;
  *
  * @author wusiwei
  */
+@Configuration
 @AllArgsConstructor
-@AutoConfigureAfter(ObjectMapper.class)
 public class HttpMessageConfiguration {
 
     private final ObjectMapper objectMapper;
 
     @Bean
-    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setObjectMapper(objectMapper);
-        converter.setSupportedMediaTypes(getMediaType());
-        return converter;
+    public HttpMessageConverters fastJsonHttpMessageConverters() {
+        FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
+        fastJsonHttpMessageConverter.setSupportedMediaTypes(getMediaType());
+        FastJsonConfig config = new FastJsonConfig();
+        config.setWriterFeatures(
+                JSONWriter.Feature.WriteMapNullValue,
+                JSONWriter.Feature.WriteNonStringValueAsString,
+                JSONWriter.Feature.WriteBigDecimalAsPlain,
+                JSONWriter.Feature.WriteBooleanAsNumber
+        );
+        fastJsonHttpMessageConverter.setFastJsonConfig(config);
+        MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
+        jackson2HttpMessageConverter.setObjectMapper(objectMapper);
+        jackson2HttpMessageConverter.setSupportedMediaTypes(getMediaType());
+        return new HttpMessageConverters(fastJsonHttpMessageConverter, jackson2HttpMessageConverter);
     }
 
     private static List<MediaType> getMediaType() {

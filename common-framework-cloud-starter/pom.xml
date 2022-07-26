@@ -87,6 +87,11 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2-extension</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <scope>compile</scope>

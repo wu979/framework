@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -35,6 +36,7 @@ import java.util.List;
  *
  * @author wusiwei
  */
+@Configuration
 @AllArgsConstructor
 @ConditionalOnProperty(prefix = "rest.client", value = "enable", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(RestClientProperties.class)

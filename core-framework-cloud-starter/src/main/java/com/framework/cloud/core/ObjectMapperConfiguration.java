@@ -14,6 +14,7 @@ import com.framework.cloud.common.serializer.EnumDeserializer;
 import com.framework.cloud.common.serializer.EnumSerializer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ import java.time.format.DateTimeFormatter;
  *
  * @author wusiwei
  */
+@Configuration
 public class ObjectMapperConfiguration {
 
     public static String FORMAT_SHORT = "yyyy-MM-dd";

@@ -10,10 +10,10 @@ import com.framework.cloud.cache.configuration.ZookeeperConfiguration;
 import com.framework.cloud.cache.lock.RedisDistributedLock;
 import com.framework.cloud.cache.lock.ZkDistributedLock;
 import com.framework.cloud.cache.properties.CacheAutoProperties;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 
 /**
  * Introduce this configuration class to enable caching
@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Import;
  * @author wusiwei
  */
 @EnableCaching
-@Import({RedisConfiguration.class, ZookeeperConfiguration.class, CaffeineConfiguration.class})
+@ImportAutoConfiguration({RedisConfiguration.class, ZookeeperConfiguration.class, CaffeineConfiguration.class})
 public class CacheAutoConfiguration {
 
     @Bean

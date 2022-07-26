@@ -15,12 +15,12 @@ import org.redisson.api.RBloomFilter;
 import org.redisson.api.RedissonClient;
 import org.redisson.spring.data.connection.RedissonConnectionFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
@@ -43,9 +43,9 @@ import java.time.Duration;
  * @author wusiwei
  */
 @AllArgsConstructor
-@AutoConfigureAfter({ObjectMapper.class, RedisConnectionFactory.class})
+@AutoConfigureAfter(RedisConnectionFactory.class)
 @EnableConfigurationProperties({RedisProperties.class, CacheAutoProperties.class})
-@Import({StandaloneConfiguration.class, SentinelConfiguration.class, ClusterConfiguration.class})
+@ImportAutoConfiguration({StandaloneConfiguration.class, SentinelConfiguration.class, ClusterConfiguration.class})
 public class RedisConfiguration {
 
     private final ObjectMapper objectMapper;
