@@ -10,6 +10,7 @@ import java.io.IOException;
 /**
  * @author wusiwei
  */
+@SuppressWarnings({"rawtypes"})
 public class EnumSerializer extends JsonSerializer<Enum> {
     @Override
     public void serialize(Enum anEnum, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
