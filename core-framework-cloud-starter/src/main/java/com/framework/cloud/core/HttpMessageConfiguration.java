@@ -32,9 +32,7 @@ public class HttpMessageConfiguration {
         FastJsonConfig config = new FastJsonConfig();
         config.setWriterFeatures(
                 JSONWriter.Feature.WriteMapNullValue,
-                JSONWriter.Feature.WriteNonStringValueAsString,
-                JSONWriter.Feature.WriteBigDecimalAsPlain,
-                JSONWriter.Feature.WriteBooleanAsNumber
+                JSONWriter.Feature.WriteNullListAsEmpty
         );
         fastJsonHttpMessageConverter.setFastJsonConfig(config);
         MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
@@ -63,4 +61,5 @@ public class HttpMessageConfiguration {
         mediaTypes.add(MediaType.TEXT_XML);
         return mediaTypes;
     }
+
 }

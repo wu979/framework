@@ -17,6 +17,7 @@ import java.util.Map;
 /**
  * @author wusiwei
  */
+@SuppressWarnings({"rawtypes"})
 public class EnumDeserializer extends JsonDeserializer<Enum> implements ContextualDeserializer {
     private static final Map<Class, EnumDeserializer> DESERIALIZER_MAP = Maps.newHashMap();
     private Class<? extends Enum> typeClass;

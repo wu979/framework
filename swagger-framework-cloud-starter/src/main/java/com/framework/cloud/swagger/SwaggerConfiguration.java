@@ -1,6 +1,9 @@
 package com.framework.cloud.swagger;
 
+import com.framework.cloud.swagger.plugin.EnumPropertyBuilderPlugin;
 import com.framework.cloud.swagger.properties.SwaggerProperties;
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
+import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
@@ -11,19 +14,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.OAuthBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.oas.annotations.EnableOpenApi;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.schema.ModelPropertyBuilderPlugin;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.spring.web.plugins.WebFluxRequestHandlerProvider;
 import springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,32 +36,39 @@ import java.util.stream.Collectors;
  *
  * @author wusiwei
  */
+@EnableKnife4j
 @EnableOpenApi
 @AllArgsConstructor
 @EnableConfigurationProperties(SwaggerProperties.class)
-@ConditionalOnProperty(prefix = "framework.knife4j", value = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "framework.swagger3", value = "enabled", havingValue = "true", matchIfMissing = true)
 public class SwaggerConfiguration {
 
-    private final SwaggerProperties swaggerProperties;
+    private final OpenApiExtensionResolver openApiExtensionResolver;
 
     @Bean
-    public Docket docket() {
+    public Docket docket(SwaggerProperties swaggerProperties) {
         Docket docket = new Docket(DocumentationType.OAS_30)
-                .apiInfo(apiInfo())
+                .apiInfo(apiInfo(swaggerProperties))
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()))
                 .paths(PathSelectors.any())
                 .build()
-                .securitySchemes(Collections.singletonList(securitySchemes()))
-                .securityContexts(Collections.singletonList(securityContexts()));
+                .securityContexts(Collections.singletonList(securityContext(swaggerProperties)))
+                .securitySchemes(securitySchemes());
         if (StringUtils.isNotBlank(swaggerProperties.getGroupName())) {
             docket.groupName(swaggerProperties.getGroupName());
+            docket.extensions(openApiExtensionResolver.buildExtensions(swaggerProperties.getGroupName()));
         }
         return docket;
     }
 
     @Bean
-    public static BeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {
+    public ModelPropertyBuilderPlugin enumPropertyBuilderPlugin() {
+        return new EnumPropertyBuilderPlugin();
+    }
+
+    @Bean
+    public static BeanPostProcessor handlerProviderBeanPostProcessor() {
         return new BeanPostProcessor() {
             @Override
             public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
@@ -89,39 +99,31 @@ public class SwaggerConfiguration {
         };
     }
 
-    /**
-     * 认证方式使用密码模式
-     */
-    private SecurityScheme securitySchemes() {
-        GrantType grantType = new ResourceOwnerPasswordCredentialsGrant("/oauth/token");
-        return new OAuthBuilder()
-                .name("Authorization")
-                .grantTypes(Collections.singletonList(grantType))
-                .scopes(Arrays.asList(scopes()))
-                .build();
+    private List<SecurityScheme> securitySchemes() {
+        List<SecurityScheme> securitySchemes = new ArrayList<>();
+        securitySchemes.add(new ApiKey("Authorization", "Authorization", "header"));
+        return securitySchemes;
     }
 
-    /**
-     * 设置 swagger2 认证的安全上下文
-     */
-    private SecurityContext securityContexts() {
+
+    private SecurityContext securityContext(SwaggerProperties swaggerProperties) {
         return SecurityContext.builder()
-                .securityReferences(Collections.singletonList(new SecurityReference("Authorization", scopes())))
-                .forPaths(PathSelectors.any())
+                .securityReferences(defaultAuth(swaggerProperties))
                 .build();
     }
 
-    /**
-     * 允许认证的scope
-     */
-    private AuthorizationScope[] scopes() {
-        AuthorizationScope authorizationScope = new AuthorizationScope("test", "接口测试");
-        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-        authorizationScopes[0] = authorizationScope;
-        return authorizationScopes;
+    private List<SecurityReference> defaultAuth(SwaggerProperties swaggerProperties) {
+        ArrayList<AuthorizationScope> authorizationScopeList = new ArrayList<>();
+        swaggerProperties.getAuthorization().getAuthorizationScope()
+                .forEach(authorizationScope -> authorizationScopeList.add(new AuthorizationScope(authorizationScope.getScope(), authorizationScope.getDescription())));
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[authorizationScopeList.size()];
+        return Collections.singletonList(SecurityReference.builder()
+                .reference(swaggerProperties.getAuthorization().getName())
+                .scopes(authorizationScopeList.toArray(authorizationScopes))
+                .build());
     }
 
-    private ApiInfo apiInfo() {
+    private ApiInfo apiInfo(SwaggerProperties swaggerProperties) {
         SwaggerProperties.Contact contact = swaggerProperties.getContact();
         return new ApiInfoBuilder()
                 .title(swaggerProperties.getTitle())

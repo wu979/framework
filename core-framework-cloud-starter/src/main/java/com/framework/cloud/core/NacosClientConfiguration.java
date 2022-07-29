@@ -4,6 +4,7 @@ import com.alibaba.cloud.nacos.ConditionalOnNacosDiscoveryEnabled;
 import com.alibaba.cloud.nacos.NacosDiscoveryProperties;
 import com.alibaba.cloud.nacos.NacosServiceManager;
 import com.alibaba.cloud.nacos.discovery.NacosWatch;
+import com.framework.cloud.common.constant.NacosConstant;
 import com.framework.cloud.common.utils.DateUtil;
 import com.framework.cloud.core.properties.NacosWatchProperties;
 import lombok.AllArgsConstructor;
@@ -34,11 +35,11 @@ public class NacosClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = {"spring.cloud.nacos.discovery.watch.enabled"}, matchIfMissing = true)
+    @ConditionalOnProperty(value = "spring.cloud.nacos.discovery.watch.enabled", matchIfMissing = true)
     public NacosWatch nacosWatch(NacosServiceManager nacosServiceManager, NacosDiscoveryProperties properties, ObjectProvider<ThreadPoolTaskScheduler> taskScheduler) {
-        properties.getMetadata().put("startup.time", DateUtil.getNow());
-        properties.getMetadata().put("version", nacosWatchProperties.getVersion());
-        properties.getMetadata().put("weight", nacosWatchProperties.getWeight());
+        properties.getMetadata().put(NacosConstant.TIME, DateUtil.getNow());
+        properties.getMetadata().put(NacosConstant.VERSION, nacosWatchProperties.getVersion());
+        properties.getMetadata().put(NacosConstant.WEIGHT, nacosWatchProperties.getWeight());
         return new NacosWatch(nacosServiceManager, properties, taskScheduler);
     }
 }
