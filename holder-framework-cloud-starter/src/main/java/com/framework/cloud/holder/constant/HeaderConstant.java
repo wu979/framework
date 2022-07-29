@@ -8,6 +8,10 @@ package com.framework.cloud.holder.constant;
 public class HeaderConstant {
 
     /**
+     * 令牌正则解析取值
+     */
+    public static final String TOKEN = "token";
+    /**
      * 令牌前缀
      */
     public static final String BEARER = "Bearer ";

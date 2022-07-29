@@ -16,6 +16,8 @@ public enum GlobalMessage {
     ERROR(500, "系统异常!"),
     SUCCESS(200, "操作成功!"),
     FAIL(0, "操作失败!"),
+    AUTHENTICATION_ERROR(401,"身份认证失败，请重新登录!"),
+    AUTHENTICATION_PERMISSION(403,"权限不足!"),
     ;
 
     Integer code;

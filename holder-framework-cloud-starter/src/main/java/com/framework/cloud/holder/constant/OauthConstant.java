@@ -20,6 +20,10 @@ public class OauthConstant {
      */
     public static final String RESPONSE_TOKEN = "token";
     /**
+     * 令牌
+     */
+    public static final String ACCESS_TOKEN = "access_token";
+    /**
      * 刷新模式
      */
     public static final String REFRESH_TOKEN = "refresh_token";
