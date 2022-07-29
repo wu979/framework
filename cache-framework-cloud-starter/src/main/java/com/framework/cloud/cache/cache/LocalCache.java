@@ -24,6 +24,9 @@ public interface LocalCache extends MultistageCache {
      */
     <T> T get(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader);
 
+    /**
+     * 获取缓存
+     */
     <T> List<T> getAll(String key, Class<T> clz);
 
     /**

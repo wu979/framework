@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,6 +43,11 @@ public class LocalCacheTemplate implements LocalCache {
     }
 
     @Override
+    public <T> List<T> getAll(String key, Class<T> clz) {
+        return null;
+    }
+
+    @Override
     public boolean put(@NotBlank String key, Object value) {
         if (CacheUtil.isTarget(value)) {
             cache.put(key, FastJsonUtil.toJSONString(value));
@@ -49,6 +55,11 @@ public class LocalCacheTemplate implements LocalCache {
             cache.put(key, value);
         }
         return true;
+    }
+
+    @Override
+    public boolean putAll(String key, List<Object> list) {
+        return false;
     }
 
     @Override
