@@ -32,13 +32,14 @@ public class HttpMessageConfiguration {
         FastJsonConfig config = new FastJsonConfig();
         config.setWriterFeatures(
                 JSONWriter.Feature.WriteMapNullValue,
-                JSONWriter.Feature.WriteNullListAsEmpty
+                JSONWriter.Feature.WriteNullListAsEmpty,
+                JSONWriter.Feature.WriteEnumUsingToString
         );
         fastJsonHttpMessageConverter.setFastJsonConfig(config);
         MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
         jackson2HttpMessageConverter.setObjectMapper(objectMapper);
         jackson2HttpMessageConverter.setSupportedMediaTypes(getMediaType());
-        return new HttpMessageConverters(fastJsonHttpMessageConverter, jackson2HttpMessageConverter);
+        return new HttpMessageConverters(jackson2HttpMessageConverter);
     }
 
     private static List<MediaType> getMediaType() {
