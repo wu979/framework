@@ -45,7 +45,7 @@ public class RedisCacheTemplate implements RedisCache {
     }
 
     @Override
-    public boolean put(@NotBlank String key, Object value) {
+    public <T> boolean put(@NotBlank String key, T value) {
         return put(key, value, cacheAutoProperties.getCacheTimeout(), cacheAutoProperties.getCacheTimeoutUnit());
     }
 
@@ -82,20 +82,12 @@ public class RedisCacheTemplate implements RedisCache {
     }
 
     @Override
-    public <T> List<T> getAll(@NotBlank String key, Class<T> clz, long timeout, TimeUnit timeUnit) {
+    public <T> List<T> getAll(@NotBlank String key, Class<T> clz) {
         Object value = redisTemplate.opsForValue().get(key);
         if (CacheUtil.isNullOrBlank(value)) {
             return Lists.newArrayList();
         }
         return FastJsonUtil.toJavaList(value, clz);
-    }
-
-    @Override
-    public boolean putAll(@NotBlank String prefix, Map<String, Object> map, long timeout, TimeUnit unit) {
-        for (Map.Entry<String, Object> row : map.entrySet()) {
-            redisTemplate.opsForValue().set(prefix + row.getKey(), row.getValue(), timeout, unit);
-        }
-        return true;
     }
 
     @Override
@@ -126,7 +118,7 @@ public class RedisCacheTemplate implements RedisCache {
     }
 
     @Override
-    public boolean put(@NotBlank String key, Object value, long timeout, TimeUnit unit) {
+    public <T> boolean put(@NotBlank String key, T value, long timeout, TimeUnit unit) {
         if (CacheUtil.isTarget(value)) {
             redisTemplate.opsForValue().set(key, FastJsonUtil.toJSONString(value), timeout, unit);
         } else {
@@ -136,7 +128,20 @@ public class RedisCacheTemplate implements RedisCache {
     }
 
     @Override
-    public boolean putAll(@NotBlank String key, List<Object> value, long timeout, TimeUnit unit) {
+    public <T> boolean putAll(@NotBlank String key, List<T> value) {
+        return putAll(key, value, cacheAutoProperties.getCacheTimeout(), cacheAutoProperties.getCacheTimeoutUnit());
+    }
+
+    @Override
+    public <T> boolean putMap(@NotBlank String prefix, Map<String, T> map, long timeout, TimeUnit unit) {
+        for (Map.Entry<String, T> row : map.entrySet()) {
+            put(prefix + row.getKey(), row.getValue(), timeout, unit);
+        }
+        return true;
+    }
+
+    @Override
+    public <T> boolean putAll(@NotBlank String key, List<T> value, long timeout, TimeUnit unit) {
         if (CollectionUtil.isEmpty(value)) {
             return false;
         }

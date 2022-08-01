@@ -17,7 +17,7 @@ public interface MultistageCache {
     /**
      * 加入缓存 默认缓存时间
      */
-    boolean put(@NotBlank String key, Object value);
+    <T> boolean put(@NotBlank String key, T value);
 
     /**
      * 删除缓存

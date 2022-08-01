@@ -35,7 +35,7 @@ public interface RedisCache extends MultistageCache {
     /**
      * 获取缓存
      */
-    <T> List<T> getAll(@NotBlank String key, Class<T> clz, long timeout, TimeUnit timeUnit);
+    <T> List<T> getAll(@NotBlank String key, Class<T> clz);
 
     /**
      * 以布隆、分布式锁 获取缓存
@@ -56,17 +56,22 @@ public interface RedisCache extends MultistageCache {
     /**
      * 加入缓存 指定缓存时间
      */
-    boolean put(@NotBlank String key, Object value, long timeout, TimeUnit unit);
+    <T> boolean put(@NotBlank String key, T value, long timeout, TimeUnit unit);
 
     /**
      * 缓存集合 Key -> List
      */
-    boolean putAll(@NotBlank String key, List<Object> value, long timeout, TimeUnit unit);
+    <T> boolean putAll(@NotBlank String key, List<T> value);
+
+    /**
+     * 缓存集合 Key -> List
+     */
+    <T> boolean putAll(@NotBlank String key, List<T> value, long timeout, TimeUnit unit);
 
     /**
      * 批量缓存单个
      */
-    boolean putAll(@NotBlank String prefix, Map<String, Object> map, long timeout, TimeUnit unit);
+    <T> boolean putMap(@NotBlank String prefix, Map<String, T> map, long timeout, TimeUnit unit);
 
     /**
      * 设置缓存不过期
@@ -90,5 +95,12 @@ public interface RedisCache extends MultistageCache {
      */
     default long delete(@NotNull String... key) {
         return delete(Stream.of(key).filter(StringUtils::isNotBlank).collect(Collectors.toList()));
+    }
+
+    default <T> boolean putMap(@NotBlank String prefix, Map<String, T> map) {
+        for (Map.Entry<String, T> row : map.entrySet()) {
+            put(prefix + row.getKey(), row.getValue());
+        }
+        return true;
     }
 }

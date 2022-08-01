@@ -4,6 +4,7 @@ import com.framework.cloud.cache.utils.CacheUtil;
 import com.framework.cloud.common.exception.CacheException;
 import com.framework.cloud.common.utils.FastJsonUtil;
 import com.github.benmanes.caffeine.cache.Cache;
+import com.google.common.collect.Maps;
 import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
@@ -44,11 +45,12 @@ public class LocalCacheTemplate implements LocalCache {
 
     @Override
     public <T> List<T> getAll(String key, Class<T> clz) {
-        return null;
+        String data = get(key, String.class);
+        return FastJsonUtil.toJavaList(data, clz);
     }
 
     @Override
-    public boolean put(@NotBlank String key, Object value) {
+    public <T> boolean put(@NotBlank String key, T value) {
         if (CacheUtil.isTarget(value)) {
             cache.put(key, FastJsonUtil.toJSONString(value));
         } else {
@@ -58,20 +60,24 @@ public class LocalCacheTemplate implements LocalCache {
     }
 
     @Override
-    public boolean putAll(String key, List<Object> list) {
-        return false;
-    }
-
-    @Override
-    public boolean putAll(Map<String, Object> map) {
+    public <T> boolean putAll(String key, List<T> list) {
+        String data = FastJsonUtil.toJSONString(list);
+        Map<String, Object> map = Maps.newHashMap();
+        map.put(key, data);
         cache.putAll(map);
         return true;
     }
 
     @Override
-    public boolean putAll(String prefix, Map<String, Object> map) {
+    public <T> boolean putAll(Map<String, T> map) {
+        cache.putAll(map);
+        return true;
+    }
+
+    @Override
+    public <T> boolean putAll(String prefix, Map<String, T> map) {
         Map<String, Object> newMap = new HashMap<>();
-        for (Map.Entry<String, Object> row : map.entrySet()) {
+        for (Map.Entry<String, T> row : map.entrySet()) {
             newMap.put(prefix + row.getKey(), row.getValue());
         }
         return putAll(newMap);

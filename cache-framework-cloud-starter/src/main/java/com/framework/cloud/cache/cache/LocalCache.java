@@ -32,17 +32,17 @@ public interface LocalCache extends MultistageCache {
     /**
      * 加入缓存
      */
-    boolean putAll(String key, List<Object> list);
+    <T> boolean putAll(String key, List<T> list);
 
     /**
      * 加入缓存 Map<Key, Value>
      */
-    boolean putAll(Map<String, Object> map);
+    <T> boolean putAll(Map<String, T> map);
 
     /**
      * 加入缓存 Map<Suffix, Value>
      */
-    boolean putAll(String prefix, Map<String, Object> map);
+    <T> boolean putAll(String prefix, Map<String, T> map);
 
     /**
      * 删除缓存
