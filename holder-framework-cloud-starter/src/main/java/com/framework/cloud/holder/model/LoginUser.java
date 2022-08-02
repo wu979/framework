@@ -11,14 +11,17 @@ import java.io.Serializable;
  * @author wusiwei
  */
 @Data
-public class LoginUser implements Serializable {
+public final class LoginUser implements Serializable {
     private static final long serialVersionUID = -3438004656749326524L;
 
     @ApiModelProperty(value = "用户主键")
     private Long id;
 
     @ApiModelProperty(value = "用户名")
-    private String userName;
+    private String username;
+
+    @ApiModelProperty(value = "昵称")
+    private String nickname;
 
     @ApiModelProperty(value = "手机号")
     private String mobile;

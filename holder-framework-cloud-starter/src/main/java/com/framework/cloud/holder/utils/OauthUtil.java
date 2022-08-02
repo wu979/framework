@@ -55,6 +55,7 @@ public class OauthUtil {
             if (Objects.nonNull(user)) {
                 return user.getTenantId();
             }
+            return null;
         }
         return tenant.getId();
     }

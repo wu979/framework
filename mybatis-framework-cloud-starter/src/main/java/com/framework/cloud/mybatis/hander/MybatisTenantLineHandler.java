@@ -1,6 +1,7 @@
 package com.framework.cloud.mybatis.hander;
 
 import com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;
+import com.framework.cloud.holder.utils.OauthUtil;
 import com.framework.cloud.mybatis.properties.TenantProperties;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
@@ -20,7 +21,7 @@ public class MybatisTenantLineHandler implements TenantLineHandler {
 
     @Override
     public Expression getTenantId() {
-        return new LongValue(1);
+        return new LongValue(OauthUtil.getTenantId());
     }
 
     @Override

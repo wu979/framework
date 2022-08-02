@@ -1,6 +1,7 @@
 package com.framework.cloud.mybatis.hander;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.framework.cloud.holder.utils.OauthUtil;
 import org.apache.ibatis.reflection.MetaObject;
 
 import java.time.LocalDateTime;
@@ -65,7 +66,7 @@ public class MybatisMetaObjectHandler implements MetaObjectHandler {
 
     private Object getUserIdValue(Class<?> setterType) {
         if (Long.class.equals(setterType)) {
-            return 1L;
+            return OauthUtil.getUserId();
         }
         return null;
     }

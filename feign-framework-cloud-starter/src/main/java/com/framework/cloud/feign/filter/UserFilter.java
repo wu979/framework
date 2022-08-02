@@ -1,5 +1,6 @@
 package com.framework.cloud.feign.filter;
 
+import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.framework.cloud.holder.constant.HeaderConstant;
@@ -37,13 +38,13 @@ public class UserFilter extends OncePerRequestFilter implements Ordered {
             String user = request.getHeader(HeaderConstant.X_USER_HEADER);
             //保存用户信息
             if (StrUtil.isNotEmpty(user)) {
-                LoginUser userDetail = objectMapper.readValue(user, LoginUser.class);
-                UserContextHolder.getInstance().setUser(userDetail);
+                LoginUser loginUser = objectMapper.readValue(Base64.decodeStr(user), LoginUser.class);
+                UserContextHolder.getInstance().setUser(loginUser);
             }
             String role = request.getHeader(HeaderConstant.X_AUTHORITIES_HEADER);
             //保存用户角色
             if (StrUtil.isNotEmpty(role)) {
-                List<String> roleList = StrUtil.splitTrim(role, ",");
+                List<String> roleList = StrUtil.splitTrim(Base64.decodeStr(role), ",");
                 UserRoleContextHolder.getInstance().setRoleList(roleList);
             }
             chain.doFilter(request, response);

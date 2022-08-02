@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author wusiwei
  */
 @Data
-public class LoginTenant implements Serializable {
+public final class LoginTenant implements Serializable {
     private static final long serialVersionUID = 6840219118337638121L;
 
     @ApiModelProperty(value = "租户主键")

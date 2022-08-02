@@ -12,7 +12,7 @@ import java.util.List;
  * @author wusiwei
  */
 @Data
-public class LoginUserRole implements Serializable {
+public final class LoginUserRole implements Serializable {
     private static final long serialVersionUID = 4055794698806944561L;
 
     @ApiModelProperty(value = "用户主键")

@@ -1,5 +1,6 @@
 package com.framework.cloud.feign.filter;
 
+import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.framework.cloud.holder.constant.HeaderConstant;
@@ -35,8 +36,8 @@ public class TenantFilter extends OncePerRequestFilter implements Ordered {
             String tenant = request.getHeader(HeaderConstant.X_TENANT_HEADER);
             //保存租户id
             if (StrUtil.isNotEmpty(tenant)) {
-                LoginTenant tenantDetail = objectMapper.readValue(tenant, LoginTenant.class);
-                TenantContextHolder.getInstance().setTenant(tenantDetail);
+                LoginTenant loginTenant = objectMapper.readValue(Base64.decodeStr(tenant), LoginTenant.class);
+                TenantContextHolder.getInstance().setTenant(loginTenant);
             }
             chain.doFilter(request, response);
         } finally {
