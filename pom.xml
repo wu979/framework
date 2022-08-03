@@ -23,6 +23,7 @@
         <module>job-framework-cloud-starter</module>
         <module>mybatis-framework-cloud-starter</module>
         <module>pom-framework-cloud-starter</module>
+        <module>seata-framework-cloud-starter</module>
         <module>stream-framework-cloud-starter</module>
         <module>swagger-framework-cloud-starter</module>
         <module>tree-framework-cloud-starter</module>

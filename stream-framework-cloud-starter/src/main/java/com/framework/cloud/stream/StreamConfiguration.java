@@ -1,6 +1,5 @@
 package com.framework.cloud.stream;
 
-import lombok.AllArgsConstructor;
 import org.springframework.amqp.rabbit.config.DirectRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -16,14 +15,11 @@ import org.springframework.context.annotation.Bean;
  *
  * @author wusiwei
  */
-@AllArgsConstructor
 @EnableConfigurationProperties(RabbitProperties.class)
 public class StreamConfiguration {
 
-    private final RabbitProperties rabbitProperties;
-
     @Bean
-    public ConnectionFactory connectionFactory() {
+    public ConnectionFactory connectionFactory(RabbitProperties rabbitProperties) {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory(rabbitProperties.getHost());
         connectionFactory.setUsername(rabbitProperties.getUsername());
         connectionFactory.setPassword(rabbitProperties.getPassword());
@@ -36,7 +32,7 @@ public class StreamConfiguration {
 
     @Bean
     @ConditionalOnProperty(prefix = "spring.rabbitmq.listener", value = "type", havingValue = "simple")
-    public SimpleRabbitListenerContainerFactory simpleRabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
+    public SimpleRabbitListenerContainerFactory simpleRabbitListenerContainerFactory(ConnectionFactory connectionFactory, RabbitProperties rabbitProperties) {
         RabbitProperties.SimpleContainer simple = rabbitProperties.getListener().getSimple();
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setAcknowledgeMode(simple.getAcknowledgeMode());
@@ -49,7 +45,7 @@ public class StreamConfiguration {
 
     @Bean
     @ConditionalOnProperty(prefix = "spring.rabbitmq.listener", value = "type", havingValue = "direct")
-    public DirectRabbitListenerContainerFactory directRabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
+    public DirectRabbitListenerContainerFactory directRabbitListenerContainerFactory(ConnectionFactory connectionFactory, RabbitProperties rabbitProperties) {
         RabbitProperties.DirectContainer direct = rabbitProperties.getListener().getDirect();
         DirectRabbitListenerContainerFactory factory = new DirectRabbitListenerContainerFactory();
         factory.setAcknowledgeMode(direct.getAcknowledgeMode());

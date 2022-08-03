@@ -16,10 +16,15 @@ import java.util.Objects;
 public class BaseRepositoryImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> {
 
     public T getByIdNotNull(Serializable id) {
+        return getByIdNotNull(id ,MybatisMessage.NOT_FOUND.getMsg());
+    }
+
+    public T getByIdNotNull(Serializable id, String errorMsg) {
         T info = super.getById(id);
         if (Objects.isNull(info)) {
-            throw new NotFoundException(MybatisMessage.NOT_FOUND.getCode(), MybatisMessage.NOT_FOUND.getMsg());
+            throw new NotFoundException(MybatisMessage.NOT_FOUND.getCode(), errorMsg);
         }
         return info;
     }
+
 }

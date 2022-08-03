@@ -19,4 +19,12 @@ public interface BaseRepository<T> extends IService<T> {
      */
     T getByIdNotNull(Serializable id);
 
+    /**
+     * 根据主键查询详情 未找到数据异常404
+     *
+     * @param id 主键
+     * @param errorMsg 异常消息
+     * @return 泛型实体
+     */
+    T getByIdNotNull(Serializable id, String errorMsg);
 }
