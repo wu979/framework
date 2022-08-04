@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 /**
  * 认证用户权限
@@ -19,6 +19,6 @@ public final class LoginUserRole implements Serializable {
     private Long userId;
 
     @ApiModelProperty(value = "角色列表")
-    private List<String> roleList;
+    private Set<String> roleList;
 
 }

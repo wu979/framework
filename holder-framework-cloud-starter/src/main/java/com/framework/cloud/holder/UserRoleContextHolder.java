@@ -2,7 +2,7 @@ package com.framework.cloud.holder;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * 认证用户角色上下文传递
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class UserRoleContextHolder {
 
-    private final ThreadLocal<List<String>> roleContext;
+    private final ThreadLocal<Set<String>> roleContext;
 
     private UserRoleContextHolder() {
         this.roleContext = new TransmittableThreadLocal<>();
@@ -25,11 +25,11 @@ public class UserRoleContextHolder {
         private static final UserRoleContextHolder INSTANCE = new UserRoleContextHolder();
     }
 
-    public void setRoleList(List<String> roleList) {
+    public void setRoleList(Set<String> roleList) {
         roleContext.set(roleList);
     }
 
-    public List<String> getRoleList() {
+    public Set<String> getRoleList() {
         return roleContext.get();
     }
 

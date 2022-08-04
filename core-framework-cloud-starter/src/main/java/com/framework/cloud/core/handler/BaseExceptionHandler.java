@@ -1,8 +1,6 @@
 package com.framework.cloud.core.handler;
 
-import com.framework.cloud.common.exception.BizException;
-import com.framework.cloud.common.exception.EnumException;
-import com.framework.cloud.common.exception.LockException;
+import com.framework.cloud.common.exception.*;
 import com.framework.cloud.common.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -38,6 +36,20 @@ public class BaseExceptionHandler {
         return new Result<Void>(e.getCode(), e.getMessage());
     }
 
+    @ExceptionHandler(CacheException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public Result<Void> exceptionHandle(CacheException e) {
+        log.error("缓存异常：{}" , e);
+        return new Result<Void>(e.getCode(), e.getMessage());
+    }
+
+    @ExceptionHandler(ElasticException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public Result<Void> exceptionHandle(ElasticException e) {
+        log.error("查询异常：{}" , e);
+        return new Result<Void>(e.getCode(), e.getMessage());
+    }
+
     @ExceptionHandler(EnumException.class)
     @ResponseStatus(HttpStatus.OK)
     public Result<Void> exceptionHandle(EnumException e) {
@@ -49,6 +61,13 @@ public class BaseExceptionHandler {
     @ResponseStatus(HttpStatus.OK)
     public Result<Void> exceptionHandle(LockException e) {
         log.error("唯一异常：{}" , e);
+        return new Result<Void>(e.getCode(), e.getMessage());
+    }
+
+    @ExceptionHandler(OauthException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public Result<Void> exceptionHandle(OauthException e) {
+        log.error("认证异常：{}" , e);
         return new Result<Void>(e.getCode(), e.getMessage());
     }
 

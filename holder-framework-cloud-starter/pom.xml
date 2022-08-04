@@ -10,7 +10,26 @@
     <description>应用上下文</description>
     <packaging>jar</packaging>
 
+    <properties>
+        <common.framework.cloud.starter.version>1.0.0</common.framework.cloud.starter.version>
+    </properties>
+
     <dependencies>
+        <dependency>
+            <groupId>com.framework.cloud</groupId>
+            <artifactId>common-framework-cloud-starter</artifactId>
+            <version>${common.framework.cloud.starter.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-openfeign-core</artifactId>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-annotations</artifactId>

@@ -1,5 +1,7 @@
 package com.framework.cloud.common.exception;
 
+import com.framework.cloud.common.enums.GlobalMessage;
+
 import java.io.Serializable;
 
 /**
@@ -19,6 +21,7 @@ public class BaseException extends RuntimeException implements Serializable {
 
     public BaseException(String msg) {
         super(msg);
+        this.code = GlobalMessage.FAIL.getCode();
         this.msg = msg;
     }
 

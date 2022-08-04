@@ -3,10 +3,11 @@ package com.framework.cloud.feign.filter;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.framework.cloud.holder.constant.HeaderConstant;
 import com.framework.cloud.holder.UserContextHolder;
 import com.framework.cloud.holder.UserRoleContextHolder;
+import com.framework.cloud.holder.constant.HeaderConstant;
 import com.framework.cloud.holder.model.LoginUser;
+import com.google.common.collect.Sets;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.core.Ordered;
@@ -18,7 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 /**
  * 用户上下文过滤器
@@ -44,7 +45,7 @@ public class UserFilter extends OncePerRequestFilter implements Ordered {
             String role = request.getHeader(HeaderConstant.X_AUTHORITIES_HEADER);
             //保存用户角色
             if (StrUtil.isNotEmpty(role)) {
-                List<String> roleList = StrUtil.splitTrim(Base64.decodeStr(role), ",");
+                Set<String> roleList = Sets.newHashSet(StrUtil.splitTrim(Base64.decodeStr(role), ","));
                 UserRoleContextHolder.getInstance().setRoleList(roleList);
             }
             chain.doFilter(request, response);

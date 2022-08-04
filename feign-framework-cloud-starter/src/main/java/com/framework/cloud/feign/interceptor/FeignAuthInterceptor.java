@@ -2,11 +2,11 @@ package com.framework.cloud.feign.interceptor;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.framework.cloud.holder.constant.HeaderConstant;
 import com.framework.cloud.common.utils.FastJsonUtil;
 import com.framework.cloud.holder.TenantContextHolder;
 import com.framework.cloud.holder.UserContextHolder;
 import com.framework.cloud.holder.UserRoleContextHolder;
+import com.framework.cloud.holder.constant.HeaderConstant;
 import com.framework.cloud.holder.model.LoginTenant;
 import com.framework.cloud.holder.model.LoginUser;
 import feign.RequestInterceptor;
@@ -16,7 +16,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import java.util.Set;
 
 /**
  * @program: wsw-starter-cloud
@@ -53,7 +53,7 @@ public class FeignAuthInterceptor implements RequestInterceptor {
         //传递 用户权限
         String role = request.getHeader(HeaderConstant.X_AUTHORITIES_HEADER);
         if (StringUtils.isBlank(role)) {
-            List<String> userRole = UserRoleContextHolder.getInstance().getRoleList();
+            Set<String> userRole = UserRoleContextHolder.getInstance().getRoleList();
             if (CollectionUtil.isNotEmpty(userRole)) {
                 requestTemplate.header(HeaderConstant.X_AUTHORITIES_HEADER, CollectionUtil.join(userRole, ","));
             }

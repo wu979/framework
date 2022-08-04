@@ -33,7 +33,7 @@ public @interface FrameworkApplication {
             annotation = EnableFeignClients.class,
             attribute = "basePackages"
     )
-    String[] enableFeignClients() default {"com.framework.cloud.**.domain.feign"};
+    String[] enableFeignClients() default {"com.framework.cloud.**.domain.feign", "com.framework.cloud.holder.feign"};
 
     @AliasFor(
             annotation = EnableAutoConfiguration.class,
