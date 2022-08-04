@@ -1,22 +1,26 @@
-package com.framework.cloud.stream;
+package com.framework.cloud.stream.configuration;
 
 import org.springframework.amqp.rabbit.config.DirectRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 
 /**
- * domain driven event initialization configuration
+ * rabbit
  *
  * @author wusiwei
  */
 @EnableConfigurationProperties(RabbitProperties.class)
-public class StreamConfiguration {
+@ConditionalOnProperty(prefix = "spring.rabbitmq", value = "enable", havingValue = "true")
+public class RabbitStreamConfiguration {
 
     @Bean
     public ConnectionFactory connectionFactory(RabbitProperties rabbitProperties) {
@@ -28,6 +32,14 @@ public class StreamConfiguration {
         connectionFactory.setPublisherConfirmType(rabbitProperties.getPublisherConfirmType());
         connectionFactory.setPublisherReturns(rabbitProperties.isPublisherReturns());
         return connectionFactory;
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+        return rabbitTemplate;
     }
 
     @Bean
@@ -53,4 +65,5 @@ public class StreamConfiguration {
         factory.setMessageConverter(new Jackson2JsonMessageConverter());
         return factory;
     }
+
 }
