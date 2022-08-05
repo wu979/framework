@@ -32,6 +32,7 @@ public class OauthUtil {
     private static OauthHolderFeignService oauthHolderFeignService;
 
     @Autowired
+    @SuppressWarnings("all")
     public OauthUtil(OauthHolderFeignService oauthHolderFeignService) {
         OauthUtil.oauthHolderFeignService = oauthHolderFeignService;
     }
