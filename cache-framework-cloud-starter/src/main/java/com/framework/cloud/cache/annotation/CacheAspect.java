@@ -69,7 +69,7 @@ public class CacheAspect implements Ordered {
             result = readObject(cacheKey, cache, method, point).getResult();
         }
         if (CacheType.DELETE.equals(type)) {
-            result = deleteObject(cacheKey, point);
+            result = deleteObject(cacheKey, cache, point);
         }
         if (CacheType.PUT.equals(type)) {
             result = putObject(cacheKey, cache, point);
@@ -115,10 +115,27 @@ public class CacheAspect implements Ordered {
     }
 
     @SneakyThrows
-    private Object deleteObject(String cacheKey, ProceedingJoinPoint point) {
-        localCache.delete(cacheKey);
-        redisCache.delete(cacheKey);
-        return point.proceed();
+    private Object deleteObject(String cacheKey, Cache cache, ProceedingJoinPoint point) {
+        Object proceed = point.proceed();
+        if (ObjectUtil.isNotNull(proceed)) {
+            if (proceed instanceof Boolean) {
+                Boolean delete = (Boolean) proceed;
+                if (delete) {
+                    CacheMedium medium = cache.medium();
+                    if (CacheMedium.LOCAL.equals(medium)) {
+                        localCache.delete(cacheKey);
+                    }
+                    if (CacheMedium.DISTRIBUTED.equals(medium)) {
+                        redisCache.delete(cacheKey);
+                    }
+                    if (CacheMedium.FULL.equals(medium)) {
+                        localCache.delete(cacheKey);
+                        redisCache.delete(cacheKey);
+                    }
+                }
+            }
+        }
+        return proceed;
     }
 
     @SneakyThrows

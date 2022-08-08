@@ -1,6 +1,7 @@
 package com.framework.cloud.holder.utils;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.framework.cloud.common.enums.GlobalRoleType;
 import com.framework.cloud.common.exception.OauthException;
 import com.framework.cloud.common.result.Result;
 import com.framework.cloud.common.utils.StringUtil;
@@ -103,6 +104,15 @@ public class OauthUtil {
         return roleList;
     }
 
+    /**
+     * 是否超级管理员
+     *
+     * @return bool
+     */
+    public static boolean isAdmin() {
+        Set<String> roleList = getRoleList();
+        return roleList.contains(GlobalRoleType.ROLE_ADMIN.name());
+    }
 
     private static LoginUser loginUser() {
         return oauth() ? UserContextHolder.getInstance().getUser() : null;
