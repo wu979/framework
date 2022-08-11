@@ -23,3 +23,10 @@ feign:
       min-request-size: 2048
     response:
       enabled: true
+
+#微服务客户端
+client:
+  user: framework-cloud-user-api
+  platform: framework-cloud-platform-api
+  oauth: framework-cloud-oauth-api
+  pay: framework-cloud-pay-api

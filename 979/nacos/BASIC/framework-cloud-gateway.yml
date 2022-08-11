@@ -1,0 +1,59 @@
+framework:
+  gateway:
+    version: v1
+    public-key: public-key.txt
+    ignored-url:
+      - /webjars/**
+      - /swagger-resources/**
+      - /*/*/v3/api-docs
+      - /doc.html
+      - /api/oauth/**
+      - /api/*/open/**
+
+  redis:
+    prefix: authentication
+    host: 139.155.11.84
+    password: wsw979
+  rabbitmq:
+    host: 139.155.11.84
+    port: 5672
+    username: 979
+    password: wsw979
+    virtual-host: /
+  swagger:
+    docs-path: /v3/api-docs
+    version: 3.0
+    enable-group: true
+    ignore-routes:
+      - oauth
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          # 根据注册中心自动注册路由，默认false
+          enabled: false
+          # 将注册表中的服务名转为小写创建路由，默认false
+          lower-case-service-id: true
+      #http连接设置
+      httpclient:
+        pool:
+          #最大连接数
+          max-connections: 5000
+          #返回时间
+          acquire-timeout: 15000
+          #最大空闲时间
+          max-idle-time: 10000
+    stream:
+      bindings:
+        gateway-route-channel:
+          destination: gateway-route
+          content-type: application/json
+          group: ${spring.application.name}
+        gateway-route-delete-channel:
+          destination: gateway-route-delete
+          content-type: application/json
+          group: ${spring.application.name}
+      binders:
+        rabbit:
+          type: rabbit

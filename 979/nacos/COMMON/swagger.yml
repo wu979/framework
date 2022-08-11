@@ -1,5 +1,13 @@
+#增强模式
+knife4j:
+  enable: ${framework.knife4j.enabled:true}
+  basic:
+    enable: ${framework.knife4j.basic.enabled:false}
+    username: ${framework.knife4j.basic.username:979}
+    password: ${framework.knife4j.basic.password:wusiwei979}
+#文档
 framework:
-    knife4j:
+    swagger3:
         #是否开启
         enabled: ${framework.swagger.enabled:true}
         #扫描路径
@@ -9,7 +17,7 @@ framework:
         #描述
         description: ${framework.swagger.description:文档}
         #版本号
-        version: ${framework.swagger.version:2.0}
+        version: ${framework.swagger.version:v3}
         #许可
         license: ${framework.swagger.license:暂无}
         #许可链接
@@ -23,6 +31,8 @@ framework:
             #链接
             url: ${framework.swagger.contact.url:无}
             #邮箱
-            email: ${framework.swagger.contact.email:XXXXXXXXXX@163.com}
-    
-    
+            email: ${framework.swagger.contact.email:18683789594@163.com}
+        #认证
+        authorization:
+            name: ${framework.swagger.authorization.name:Authorization}
+            auth-regex: ${framework.swagger.authorization.auth-regex:^.*$}

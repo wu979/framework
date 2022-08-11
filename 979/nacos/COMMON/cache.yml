@@ -17,9 +17,9 @@ spring:
     #连接超时
     connectTimeout: ${framework.redis.connect-timeout:3000}
     #默认缓存过期时间
-    cache-timeout: ${framework.redis.cache-timeout:30000}
+    cache-timeout: ${framework.redis.cache-timeout:7200}
     #默认缓存过期时间单位 毫秒
-    cache-timeout-unit: ${framework.redis.cache-timeout-unit:MILLISECONDS}
+    cache-timeout-unit: ${framework.redis.cache-timeout-unit:SECONDS}
     #库
     database: ${framework.redis.database:0}
     #前缀
@@ -50,3 +50,8 @@ spring:
       expectedInsertions: ${framework.redis.bloom.expectedInsertions:64000}
       #预期错误概率
       falseProbability: ${framework.redis.bloom.falseProbability:0.03}
+    #本地缓存配置
+    caffeine-cache:
+        name: ${framework.redis.caffeine.name}
+        initial-capacity: ${framework.redis.caffeine.initial-capacity:100}
+        maximum-size: ${framework.redis.caffeine.maximum-size:1024}

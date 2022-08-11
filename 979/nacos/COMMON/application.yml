@@ -6,7 +6,6 @@ spring:
     multipart:
       max-file-size: 500MB
       max-request-size: 500MB
-
 #端口
 management:
   endpoints:
@@ -22,4 +21,8 @@ management:
         enabled: false
 
 
-
+logging:
+  level:
+    org:
+      quartz:
+        core: warn

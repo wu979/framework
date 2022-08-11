@@ -5,9 +5,11 @@ framework:
     group-name: oauth
   redis:
     prefix: authentication
-    host: 127.0.0.1
-    password: 123456
+    host: 139.155.11.84
+    password: wsw979
   oauth2:
+    #租户最大认证次数
+    max-count: 1000
     url:
       cors-pattern: /**
       logout-url: /oauth/logout

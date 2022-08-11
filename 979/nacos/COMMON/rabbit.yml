@@ -1,0 +1,26 @@
+spring:
+  rabbitmq:
+    enable: ${framework.rabbitmq.enable:true}
+    host: ${framework.rabbitmq.host}
+    port: ${framework.rabbitmq.port}
+    username: ${framework.rabbitmq.username}
+    password: ${framework.rabbitmq.password}
+    virtual-host: ${framework.rabbitmq.virtual-host:/}
+    #是否启用【发布确认】
+    publisher-confirm-type: ${framework.rabbitmq.publisher-confirm-type:simple}
+    #是否启用 发布返回
+    publisher-returns: ${framework.rabbitmq.publisher-returns:true}
+    template:
+      retry:
+        max-attempts: ${framework.rabbitmq.retry.max-attempts:3}
+    listener:
+      type: ${framework.rabbitmq.listener.type:simple}
+      simple:
+        #手动ACK
+        acknowledge-mode: ${framework.rabbitmq.listener.simple.acknowledge-mode:MANUAL}
+        #最小的消费者数量
+        concurrency: ${framework.rabbitmq.listener.simple.concurrency:5}
+        #最大的消费者数量
+        max-concurrency: ${framework.rabbitmq.listener.simple.max-concurrency:20}
+      direct:
+        acknowledge-mode: ${framework.rabbitmq.listener.direct.acknowledge-mode:MANUAL}
