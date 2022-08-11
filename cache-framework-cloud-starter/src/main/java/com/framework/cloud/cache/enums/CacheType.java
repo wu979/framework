@@ -12,13 +12,17 @@ public enum CacheType {
     /**
      * 写
      */
-    PUT,
+    WRITE,
     /**
      * 删除
      */
-    DELETE,
+    DEL,
     /**
      * 读写
      */
-    FULL
+    READ_WRITE,
+    /**
+     * 删写
+     */
+    DEL_WRITE
 }

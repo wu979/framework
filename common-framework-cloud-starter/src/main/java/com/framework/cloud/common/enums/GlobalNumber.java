@@ -26,6 +26,7 @@ public enum GlobalNumber {
     SEVEN(7, 7L, "7", 7.00, BigDecimal.valueOf(7)),
     EIGHT(8, 8L, "8", 8.00, BigDecimal.valueOf(8)),
     NINE(9, 9L, "9", 9.00, BigDecimal.valueOf(9)),
+    TEN(10, 10L, "10", 10.00, BigDecimal.valueOf(10)),
     ;
 
     Integer intValue;

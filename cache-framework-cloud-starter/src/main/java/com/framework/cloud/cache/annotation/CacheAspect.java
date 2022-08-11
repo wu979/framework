@@ -68,14 +68,17 @@ public class CacheAspect implements Ordered {
         if (CacheType.READ.equals(type)) {
             result = readObject(cacheKey, cache, method, point).getResult();
         }
-        if (CacheType.DELETE.equals(type)) {
+        if (CacheType.DEL.equals(type)) {
             result = deleteObject(cacheKey, cache, point);
         }
-        if (CacheType.PUT.equals(type)) {
+        if (CacheType.WRITE.equals(type)) {
             result = putObject(cacheKey, cache, point);
         }
-        if (CacheType.FULL.equals(type)) {
-            result = fullObject(cacheKey, cache, method, point);
+        if (CacheType.READ_WRITE.equals(type)) {
+            result = readWriteObject(cacheKey, cache, method, point);
+        }
+        if (CacheType.DEL_WRITE.equals(type)) {
+            result = delWriteObject(cacheKey, cache, point);
         }
         return result;
     }
@@ -149,7 +152,7 @@ public class CacheAspect implements Ordered {
     }
 
     @SneakyThrows
-    private Object fullObject(String cacheKey, Cache cache, Method method, ProceedingJoinPoint point) {
+    private Object readWriteObject(String cacheKey, Cache cache, Method method, ProceedingJoinPoint point) {
         ReadObject readObject = readObject(cacheKey, cache, method, point);
         Object proceed = readObject.getResult();
         if (ObjectUtil.isNull(proceed)) {
@@ -168,6 +171,30 @@ public class CacheAspect implements Ordered {
                 localCache.put(cacheKey, proceed);
                 redisCache.put(cacheKey, proceed, timeout(cache.timeout()), cache.unit());
             }
+        }
+        return proceed;
+    }
+
+    @SneakyThrows
+    private Object delWriteObject(String cacheKey, Cache cache, ProceedingJoinPoint point) {
+        Object proceed = point.proceed();
+        if (ObjectUtil.isNull(proceed)) {
+            return proceed;
+        }
+        CacheMedium medium = cache.medium();
+        if (CacheMedium.LOCAL.equals(medium)) {
+            localCache.delete(cacheKey);
+            localCache.put(cacheKey, proceed);
+        }
+        if (CacheMedium.DISTRIBUTED.equals(medium)) {
+            redisCache.delete(cacheKey);
+            redisCache.put(cacheKey, proceed, timeout(cache.timeout()), cache.unit());
+        }
+        if (CacheMedium.FULL.equals(medium)) {
+            localCache.delete(cacheKey);
+            redisCache.delete(cacheKey);
+            localCache.put(cacheKey, proceed);
+            redisCache.put(cacheKey, proceed, timeout(cache.timeout()), cache.unit());
         }
         return proceed;
     }
