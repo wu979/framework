@@ -14,13 +14,13 @@ framework:
         - t_pay_mode
   redis:
     prefix: platform
-    host: 139.155.11.84
+    host: 127.0.0.1
     password: wsw979
   rabbitmq:
-    host: 139.155.11.84
+    host: 127.0.0.1
     port: 5672
-    username: 979
-    password: wsw979
+    username: mq
+    password: mq
     virtual-host: /
 spring:
   shardingsphere:
@@ -33,9 +33,9 @@ spring:
       platform:
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://139.155.11.84:3306/framework-platform?characterEncoding=utf8&useSSL=false&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&serverTimezone=Asia/Shanghai
-        username: 979
-        password: wsw979
+        url: jdbc:mysql://127.0.0.1:3306/framework-platform?characterEncoding=utf8&useSSL=false&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&serverTimezone=Asia/Shanghai
+        username: mysql
+        password: mysql
     rules:
       sharding:
         #不分库分表 none

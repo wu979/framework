@@ -11,12 +11,12 @@ framework:
         - t_permission
   redis:
     prefix: user
-    host: 139.155.11.84
-    password: wsw979
+    host: 127.0.0.1
+    password: 123456
   elasticsearch:
-    uris: 162.14.111.104:9200,162.14.111.104:9201
+    uris: 127.0.0.1:9200,127.0.0.1:9201
     username: elastic
-    password: wsw979
+    password: elastic
 spring:
   shardingsphere:
     props:
@@ -26,9 +26,9 @@ spring:
       user:
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://139.155.11.84:3306/framework-user?characterEncoding=utf8&useSSL=false&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&serverTimezone=Asia/Shanghai
-        username: 979
-        password: wsw979
+        url: jdbc:mysql://127.0.0.1:3306/framework-user?characterEncoding=utf8&useSSL=false&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&serverTimezone=Asia/Shanghai
+        username: mysql
+        password: mysql
     #分片规则 https://blog.csdn.net/qq_34279995/article/details/122421989
     rules:
       sharding:

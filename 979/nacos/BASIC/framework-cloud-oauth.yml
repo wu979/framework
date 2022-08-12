@@ -5,7 +5,7 @@ framework:
     group-name: oauth
   redis:
     prefix: authentication
-    host: 139.155.11.84
+    host: 127.0.0.1
     password: wsw979
   oauth2:
     #租户最大认证次数

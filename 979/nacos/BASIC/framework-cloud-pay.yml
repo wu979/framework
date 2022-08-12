@@ -7,8 +7,8 @@ framework:
       is-open: true
   redis:
     prefix: pay
-    host: 139.155.11.84
-    password: wsw979
+    host: 127.0.0.1
+    password: 123456
 spring:
   shardingsphere:
     props:
@@ -20,9 +20,9 @@ spring:
       pay:
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://139.155.11.84:3306/framework-pay?characterEncoding=utf8&useSSL=false&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&serverTimezone=Asia/Shanghai
-        username: 979
-        password: wsw979
+        url: jdbc:mysql://127.0.0.1:3306/framework-pay?characterEncoding=utf8&useSSL=false&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&serverTimezone=Asia/Shanghai
+        username: mysql
+        password: mysql
     rules:
       sharding:
         #默认key生成策略

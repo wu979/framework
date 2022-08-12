@@ -12,13 +12,13 @@ framework:
 
   redis:
     prefix: authentication
-    host: 139.155.11.84
-    password: wsw979
+    host: 127.0.0.1
+    password: 123456
   rabbitmq:
-    host: 139.155.11.84
+    host: 127.0.0.1
     port: 5672
-    username: 979
-    password: wsw979
+    username: mq
+    password: mq
     virtual-host: /
   swagger:
     docs-path: /v3/api-docs
