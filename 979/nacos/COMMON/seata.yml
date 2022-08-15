@@ -19,6 +19,7 @@ seata:
       server-addr: 127.0.0.1:8848
       group : SEATA
       namespace: 9c18888d-7cbc-4e29-812a-e7cd073d6a7c
+      cluster: seata-cluster
   client:
     rm:
       async-commit-buffer-limit: 10000

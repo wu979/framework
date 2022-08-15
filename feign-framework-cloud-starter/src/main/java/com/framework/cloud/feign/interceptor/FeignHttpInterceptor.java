@@ -10,7 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.util.Enumeration;
 
 /**
  * @program: wsw-starter-cloud
@@ -26,6 +28,15 @@ public class FeignHttpInterceptor implements RequestInterceptor {
                 .getRequestAttributes();
         if (attributes == null) {
             return;
+        }
+        HttpServletRequest request = attributes.getRequest();
+        Enumeration<String> headerNames = request.getHeaderNames();
+        if (headerNames != null) {
+            while (headerNames.hasMoreElements()) {
+                String name = headerNames.nextElement();
+                String value = request.getHeader(name);
+                requestTemplate.header(name, value);
+            }
         }
         MethodMetadata methodMetadata = requestTemplate.methodMetadata();
         Method method = methodMetadata.method();

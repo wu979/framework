@@ -9,8 +9,10 @@ import com.framework.cloud.holder.UserRoleContextHolder;
 import com.framework.cloud.holder.constant.HeaderConstant;
 import com.framework.cloud.holder.model.LoginTenant;
 import com.framework.cloud.holder.model.LoginUser;
+import com.google.common.collect.Lists;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import io.seata.core.context.RootContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -56,6 +58,14 @@ public class FeignAuthInterceptor implements RequestInterceptor {
             Set<String> userRole = UserRoleContextHolder.getInstance().getRoleList();
             if (CollectionUtil.isNotEmpty(userRole)) {
                 requestTemplate.header(HeaderConstant.X_AUTHORITIES_HEADER, CollectionUtil.join(userRole, ","));
+            }
+        }
+        //传递 事务ID
+        String xid = request.getHeader(RootContext.KEY_XID);
+        if (StringUtils.isBlank(xid)) {
+            xid = RootContext.getXID();
+            if (StringUtils.isNotBlank(xid)) {
+                requestTemplate.header(RootContext.KEY_XID, Lists.newArrayList(xid));
             }
         }
     }

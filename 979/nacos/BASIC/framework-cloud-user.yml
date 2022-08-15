@@ -17,6 +17,11 @@ framework:
     uris: 127.0.0.1:9200,127.0.0.1:9201
     username: elastic
     password: elastic
+seata:
+  tx-service-group: user-group
+  service:
+    vgroup-mapping:
+      user-group: seata-cluster
 spring:
   shardingsphere:
     props:

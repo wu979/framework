@@ -59,6 +59,11 @@
             <artifactId>httpclient</artifactId>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>io.seata</groupId>
+            <artifactId>seata-core</artifactId>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

@@ -120,9 +120,17 @@ public class RedisCacheTemplate implements RedisCache {
     @Override
     public <T> boolean put(@NotBlank String key, T value, long timeout, TimeUnit unit) {
         if (CacheUtil.isTarget(value)) {
-            redisTemplate.opsForValue().set(key, FastJsonUtil.toJSONString(value), timeout, unit);
+            if (timeout < 0) {
+                redisTemplate.opsForValue().set(key, FastJsonUtil.toJSONString(value));
+            } else {
+                redisTemplate.opsForValue().set(key, FastJsonUtil.toJSONString(value), timeout, unit);
+            }
         } else {
-            redisTemplate.opsForValue().set(key, value, timeout, unit);
+            if (timeout < 0) {
+                redisTemplate.opsForValue().set(key, value);
+            } else {
+                redisTemplate.opsForValue().set(key, value, timeout, unit);
+            }
         }
         return true;
     }

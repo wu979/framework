@@ -19,14 +19,8 @@ import org.springframework.context.annotation.Bean;
 @EnableConfigurationProperties(DruidProperties.class)
 public class DruidConfiguration {
 
-    private final DruidProperties druidProperties;
-
-    public DruidConfiguration(DruidProperties druidProperties) {
-        this.druidProperties = druidProperties;
-    }
-
     @Bean("startViewServlet")
-    public ServletRegistrationBean startViewServlet() {
+    public ServletRegistrationBean startViewServlet(DruidProperties druidProperties) {
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
         //Ip白名单,多个在value中用逗号隔开，不配置默认所有
         servletRegistrationBean.addInitParameter("allow", druidProperties.getStatViewServlet().getAllow());
@@ -41,7 +35,7 @@ public class DruidConfiguration {
     }
 
     @Bean("statBeanFilter")
-    public FilterRegistrationBean statFilter() {
+    public FilterRegistrationBean statFilter(DruidProperties druidProperties) {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new WebStatFilter());
         //添加过滤规则
         filterRegistrationBean.addUrlPatterns(druidProperties.getWebStatFilter().getUrlPattern());

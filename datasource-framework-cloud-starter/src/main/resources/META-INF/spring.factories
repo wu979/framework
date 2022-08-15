@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.framework.cloud.datasource.configuration.DruidConfiguration
+com.framework.cloud.datasource.DataSourceAutoConfiguration
