@@ -2,7 +2,6 @@ package com.framework.cloud.feign.annotation;
 
 import com.framework.cloud.feign.FeignContextConfiguration;
 import com.framework.cloud.feign.interceptor.FeignAuthInterceptor;
-import com.framework.cloud.feign.interceptor.FeignHttpInterceptor;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -17,6 +16,6 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import({FeignContextConfiguration.class, FeignAuthInterceptor.class, FeignHttpInterceptor.class})
+@Import({FeignAuthInterceptor.class, FeignContextConfiguration.class})
 public @interface EnableFeignInterceptor {
 }

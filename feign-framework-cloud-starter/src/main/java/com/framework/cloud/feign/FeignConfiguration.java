@@ -44,7 +44,7 @@ public class FeignConfiguration {
     @Scope("prototype")
     @ConditionalOnClass({SphU.class, Feign.class})
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(name = "feign.sentinel.enabled", havingValue = "true")
+    @ConditionalOnProperty(name = "feign.enabled", havingValue = "true")
     @Primary
     public Feign.Builder feignSentinelBuilder() {
         return SentinelFeign.builder();

@@ -14,7 +14,7 @@ public final class AmountUtil {
     /**
      * 数据库存储的精度
      */
-    private static final int DB_PRECISION = 8;
+    private static final int DB_PRECISION = 4;
     /**
      * 幂运算，转正原始小数
      */

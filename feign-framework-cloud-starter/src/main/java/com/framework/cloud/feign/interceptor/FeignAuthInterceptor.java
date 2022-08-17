@@ -3,6 +3,7 @@ package com.framework.cloud.feign.interceptor;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.framework.cloud.common.utils.FastJsonUtil;
+import com.framework.cloud.common.utils.StringUtil;
 import com.framework.cloud.holder.TenantContextHolder;
 import com.framework.cloud.holder.UserContextHolder;
 import com.framework.cloud.holder.UserRoleContextHolder;
@@ -36,12 +37,16 @@ public class FeignAuthInterceptor implements RequestInterceptor {
             return;
         }
         HttpServletRequest request = attributes.getRequest();
+        String token = request.getHeader(HeaderConstant.AUTHORIZATION);
+        if (StringUtil.isBlank(token)) {
+            token = request.getParameter(HeaderConstant.AUTHORIZATION);
+        }
         //传递 用户
         String user = request.getHeader(HeaderConstant.X_USER_HEADER);
         if (StringUtils.isBlank(user)) {
             LoginUser userDetail = UserContextHolder.getInstance().getUser();
             if (ObjectUtil.isNotNull(userDetail)) {
-                requestTemplate.header(HeaderConstant.X_USER_HEADER, FastJsonUtil.toJSONString(userDetail));
+                user = FastJsonUtil.toJSONString(userDetail);
             }
         }
         //传递 租户
@@ -49,7 +54,7 @@ public class FeignAuthInterceptor implements RequestInterceptor {
         if (StringUtils.isBlank(tenant)) {
             LoginTenant tenantDetail = TenantContextHolder.getInstance().getTenant();
             if (ObjectUtil.isNotNull(tenantDetail)) {
-                requestTemplate.header(HeaderConstant.X_TENANT_HEADER, FastJsonUtil.toJSONString(tenantDetail));
+                tenant = FastJsonUtil.toJSONString(tenantDetail);
             }
         }
         //传递 用户权限
@@ -57,17 +62,19 @@ public class FeignAuthInterceptor implements RequestInterceptor {
         if (StringUtils.isBlank(role)) {
             Set<String> userRole = UserRoleContextHolder.getInstance().getRoleList();
             if (CollectionUtil.isNotEmpty(userRole)) {
-                requestTemplate.header(HeaderConstant.X_AUTHORITIES_HEADER, CollectionUtil.join(userRole, ","));
+                role = CollectionUtil.join(userRole, ",");
             }
         }
         //传递 事务ID
         String xid = request.getHeader(RootContext.KEY_XID);
         if (StringUtils.isBlank(xid)) {
             xid = RootContext.getXID();
-            if (StringUtils.isNotBlank(xid)) {
-                requestTemplate.header(RootContext.KEY_XID, Lists.newArrayList(xid));
-            }
         }
+        requestTemplate.header(HeaderConstant.AUTHORIZATION, token);
+        requestTemplate.header(HeaderConstant.X_USER_HEADER, user);
+        requestTemplate.header(HeaderConstant.X_TENANT_HEADER, tenant);
+        requestTemplate.header(HeaderConstant.X_AUTHORITIES_HEADER, role);
+        requestTemplate.header(RootContext.KEY_XID, Lists.newArrayList(xid));
     }
 
 }
