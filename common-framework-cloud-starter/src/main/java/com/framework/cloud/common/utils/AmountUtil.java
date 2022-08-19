@@ -34,7 +34,20 @@ public final class AmountUtil {
         if (null == val) {
             return BigDecimal.ZERO;
         }
-        return new BigDecimal(val).divide(new BigDecimal(DB_POWER).pow(DB_PRECISION), PRICE_PRECISION, BigDecimal.ROUND_HALF_UP);
+        return precision(new BigDecimal(val));
+    }
+
+    /**
+     * Long To BigDecimal
+     *
+     * @param val 值
+     * @return BigDecimal
+     */
+    public static BigDecimal longToDecimal(String val) {
+        if (null == val) {
+            return BigDecimal.ZERO;
+        }
+        return precision(new BigDecimal(val));
     }
 
     /**
@@ -48,5 +61,9 @@ public final class AmountUtil {
             return GlobalNumber.ZERO.getLongValue();
         }
         return val.setScale(DB_PRECISION, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(DB_POWER).pow(DB_PRECISION)).toBigIntegerExact().longValue();
+    }
+
+    private static BigDecimal precision(BigDecimal val) {
+        return val.divide(new BigDecimal(DB_POWER).pow(DB_PRECISION), PRICE_PRECISION, BigDecimal.ROUND_HALF_UP);
     }
 }
