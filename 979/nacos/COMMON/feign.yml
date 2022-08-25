@@ -1,6 +1,7 @@
 feign:
+  enabled: ${framework.feign.enabled:true}
   sentinel:
-    enabled: ${framework.feign.enabled:true}
+    enabled: ${framework.feign.sentinel.enabled:false}
   circuitbreaker:
     enabled: true
   okhttp:

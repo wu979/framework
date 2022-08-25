@@ -10,11 +10,23 @@
     <description>公共枚举</description>
     <packaging>jar</packaging>
 
+    <properties>
+        <common.framework.cloud.starter.version>1.0.0</common.framework.cloud.starter.version>
+        <swagger.framework.cloud.starter.version>1.0.0</swagger.framework.cloud.starter.version>
+    </properties>
+
     <dependencies>
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus</artifactId>
-            <scope>compile</scope>
+            <groupId>com.framework.cloud</groupId>
+            <artifactId>common-framework-cloud-starter</artifactId>
+            <version>${common.framework.cloud.starter.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.framework.cloud</groupId>
+            <artifactId>swagger-framework-cloud-starter</artifactId>
+            <version>${swagger.framework.cloud.starter.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

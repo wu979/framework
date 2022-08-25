@@ -6,7 +6,7 @@ framework:
   redis:
     prefix: authentication
     host: 127.0.0.1
-    password: wsw979
+    password: 123456
   oauth2:
     #租户最大认证次数
     max-count: 1000

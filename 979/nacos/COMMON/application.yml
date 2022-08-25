@@ -1,3 +1,5 @@
+server:
+  max-http-header-size: 102400
 spring:
   mvc:
     pathmatch:

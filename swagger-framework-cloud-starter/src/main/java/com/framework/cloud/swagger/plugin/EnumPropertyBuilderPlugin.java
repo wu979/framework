@@ -6,7 +6,6 @@ import com.framework.cloud.swagger.annotation.SwaggerDisplayEnum;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.util.ReflectionUtils;
-import springfox.documentation.builders.ModelPropertyBuilder;
 import springfox.documentation.builders.PropertySpecificationBuilder;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.schema.ModelPropertyBuilderPlugin;
@@ -69,7 +68,6 @@ public class EnumPropertyBuilderPlugin implements ModelPropertyBuilderPlugin {
                                     Object value = ReflectionUtils.getField(descField, item);
                                     return value + "：" + desc;
                                 }).collect(Collectors.toList());
-                ModelPropertyBuilder builder = context.getBuilder();
                 PropertySpecificationBuilder specificationBuilder = context.getSpecificationBuilder();
                 Field descField = ReflectionUtils.findField(specificationBuilder.getClass(), "description");
                 ReflectionUtils.makeAccessible(descField);

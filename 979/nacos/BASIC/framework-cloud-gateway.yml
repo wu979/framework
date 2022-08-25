@@ -17,8 +17,8 @@ framework:
   rabbitmq:
     host: 127.0.0.1
     port: 5672
-    username: mq
-    password: mq
+    username: dev
+    password: 123456
     virtual-host: /
   swagger:
     docs-path: /v3/api-docs
