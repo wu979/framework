@@ -65,6 +65,7 @@
         <commons.lang3.version>3.9</commons.lang3.version>
         <commons.io.version>2.4</commons.io.version>
         <commons.fileupload.version>1.2.2</commons.fileupload.version>
+        <commons.codec.version>1.9</commons.codec.version>
         <guava.version>29.0-jre</guava.version>
         <lombok.version>1.18.8</lombok.version>
         <slf4j.api.version>1.7.25</slf4j.api.version>
@@ -291,6 +292,11 @@
                 <groupId>commons-fileupload</groupId>
                 <artifactId>commons-fileupload</artifactId>
                 <version>${commons.fileupload.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons.codec.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
