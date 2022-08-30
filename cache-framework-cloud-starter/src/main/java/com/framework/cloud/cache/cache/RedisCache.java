@@ -41,7 +41,7 @@ public interface RedisCache extends MultistageCache {
      * 以布隆、分布式锁 获取缓存
      *
      * @param cacheLoader 缓存加载
-     * @see "https://github.com/mabaiwan"
+     * @see "https://github.com/agentart"
      */
     <T> T safeGet(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader);
 
@@ -49,7 +49,7 @@ public interface RedisCache extends MultistageCache {
      * 以布隆、分布式锁 获取缓存
      *
      * @param cacheLoader 缓存加载
-     * @see "https://github.com/mabaiwan"
+     * @see "https://github.com/agentart"
      */
     <T> T safeGet(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader, long timeout, TimeUnit timeUnit);
 
