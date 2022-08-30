@@ -18,6 +18,7 @@ public enum GlobalMessage {
     FAIL(0, "操作失败!"),
     AUTHENTICATION_ERROR(401,"身份认证失败，请重新登录!"),
     AUTHENTICATION_PERMISSION(403,"权限不足!"),
+    THIRD_PARTY_CONNECTION_FAILED(203, "第三方数据获取失败!"),
     ;
 
     Integer code;
