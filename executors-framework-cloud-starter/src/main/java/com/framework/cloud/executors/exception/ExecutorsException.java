@@ -3,8 +3,6 @@ package com.framework.cloud.executors.exception;
 import java.io.Serializable;
 
 /**
- *
- *
  * @author wusiwei
  */
 public class ExecutorsException extends RuntimeException implements Serializable {

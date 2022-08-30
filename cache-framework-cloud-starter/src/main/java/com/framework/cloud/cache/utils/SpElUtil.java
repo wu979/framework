@@ -18,7 +18,8 @@ public class SpElUtil {
 
     private static final DefaultParameterNameDiscoverer DISCOVERER;
 
-    private SpElUtil() {}
+    private SpElUtil() {
+    }
 
     static {
         PARSER = new SpelExpressionParser();

@@ -21,8 +21,6 @@ import java.util.Objects;
 import java.util.function.Function;
 
 /**
- *
- *
  * @author wusiwei
  */
 public class FastJsonUtil {
@@ -50,8 +48,11 @@ public class FastJsonUtil {
             = json -> LocalTime.parse(json, TIME_FORMATTER);
     private static final Function<String, Date> __dateDeserializer
             = json -> {
-        try { return LOCAL_DATE_FORMATTER.get().parse(json); }
-        catch (Exception e) { throw new RuntimeException(e); }
+        try {
+            return LOCAL_DATE_FORMATTER.get().parse(json);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     };
 
     private static final ObjectReaderProvider provider;
@@ -149,7 +150,8 @@ public class FastJsonUtil {
     }
 
     public static List<Object> toJavaList(Object node) {
-        return toJavaObject(node, new TypeReference<List<Object>>(){});
+        return toJavaObject(node, new TypeReference<List<Object>>() {
+        });
     }
 
     public static <V> Map<String, V> toJavaMap(Object node, Class<V> clazz) {
@@ -157,7 +159,8 @@ public class FastJsonUtil {
     }
 
     public static Map<String, Object> toJavaMap(Object node) {
-        return toJavaObject(node, new TypeReference<Map<String, Object>>(){});
+        return toJavaObject(node, new TypeReference<Map<String, Object>>() {
+        });
     }
 
     public static <T> T toJavaObject(String content, Class<T> clazz) {
@@ -177,7 +180,8 @@ public class FastJsonUtil {
     }
 
     public static List<Object> toJavaList(String content) {
-        return JSON.parseObject(content, new TypeReference<List<Object>>(){});
+        return JSON.parseObject(content, new TypeReference<List<Object>>() {
+        });
     }
 
     public static <V> Map<String, V> toJavaMap(String content, Class<V> clazz) {
@@ -185,7 +189,8 @@ public class FastJsonUtil {
     }
 
     public static Map<String, Object> toJavaMap(String content) {
-        return JSON.parseObject(content, new TypeReference<Map<String, Object>>(){});
+        return JSON.parseObject(content, new TypeReference<Map<String, Object>>() {
+        });
     }
 
 }

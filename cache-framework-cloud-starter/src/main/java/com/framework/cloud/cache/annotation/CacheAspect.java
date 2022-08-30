@@ -39,7 +39,8 @@ public class CacheAspect implements Ordered {
     private final CacheAutoProperties cacheAutoProperties;
 
     @Pointcut("@annotation(com.framework.cloud.cache.annotation.Cache)")
-    public void cache() {}
+    public void cache() {
+    }
 
     @Around(value = "@annotation(com.framework.cloud.cache.annotation.Cache)")
     public Object doAround(ProceedingJoinPoint point) {

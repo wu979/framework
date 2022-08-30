@@ -3,8 +3,6 @@ package com.framework.cloud.common.exception;
 import lombok.EqualsAndHashCode;
 
 /**
- *
- *
  * @author wusiwei
  */
 @EqualsAndHashCode(callSuper = true)

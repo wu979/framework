@@ -22,7 +22,7 @@ public interface BaseRepository<T> extends IService<T> {
     /**
      * 根据主键查询详情 未找到数据异常404
      *
-     * @param id 主键
+     * @param id       主键
      * @param errorMsg 异常消息
      * @return 泛型实体
      */

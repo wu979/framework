@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component;
 import java.lang.annotation.Annotation;
 
 /**
- *
- *
  * @author wusiwei
  */
 @Component
@@ -89,7 +87,6 @@ public class ApplicationContextHolder implements BeanFactoryPostProcessor {
 
     /**
      * Find annotations.
-     *
      */
     public static <A extends Annotation> A findAnnotationOnBean(String beanName, Class<A> annotationType) {
         return beanFactory.findAnnotationOnBean(beanName, annotationType);

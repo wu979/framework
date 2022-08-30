@@ -59,7 +59,7 @@ public class OverallFeignFallback<T> implements MethodInterceptor {
         } else {
             if (StringUtils.isBlank(msg)) {
                 Throwable cause = this.cause.getCause();
-                msg = StringUtils.isBlank(cause.getMessage()) ? GlobalMessage.ERROR.getMsg(): cause.getMessage();
+                msg = StringUtils.isBlank(cause.getMessage()) ? GlobalMessage.ERROR.getMsg() : cause.getMessage();
             }
         }
         return msg;

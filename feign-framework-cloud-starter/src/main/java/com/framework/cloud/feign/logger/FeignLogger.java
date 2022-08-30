@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 /**
- *
- *
  * @author wusiwei
  */
 public class FeignLogger extends feign.Logger {

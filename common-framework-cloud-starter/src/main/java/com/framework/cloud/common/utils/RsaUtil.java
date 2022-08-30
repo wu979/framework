@@ -26,7 +26,7 @@ public class RsaUtil {
     /**
      * 私钥加密
      *
-     * @param data 待加密数据
+     * @param data       待加密数据
      * @param privateKey 私钥
      * @return 加密数据
      */
@@ -58,7 +58,6 @@ public class RsaUtil {
             throw new RuntimeException("解密字符串[" + data + "]时遇到异常", e);
         }
     }
-
 
 
     /**
@@ -99,7 +98,7 @@ public class RsaUtil {
     /**
      * RSA私钥 签名
      *
-     * @param data 签名内容
+     * @param data           签名内容
      * @param privateKeyName 私钥
      * @return sign
      */
@@ -124,8 +123,8 @@ public class RsaUtil {
     /**
      * RSA公钥 验证签名
      *
-     * @param data 验证内容
-     * @param signature 签名
+     * @param data          验证内容
+     * @param signature     签名
      * @param publicKeyName 公钥
      * @return bool
      */
@@ -148,7 +147,7 @@ public class RsaUtil {
     /**
      * 加密
      *
-     * @param clearText     加密字符串
+     * @param clearText 加密字符串
      * @param publicKey 公钥
      * @return 密文
      */
@@ -170,7 +169,7 @@ public class RsaUtil {
      * 解密
      *
      * @param encryptedBase64 加密后字符串
-     * @param privateKey  私钥
+     * @param privateKey      私钥
      * @return 明文
      */
     public static String decrypt(String encryptedBase64, String privateKey) {

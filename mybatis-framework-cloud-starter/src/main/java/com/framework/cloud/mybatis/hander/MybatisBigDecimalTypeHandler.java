@@ -23,7 +23,7 @@ public class MybatisBigDecimalTypeHandler extends BaseTypeHandler<BigDecimal> {
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, BigDecimal parameter, JdbcType jdbcType) throws SQLException {
-        ps.setLong(i , AmountUtil.decimalToLong(parameter));
+        ps.setLong(i, AmountUtil.decimalToLong(parameter));
     }
 
     @Override

@@ -19,6 +19,7 @@ public interface Elastic {
 
     /**
      * 索引是否存在
+     *
      * @param indexName 索引名
      * @return bool
      */
@@ -26,51 +27,58 @@ public interface Elastic {
 
     /**
      * 创建索引
+     *
      * @param indexName 索引名
-     * @param source 数据源
+     * @param source    数据源
      * @return bool
      */
     <T> ElasticResponse<Boolean> createIndex(@NonNull String indexName, @NonNull Class<T> source);
 
     /**
      * 删除索引
+     *
      * @param indexName 索引名
      */
     <T> ElasticResponse<Boolean> deleteIndex(@NonNull String indexName);
 
     /**
      * 根据ID删除
+     *
      * @param indexName 索引名
-     * @param id 主键
+     * @param id        主键
      */
     ElasticResponse<Boolean> deleteById(@NonNull String indexName, @NonNull String id);
 
     /**
      * 根据ID删除
+     *
      * @param indexName 索引名
-     * @param ids 主键
+     * @param ids       主键
      */
     ElasticResponse<Boolean> deleteById(@NonNull String indexName, @NonNull List<String> ids);
 
     /**
      * 删除文档
+     *
      * @param indexName 索引名
-     * @param query 删除条件
+     * @param query     删除条件
      * @return 失败id
      */
     <T> ElasticResponse<List<String>> deleteDocument(@NonNull String indexName, @NonNull QueryBuilder query, @NonNull Class<T> clz);
 
     /**
      * 新增
+     *
      * @param indexName 索引名
-     * @param source 数据源
+     * @param source    数据源
      * @return bool
      */
     <T> ElasticResponse<Boolean> save(@NonNull String indexName, @NonNull T source);
 
     /**
      * 批量新增
-     * @param indexName 索引名
+     *
+     * @param indexName  索引名
      * @param sourceList 数据源
      * @return bool
      */
@@ -78,15 +86,17 @@ public interface Elastic {
 
     /**
      * 根据ID 更新
+     *
      * @param indexName 索引名
-     * @param source 数据源
+     * @param source    数据源
      * @return bool
      */
     <T> ElasticResponse<Boolean> update(@NonNull String indexName, @NonNull T source);
 
     /**
      * 根据ID 批量更新
-     * @param indexName 索引名
+     *
+     * @param indexName  索引名
      * @param sourceList 数据源
      * @return bool
      */
@@ -94,7 +104,8 @@ public interface Elastic {
 
     /**
      * 根据ID 更新
-     * @param indexName 索引名
+     *
+     * @param indexName   索引名
      * @param updateQuery 更新条件
      * @return bool
      */
@@ -102,9 +113,10 @@ public interface Elastic {
 
     /**
      * 分页
-     * @param indexName 索引名
-     * @param request 请求参数 extends {@link BasePage }
-     * @param source 文档
+     *
+     * @param indexName    索引名
+     * @param request      请求参数 extends {@link BasePage }
+     * @param source       文档
      * @param queryBuilder 查询条件
      * @param sortBuilders 排序
      * @return 分页
@@ -113,38 +125,42 @@ public interface Elastic {
 
     /**
      * 聚合统计
-     * @param indexName 索引名
+     *
+     * @param indexName    索引名
      * @param queryBuilder 聚合条件 {@link org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder }
-     *
-     * Aggregation query is recommended
-     *
-     * NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
-     * BoolQueryBuilder bool = new BoolQueryBuilder();
-     * nativeSearchQueryBuilder.withQuery(bool);
-     * nativeSearchQueryBuilder.addAggregation(AggregationBuilders.sum(resultSet).field(sumField).valueType());
-     * nativeSearchQueryBuilder.addAggregation................
+     *                     <p>
+     *                     Aggregation query is recommended
+     *                     <p>
+     *                     NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
+     *                     BoolQueryBuilder bool = new BoolQueryBuilder();
+     *                     nativeSearchQueryBuilder.withQuery(bool);
+     *                     nativeSearchQueryBuilder.addAggregation(AggregationBuilders.sum(resultSet).field(sumField).valueType());
+     *                     nativeSearchQueryBuilder.addAggregation................
      */
     ElasticResponse<Aggregations> aggregation(@NonNull String indexName, QueryBuilder queryBuilder);
 
     /**
      * 根据ID查询
+     *
      * @param indexName 索引名
-     * @param id 主键
-     * @param source 文档类型
+     * @param id        主键
+     * @param source    文档类型
      */
     <T> ElasticResponse<T> getById(@NonNull String indexName, @NonNull String id, @NonNull Class<T> source);
 
     /**
      * 查询列表
-     * @param indexName 索引名
+     *
+     * @param indexName    索引名
      * @param queryBuilder 查询条件
-     * @param source 文档类型
+     * @param source       文档类型
      */
     <T> ElasticResponse<List<T>> queryList(@NonNull String indexName, QueryBuilder queryBuilder, @NonNull Class<T> source);
 
     /**
      * 查询文档总数
-     * @param indexName 索引名
+     *
+     * @param indexName    索引名
      * @param queryBuilder 查询条件
      */
     ElasticResponse<Long> getTotalCount(@NonNull String indexName, QueryBuilder queryBuilder);

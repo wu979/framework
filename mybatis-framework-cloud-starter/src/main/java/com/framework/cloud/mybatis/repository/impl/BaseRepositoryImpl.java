@@ -16,7 +16,7 @@ import java.util.Objects;
 public class BaseRepositoryImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> {
 
     public T getByIdNotNull(Serializable id) {
-        return getByIdNotNull(id ,MybatisMessage.NOT_FOUND.getMsg());
+        return getByIdNotNull(id, MybatisMessage.NOT_FOUND.getMsg());
     }
 
     public T getByIdNotNull(Serializable id, String errorMsg) {

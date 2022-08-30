@@ -70,7 +70,7 @@ public class ElasticTemplate implements Elastic {
 
     @Override
     public ElasticResponse<Boolean> isExists(String indexName) {
-        ElasticResponse<Boolean> elasticResponse ;
+        ElasticResponse<Boolean> elasticResponse;
         try {
             boolean exists = elasticsearchRestTemplate.indexOps(IndexCoordinates.of(indexName)).exists();
             elasticResponse = ElasticResponse.success(exists);
@@ -82,13 +82,13 @@ public class ElasticTemplate implements Elastic {
 
     @Override
     public <T> ElasticResponse<Boolean> createIndex(String indexName, Class<T> source) {
-        ElasticResponse<Boolean> elasticResponse ;
+        ElasticResponse<Boolean> elasticResponse;
         try {
             ElasticDeclare elasticDeclare = ElasticUtil.elasticDeclare(source);
             short shards = elasticDeclare.shards();
             short replicas = elasticDeclare.replicas();
             String settingPath = elasticDeclare.settingPath();
-            Settings settings ;
+            Settings settings;
             if (StringUtil.isNotBlank(settingPath)) {
                 InputStream in = ElasticTemplate.class.getClassLoader().getResourceAsStream(settingPath);
                 settings = Settings.builder().loadFromStream(settingPath, in, true).build();
@@ -116,7 +116,7 @@ public class ElasticTemplate implements Elastic {
 
     @Override
     public <T> ElasticResponse<Boolean> deleteIndex(String indexName) {
-        ElasticResponse<Boolean> elasticResponse ;
+        ElasticResponse<Boolean> elasticResponse;
         try {
             boolean delete = elasticsearchRestTemplate.indexOps(IndexCoordinates.of(indexName)).delete();
             elasticResponse = ElasticResponse.success(delete);
@@ -128,7 +128,7 @@ public class ElasticTemplate implements Elastic {
 
     @Override
     public ElasticResponse<Boolean> deleteById(String indexName, String id) {
-        ElasticResponse<Boolean> elasticResponse ;
+        ElasticResponse<Boolean> elasticResponse;
         try {
             DeleteRequest request = new DeleteRequest(indexName).id(id);
             DeleteResponse response = restHighLevelClient.delete(request, RequestOptions.DEFAULT);
@@ -141,7 +141,7 @@ public class ElasticTemplate implements Elastic {
 
     @Override
     public ElasticResponse<Boolean> deleteById(String indexName, List<String> ids) {
-        ElasticResponse<Boolean> elasticResponse ;
+        ElasticResponse<Boolean> elasticResponse;
         try {
             BulkRequest request = new BulkRequest();
             for (String id : ids) {
@@ -161,7 +161,7 @@ public class ElasticTemplate implements Elastic {
 
     @Override
     public <T> ElasticResponse<List<String>> deleteDocument(String indexName, QueryBuilder query, Class<T> clz) {
-        ElasticResponse<List<String>> elasticResponse ;
+        ElasticResponse<List<String>> elasticResponse;
         try {
             DeleteByQueryRequest request = new DeleteByQueryRequest(indexName);
             request.setQuery(query);
@@ -180,7 +180,7 @@ public class ElasticTemplate implements Elastic {
 
     @Override
     public <T> ElasticResponse<Boolean> save(String indexName, T source) {
-        ElasticResponse<Boolean> elasticResponse ;
+        ElasticResponse<Boolean> elasticResponse;
         try {
             if (ObjectUtil.isNull(source)) {
                 return ElasticResponse.error(ElasticMessage.SOURCE_NULL.getMsg());
@@ -205,7 +205,7 @@ public class ElasticTemplate implements Elastic {
 
     @Override
     public <T> ElasticResponse<Boolean> save(String indexName, List<T> sourceList) {
-        ElasticResponse<Boolean> elasticResponse ;
+        ElasticResponse<Boolean> elasticResponse;
         try {
             if (CollectionUtil.isEmpty(sourceList)) {
                 return ElasticResponse.error(ElasticMessage.SOURCE_NULL.getMsg());
@@ -234,7 +234,7 @@ public class ElasticTemplate implements Elastic {
 
     @Override
     public <T> ElasticResponse<Boolean> update(String indexName, T source) {
-        ElasticResponse<Boolean> elasticResponse ;
+        ElasticResponse<Boolean> elasticResponse;
         try {
             if (ObjectUtil.isNull(source)) {
                 return ElasticResponse.error(ElasticMessage.SOURCE_NULL.getMsg());
@@ -258,7 +258,7 @@ public class ElasticTemplate implements Elastic {
 
     @Override
     public <T> ElasticResponse<Boolean> update(String indexName, List<T> sourceList) {
-        ElasticResponse<Boolean> elasticResponse ;
+        ElasticResponse<Boolean> elasticResponse;
         try {
             if (CollectionUtil.isEmpty(sourceList)) {
                 return ElasticResponse.error(ElasticMessage.SOURCE_NULL.getMsg());
@@ -286,7 +286,7 @@ public class ElasticTemplate implements Elastic {
 
     @Override
     public <T> ElasticResponse<Boolean> update(String indexName, UpdateQuery updateQuery) {
-        ElasticResponse<Boolean> elasticResponse ;
+        ElasticResponse<Boolean> elasticResponse;
         try {
             if (ObjectUtil.isNull(updateQuery)) {
                 return ElasticResponse.error(ElasticMessage.SOURCE_NULL.getMsg());
@@ -327,7 +327,7 @@ public class ElasticTemplate implements Elastic {
 
     @Override
     public ElasticResponse<Aggregations> aggregation(@NonNull String indexName, QueryBuilder queryBuilder) {
-        ElasticResponse<Aggregations> elasticResponse ;
+        ElasticResponse<Aggregations> elasticResponse;
         try {
             SearchRequest searchRequest = new SearchRequest(indexName);
             SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
@@ -350,7 +350,7 @@ public class ElasticTemplate implements Elastic {
 
     @Override
     public <T> ElasticResponse<T> getById(String indexName, String id, Class<T> source) {
-        ElasticResponse<T> elasticResponse ;
+        ElasticResponse<T> elasticResponse;
         try {
             GetRequest request = new GetRequest(indexName).id(id);
             GetResponse response = restHighLevelClient.get(request, RequestOptions.DEFAULT);
@@ -387,7 +387,7 @@ public class ElasticTemplate implements Elastic {
 
     @Override
     public ElasticResponse<Long> getTotalCount(String indexName, QueryBuilder queryBuilder) {
-        ElasticResponse<Long> elasticResponse ;
+        ElasticResponse<Long> elasticResponse;
         try {
             SearchSourceBuilder builder = new SearchSourceBuilder();
             builder.query(queryBuilder).size(0);

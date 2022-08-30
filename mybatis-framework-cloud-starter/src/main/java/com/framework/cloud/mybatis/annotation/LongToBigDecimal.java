@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 
 /**
  * Long转BigDecimal 字段注解 （无用）
- *
+ * <p>
  * TypeHandler 要么扫描要么注入 都是全局配置，使用TableField指定转换器无效，因为一旦注入，会默认使用 {@link MybatisBigDecimalTypeHandler }
  *
  * @author wusiwei

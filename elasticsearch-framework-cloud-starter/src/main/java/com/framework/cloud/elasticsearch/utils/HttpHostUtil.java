@@ -14,7 +14,8 @@ public class HttpHostUtil {
 
     public static final String SPLIT = ":";
 
-    private HttpHostUtil() {}
+    private HttpHostUtil() {
+    }
 
     public static HttpHost[] httpHost(ElasticsearchProperties elasticsearchProperties) {
         List<HttpHost> httpHostList = new ArrayList<>();
