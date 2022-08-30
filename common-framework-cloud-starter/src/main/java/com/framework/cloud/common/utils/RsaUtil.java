@@ -99,18 +99,18 @@ public class RsaUtil {
     /**
      * RSA私钥 签名
      *
-     * @param requestData    签名内容
+     * @param data 签名内容
      * @param privateKeyName 私钥
      * @return sign
      */
-    public static String sign(String requestData, String privateKeyName) {
+    public static String sign(String data, String privateKeyName) {
         String signature = null;
         byte[] signed = null;
         try {
             PrivateKey privateKey = getPrivateKey(privateKeyName);
             Signature sign = Signature.getInstance(SIGNATURE_ALGORITHM);
             sign.initSign(privateKey);
-            sign.update(requestData.getBytes());
+            sign.update(data.getBytes());
             signed = sign.sign();
             signature = Base64.encode(signed);
 
@@ -124,18 +124,18 @@ public class RsaUtil {
     /**
      * RSA公钥 验证签名
      *
-     * @param requestData   签名内容
-     * @param signature     base64签名
+     * @param data 验证内容
+     * @param signature 签名
      * @param publicKeyName 公钥
      * @return bool
      */
-    public static boolean verifySign(String requestData, String signature, String publicKeyName) {
+    public static boolean verifySign(String data, String signature, String publicKeyName) {
         boolean verifySignSuccess = false;
         try {
             PublicKey publicKey = getPublicKey(publicKeyName);
             Signature verifySign = Signature.getInstance(SIGNATURE_ALGORITHM);
             verifySign.initVerify(publicKey);
-            verifySign.update(requestData.getBytes());
+            verifySign.update(data.getBytes());
             verifySignSuccess = verifySign.verify(Base64.decode(signature));
         } catch (Exception e) {
             e.printStackTrace();
