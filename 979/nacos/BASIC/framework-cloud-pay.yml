@@ -9,6 +9,14 @@ framework:
     prefix: pay
     host: 127.0.0.1
     password: 123456
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: dev
+    password: 123456
+    virtual-host: /
+    delay:
+      pay-order-output-channel: 1800000
 spring:
   shardingsphere:
     props:
@@ -65,3 +73,36 @@ spring:
             type: INLINE
             props:
               algorithm-expression: t_pay_notify_$->{pay_order_id % 10}
+  cloud:
+    stream:
+      bindings:
+        pay-order-ouput-channel:
+          destination: pay.order.delay.exchange
+          content-type: application/json
+          group: pay-order-delay
+          consumer:
+            maxAttempts: 1
+            concurrency: 5
+          producer:
+            required-groups: pay-order-delay
+        pay-order-input-channel:
+          destination: pay.order.delay.exchange
+          content-type: application/json
+          group: pay-order-delay
+          consumer:
+            maxAttempts: 1
+      binders:
+        rabbit:
+          type: rabbit
+      rabbit:
+        bindings:
+          pay-order-ouput-channel:
+            producer:
+              delayed-exchange: true
+              ttl: 120000
+              auto-bind-dlq: true
+          pay-order-input-channel:
+            consumer:
+              delayed-exchange: true
+              ttl: 120000
+              auto-bind-dlq: true
