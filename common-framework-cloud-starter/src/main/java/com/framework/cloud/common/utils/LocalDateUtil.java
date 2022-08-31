@@ -21,14 +21,28 @@ public class LocalDateUtil {
      * 获取秒级
      */
     public static long getTimeSeconds() {
-        return LocalDateTime.now().toEpochSecond(ZoneOffset.of(ZONE));
+        return getTimeSeconds(LocalDateTime.now());
+    }
+
+    /**
+     * 获取秒级
+     */
+    public static long getTimeSeconds(LocalDateTime date) {
+        return date.toEpochSecond(ZoneOffset.of(ZONE));
     }
 
     /**
      * 获取毫秒级
      */
     public static long getTimeMillis() {
-        return LocalDateTime.now().toInstant(ZoneOffset.of(ZONE)).toEpochMilli();
+        return getTimeMillis(LocalDateTime.now());
+    }
+
+    /**
+     * 获取毫秒级
+     */
+    public static long getTimeMillis(LocalDateTime date) {
+        return date.toInstant(ZoneOffset.of(ZONE)).toEpochMilli();
     }
 
     /**
@@ -74,6 +88,15 @@ public class LocalDateUtil {
     }
 
     /**
+     * LocalDateTime转换为Date
+     */
+    public static Date localDateTime2Date(LocalDateTime localDateTime) {
+        ZoneId zoneId = ZoneId.systemDefault();
+        ZonedDateTime zdt = localDateTime.atZone(zoneId);
+        return Date.from(zdt.toInstant());
+    }
+
+    /**
      * Date转LocalDate
      *
      * @param date 日期
@@ -91,15 +114,6 @@ public class LocalDateUtil {
         Instant instant = date.toInstant();
         ZoneId zoneId = ZoneId.systemDefault();
         return instant.atZone(zoneId).toLocalTime();
-    }
-
-    /**
-     * LocalDateTime转换为Date
-     */
-    public static Date localDateTime2Date(LocalDateTime localDateTime) {
-        ZoneId zoneId = ZoneId.systemDefault();
-        ZonedDateTime zdt = localDateTime.atZone(zoneId);
-        return Date.from(zdt.toInstant());
     }
 
     /**
