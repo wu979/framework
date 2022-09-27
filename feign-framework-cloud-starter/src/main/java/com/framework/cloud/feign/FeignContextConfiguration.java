@@ -1,6 +1,7 @@
 package com.framework.cloud.feign;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.framework.cloud.feign.filter.SeataFilter;
 import com.framework.cloud.feign.filter.TenantFilter;
 import com.framework.cloud.feign.filter.UserFilter;
 import lombok.AllArgsConstructor;
@@ -34,6 +35,14 @@ public class FeignContextConfiguration {
     public FilterRegistrationBean userFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new UserFilter(objectMapper));
+        registration.addUrlPatterns("/*");
+        return registration;
+    }
+
+    @Bean("seataFilter")
+    public FilterRegistrationBean seataFilter() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(new SeataFilter());
         registration.addUrlPatterns("/*");
         return registration;
     }
