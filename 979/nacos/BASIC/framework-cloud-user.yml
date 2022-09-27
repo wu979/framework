@@ -38,10 +38,6 @@ spring:
     #分片规则 https://blog.csdn.net/qq_34279995/article/details/122421989
     rules:
       sharding:
-        #默认key生成策略
-        default-key-generate-strategy:
-          column: id
-          key-generator-name: snowflake
         tables:
           t_user:
             actualDataNodes: user.t_user_$->{0..1}

@@ -21,8 +21,6 @@ spring:
   shardingsphere:
     props:
       sql-show: true
-    mode:
-      type: Memory
     datasource:
       names: pay
       pay:
@@ -33,10 +31,6 @@ spring:
         password: 123456
     rules:
       sharding:
-        #默认key生成策略
-        default-key-generate-strategy:
-          column: id
-          key-generator-name: snowflake
         tables:
           t_pay_order:
             #定义表表名区间

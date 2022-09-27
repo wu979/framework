@@ -26,8 +26,6 @@ spring:
   shardingsphere:
     props:
       sql-show: true
-    mode:
-      type: Memory
     datasource:
       names: platform
       platform:
@@ -41,9 +39,6 @@ spring:
         #不分库分表 none
         default-table-strategy:
           none: none
-        default-key-generate-strategy:
-          column: id
-          key-generator-name: snowflake
       encrypt:
         query-with-cipher-column: true
         encryptors:
