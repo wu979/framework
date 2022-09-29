@@ -18,6 +18,14 @@ import java.util.Collection;
 @SuppressWarnings({"rawtypes"})
 public class AssertUtil {
 
+    public void exception(String msg) {
+        throw new BizException(GlobalMessage.FAIL.getCode(), msg);
+    }
+
+    public void exception(Integer code, String msg) {
+        throw new BizException(code, msg);
+    }
+
     public void notBlank(String text, Integer code, String msg) throws BizException {
         if (StrUtil.isBlank(text)) {
             throw new BizException(code, msg);
@@ -25,9 +33,7 @@ public class AssertUtil {
     }
 
     public void notBlank(String text, String msg) throws BizException {
-        if (StrUtil.isBlank(text)) {
-            throw new BizException(GlobalMessage.FAIL.getCode(), msg);
-        }
+        notBlank(text, GlobalMessage.FAIL.getCode(), msg);
     }
 
     public void notBlank(String text, Result result) throws BizException {
@@ -41,9 +47,7 @@ public class AssertUtil {
     }
 
     public void isBlank(String text, String msg) throws BizException {
-        if (StrUtil.isBlank(text)) {
-            throw new BizException(GlobalMessage.FAIL.getCode(), msg);
-        }
+        isBlank(text, GlobalMessage.FAIL.getCode(), msg);
     }
 
     public void isBlank(String text, Result result) throws BizException {
@@ -57,9 +61,7 @@ public class AssertUtil {
     }
 
     public void isNull(Object object, String msg) throws BizException {
-        if (object == null) {
-            throw new BizException(GlobalMessage.FAIL.getCode(), msg);
-        }
+        isNull(object, GlobalMessage.FAIL.getCode(), msg);
     }
 
     public void isNull(Object object, Result result) throws BizException {
@@ -73,9 +75,7 @@ public class AssertUtil {
     }
 
     public void nonNull(Object object, String msg) throws BizException {
-        if (object != null) {
-            throw new BizException(GlobalMessage.FAIL.getCode(), msg);
-        }
+        nonNull(object, GlobalMessage.FAIL.getCode(), msg);
     }
 
     public void nonNull(Object object, Result result) throws BizException {
@@ -89,9 +89,7 @@ public class AssertUtil {
     }
 
     public void notEmpty(Collection collection, String msg) throws BizException {
-        if (CollUtil.isEmpty(collection)) {
-            throw new BizException(GlobalMessage.FAIL.getCode(), msg);
-        }
+        notEmpty(collection, GlobalMessage.FAIL.getCode(), msg);
     }
 
     public void notEmpty(Collection collection, Result result) throws BizException {
@@ -105,9 +103,7 @@ public class AssertUtil {
     }
 
     public void isTrue(boolean expression, String msg) throws BizException {
-        if (!expression) {
-            throw new BizException(GlobalMessage.FAIL.getCode(), msg);
-        }
+        isTrue(expression, GlobalMessage.FAIL.getCode(), msg);
     }
 
     public void isTrue(boolean expression, Result result) throws BizException {
@@ -121,9 +117,7 @@ public class AssertUtil {
     }
 
     public void isFalse(boolean expression, String msg) throws BizException {
-        if (expression) {
-            throw new BizException(GlobalMessage.FAIL.getCode(), msg);
-        }
+        isFalse(expression, GlobalMessage.FAIL.getCode(), msg);
     }
 
     public void isFalse(boolean expression, Result result) throws BizException {
