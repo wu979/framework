@@ -33,7 +33,7 @@ public class ContextDecorator implements TaskDecorator {
         final ServletRequestEvent finalRequestEvent = requestEvent;
         return () -> {
             if (finalRequestEvent != null) {
-                servletRequestListener.requestDestroyed(finalRequestEvent);
+                servletRequestListener.requestInitialized(finalRequestEvent);
             }
             try {
                 runnable.run();
@@ -41,10 +41,10 @@ public class ContextDecorator implements TaskDecorator {
                     ((Future) runnable).get();
                 }
             } catch (InterruptedException | ExecutionException e) {
-                log.error("future task errpr: {}", e);
+                log.error("future task error: {}", e.getMessage());
                 throw new IllegalThreadStateException(e.getMessage());
             } catch (Exception e) {
-                log.error("errpr: {}", e);
+                log.error("error: {}", e.getMessage());
                 throw e;
             } finally {
                 servletRequestListener.requestDestroyed(finalRequestEvent);
