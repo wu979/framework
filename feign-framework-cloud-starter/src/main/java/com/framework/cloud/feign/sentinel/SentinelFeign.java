@@ -2,12 +2,11 @@ package com.framework.cloud.feign.sentinel;
 
 import com.framework.cloud.feign.constant.FeignConstant;
 import com.framework.cloud.feign.fallback.OverallFallbackFactory;
-import feign.Contract;
-import feign.Feign;
-import feign.InvocationHandlerFactory;
-import feign.Target;
+import feign.*;
+import io.seata.core.context.RootContext;
 import lombok.SneakyThrows;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.cloud.openfeign.FeignClientFactoryBean;
@@ -15,27 +14,29 @@ import org.springframework.cloud.openfeign.FeignContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 重写Sentinel降级处理器
  *
  * @author wusiwei
  */
+@Component
 public class SentinelFeign {
 
     public static SentinelFeign.Builder builder() {
         return new SentinelFeign.Builder();
     }
 
-    public static final class Builder extends Feign.Builder
-            implements ApplicationContextAware {
+    public static final class Builder extends Feign.Builder implements ApplicationContextAware {
 
         private Contract contract = new Contract.Default();
         private ApplicationContext applicationContext;
@@ -124,5 +125,49 @@ public class SentinelFeign {
             return null;
         }
 
+    }
+
+
+    public static final class FeignClient implements Client {
+        private final Client delegate;
+        private final BeanFactory beanFactory;
+
+        public FeignClient(BeanFactory beanFactory) {
+            this.beanFactory = beanFactory;
+            this.delegate = new Client.Default(null, null);
+        }
+
+        public FeignClient(Client delegate, BeanFactory beanFactory) {
+            this.delegate = delegate;
+            this.beanFactory = beanFactory;
+        }
+
+        private static final int MAP_SIZE = 16;
+
+        @Override
+        public Response execute(Request request, Request.Options options) throws IOException {
+
+            Request modifiedRequest = getModifyRequest(request);
+            return this.delegate.execute(modifiedRequest, options);
+        }
+
+        private Request getModifyRequest(Request request) {
+
+            String xid = RootContext.getXID();
+
+            if (StringUtils.isEmpty(xid)) {
+                return request;
+            }
+
+            Map<String, Collection<String>> headers = new HashMap<>(MAP_SIZE);
+            headers.putAll(request.headers());
+
+            List<String> seataXid = new ArrayList<>();
+            seataXid.add(xid);
+            headers.put(RootContext.KEY_XID, seataXid);
+
+            return Request.create(request.method(), request.url(), headers, request.body(),
+                    request.charset());
+        }
     }
 }

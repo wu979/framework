@@ -8,6 +8,7 @@ import feign.Logger;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -46,8 +47,8 @@ public class FeignConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnProperty(name = "feign.enabled", havingValue = "true")
     @Primary
-    public Feign.Builder feignSentinelBuilder() {
-        return SentinelFeign.builder();
+    public Feign.Builder feignSentinelBuilder(BeanFactory beanFactory) {
+        return SentinelFeign.builder().client(new SentinelFeign.FeignClient(beanFactory));
     }
 
     @Bean
@@ -61,5 +62,7 @@ public class FeignConfiguration {
     public Encoder feignEncoder(ObjectFactory<HttpMessageConverters> httpMessageConverters) {
         return new SpringEncoder(httpMessageConverters);
     }
+
+
 
 }

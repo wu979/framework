@@ -1,5 +1,6 @@
-package com.framework.cloud.core.event;
+package com.framework.cloud.event.publisher;
 
+import com.framework.cloud.event.application.ApplicationInitializingEvent;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;

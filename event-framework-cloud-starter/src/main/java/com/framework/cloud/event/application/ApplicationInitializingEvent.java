@@ -1,4 +1,4 @@
-package com.framework.cloud.core.event;
+package com.framework.cloud.event.application;
 
 import org.springframework.context.ApplicationEvent;
 
