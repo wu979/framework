@@ -31,12 +31,14 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 @AutoConfigureBefore({SimpleDiscoveryClientAutoConfiguration.class, CommonsClientAutoConfiguration.class})
 public class NacosClientConfiguration {
 
+    private final NacosServiceManager nacosServiceManager;
+    private final NacosDiscoveryProperties properties;
     private final NacosWatchProperties nacosWatchProperties;
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "spring.cloud.nacos.discovery.watch.enabled", matchIfMissing = true)
-    public NacosWatch nacosWatch(NacosServiceManager nacosServiceManager, NacosDiscoveryProperties properties, ObjectProvider<ThreadPoolTaskScheduler> taskScheduler) {
+    public NacosWatch nacosWatch(ObjectProvider<ThreadPoolTaskScheduler> taskScheduler) {
         properties.getMetadata().put(NacosConstant.TIME, DateUtil.getNow());
         properties.getMetadata().put(NacosConstant.VERSION, nacosWatchProperties.getVersion());
         properties.getMetadata().put(NacosConstant.WEIGHT, nacosWatchProperties.getWeight());

@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author wusiwei
  */
 @Data
-@ConfigurationProperties(prefix = "rest.client")
+@ConfigurationProperties(prefix = "framework.rest.client")
 public class RestClientProperties {
 
     /**
