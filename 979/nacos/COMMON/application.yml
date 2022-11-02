@@ -22,9 +22,6 @@ management:
       elasticsearch:
         enabled: false
 
-
+#日志
 logging:
-  level:
-    org:
-      quartz:
-        core: warn
+  config: classpath:logback-spring.xml
