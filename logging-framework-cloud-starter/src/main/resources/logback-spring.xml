@@ -29,12 +29,32 @@
             <charset>UTF-8</charset>
         </encoder>
     </appender>
+    <!-- Skywalking grpc -->
+    <appender name="GRPC_LOG" class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.log.GRPCLogClientAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%tid] [%thread] %-5level %logger{36} -%msg%n</Pattern>
+            </layout>
+        </encoder>
+    </appender>
 
-    <logger name="com.framework.cloud" level="INFO" additivity="false">
+    <logger name="com.framework.cloud" level="DEBUG" additivity="false">
         <appender-ref ref="CONSOLE_LOG"/>
+        <appender-ref ref="GRPC_LOG"/>
+    </logger>
+
+    <logger name="org.quartz" level="warn" additivity="false">
+        <appender-ref ref="CONSOLE_LOG"/>
+        <appender-ref ref="GRPC_LOG"/>
+    </logger>
+
+    <logger name="com.atomikos.icatch.provider.imp.AssemblerImp" level="ERROR" additivity="false">
+        <appender-ref ref="CONSOLE_LOG"/>
+        <appender-ref ref="GRPC_LOG"/>
     </logger>
 
     <root level="INFO">
         <appender-ref ref="CONSOLE_LOG"/>
+        <appender-ref ref="GRPC_LOG"/>
     </root>
 </configuration>

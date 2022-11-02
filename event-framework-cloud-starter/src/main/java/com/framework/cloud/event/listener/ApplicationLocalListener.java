@@ -15,6 +15,6 @@ public class ApplicationLocalListener implements ApplicationListener<Application
 
     @Override
     public void onApplicationEvent(ApplicationLocalEvent event) {
-        log.info("收到本地事件消息：{}", FastJsonUtil.toJSONString(event));
+        log.info("监听本地事件消息：{}", FastJsonUtil.toJSONString(event));
     }
 }
