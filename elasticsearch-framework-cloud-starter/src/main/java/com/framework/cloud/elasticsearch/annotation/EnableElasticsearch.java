@@ -1,5 +1,6 @@
 package com.framework.cloud.elasticsearch.annotation;
 
+import com.framework.cloud.elasticsearch.ElasticsearchConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -14,6 +15,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Import(EnableElasticsearch.class)
+@Import(ElasticsearchConfiguration.class)
 public @interface EnableElasticsearch {
 }
