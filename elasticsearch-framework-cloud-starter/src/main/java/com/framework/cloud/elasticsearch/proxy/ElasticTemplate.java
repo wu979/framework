@@ -160,11 +160,10 @@ public class ElasticTemplate implements Elastic {
     }
 
     @Override
-    public <T> ElasticResponse<List<String>> deleteDocument(String indexName, QueryBuilder query, Class<T> clz) {
+    public <T> ElasticResponse<List<String>> deleteQuery(String indexName, QueryBuilder query) {
         ElasticResponse<List<String>> elasticResponse;
         try {
-            DeleteByQueryRequest request = new DeleteByQueryRequest(indexName);
-            request.setQuery(query);
+            DeleteByQueryRequest request = new DeleteByQueryRequest(indexName).setQuery(query);
             BulkByScrollResponse response = restHighLevelClient.deleteByQuery(request, RequestOptions.DEFAULT);
             List<BulkItemResponse.Failure> bulkFailures = response.getBulkFailures();
             List<String> ids = null;
@@ -296,6 +295,58 @@ public class ElasticTemplate implements Elastic {
                 elasticResponse = ElasticResponse.success(org.springframework.data.elasticsearch.core.query.UpdateResponse.Result.UPDATED.equals(response.getResult()));
             } else {
                 elasticResponse = ElasticResponse.error(ElasticMessage.UPDATE_SOURCE_ERROR.getMsg());
+            }
+        } catch (ElasticException e) {
+            elasticResponse = ElasticResponse.error(e.getMsg());
+        } catch (Exception e) {
+            elasticResponse = ElasticResponse.error(e.getMessage());
+        }
+        return elasticResponse;
+    }
+
+    @Override
+    public <T> ElasticResponse<Boolean> upsert(@NonNull String indexName, @NonNull T source) {
+        ElasticResponse<Boolean> elasticResponse;
+        try {
+            if (ObjectUtil.isNull(source)) {
+                return ElasticResponse.error(ElasticMessage.SOURCE_NULL.getMsg());
+            }
+            String id = ElasticUtil.getDocumentId(source);
+            UpdateRequest updateRequest = new UpdateRequest(indexName, id);
+            updateRequest.upsert(XContentType.JSON, FastJsonUtil.toJSONString(source));
+            UpdateResponse response = restHighLevelClient.update(updateRequest, RequestOptions.DEFAULT);
+            if (null != response && null != response.getShardInfo()) {
+                elasticResponse = ElasticResponse.success(response.getShardInfo().getSuccessful() > 0);
+            } else {
+                elasticResponse = ElasticResponse.error(ElasticMessage.UPDATE_SOURCE_ERROR.getMsg());
+            }
+        } catch (ElasticException e) {
+            elasticResponse = ElasticResponse.error(e.getMsg());
+        } catch (Exception e) {
+            elasticResponse = ElasticResponse.error(e.getMessage());
+        }
+        return elasticResponse;
+    }
+
+    @Override
+    public <T> ElasticResponse<Boolean> upsert(@NonNull String indexName, @NonNull List<T> sourceList) {
+        ElasticResponse<Boolean> elasticResponse;
+        try {
+            if (CollectionUtil.isEmpty(sourceList)) {
+                return ElasticResponse.error(ElasticMessage.SOURCE_NULL.getMsg());
+            }
+            BulkRequest request = new BulkRequest();
+            for (T source : sourceList) {
+                String id = ElasticUtil.getDocumentId(source);
+                UpdateRequest updateRequest = new UpdateRequest(indexName, id);
+                updateRequest.upsert(XContentType.JSON, FastJsonUtil.toJSONString(source));
+                request.add(updateRequest);
+            }
+            BulkResponse response = restHighLevelClient.bulk(request, RequestOptions.DEFAULT);
+            if (response.hasFailures()) {
+                elasticResponse = ElasticResponse.error(response.buildFailureMessage());
+            } else {
+                elasticResponse = ElasticResponse.success(RestStatus.OK.equals(response.status()));
             }
         } catch (ElasticException e) {
             elasticResponse = ElasticResponse.error(e.getMsg());

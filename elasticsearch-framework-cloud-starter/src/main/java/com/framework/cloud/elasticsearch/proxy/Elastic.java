@@ -64,7 +64,7 @@ public interface Elastic {
      * @param query     删除条件
      * @return 失败id
      */
-    <T> ElasticResponse<List<String>> deleteDocument(@NonNull String indexName, @NonNull QueryBuilder query, @NonNull Class<T> clz);
+    <T> ElasticResponse<List<String>> deleteQuery(@NonNull String indexName, @NonNull QueryBuilder query);
 
     /**
      * 新增
@@ -110,6 +110,24 @@ public interface Elastic {
      * @return bool
      */
     <T> ElasticResponse<Boolean> update(@NonNull String indexName, @NonNull UpdateQuery updateQuery);
+
+    /**
+     * 新增或更新
+     *
+     * @param indexName   索引名
+     * @param source 数据源
+     * @return bool
+     */
+    <T> ElasticResponse<Boolean> upsert(@NonNull String indexName, @NonNull T source);
+
+    /**
+     * 新增或更新
+     *
+     * @param indexName   索引名
+     * @param sourceList 数据源
+     * @return bool
+     */
+    <T> ElasticResponse<Boolean> upsert(@NonNull String indexName, @NonNull List<T> sourceList);
 
     /**
      * 分页
