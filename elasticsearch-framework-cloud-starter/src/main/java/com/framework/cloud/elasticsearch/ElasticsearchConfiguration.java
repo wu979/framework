@@ -13,6 +13,7 @@ import org.apache.http.message.BasicHeader;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
@@ -26,6 +27,7 @@ import org.springframework.data.elasticsearch.core.mapping.SimpleElasticsearchMa
  */
 @AllArgsConstructor
 @EnableConfigurationProperties(ElasticsearchProperties.class)
+@ConditionalOnProperty(prefix = "elasticsearch", value = "enabled", havingValue = "true", matchIfMissing = true)
 public class ElasticsearchConfiguration {
 
     private final ElasticsearchProperties elasticsearchProperties;

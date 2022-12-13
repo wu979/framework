@@ -1,5 +1,6 @@
 package com.framework.cloud.tree.binary;
 
+import cn.hutool.core.util.NumberUtil;
 import com.framework.cloud.tree.Tree;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -27,13 +28,12 @@ public class BinaryTree<T extends Serializable, D, L, N> extends Tree<T, D, L> i
 
     @Override
     public Boolean getIsLeafNode() {
-        if (left instanceof Integer) {
-            return ((Integer) right) - 1 == ((Integer) left);
-        } else if (left instanceof Long) {
-            return ((Long) right) - 1 == ((Long) left);
-        } else {
-            return true;
+        if (this.left instanceof Number) {
+            Number right = (Number) this.right;
+            Number left = (Number) this.left;
+            return NumberUtil.sub(right, 1).equals(left);
         }
+        return false;
     }
 
 }
