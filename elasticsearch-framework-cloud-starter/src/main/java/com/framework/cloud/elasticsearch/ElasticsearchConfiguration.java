@@ -27,7 +27,6 @@ import org.springframework.data.elasticsearch.core.mapping.SimpleElasticsearchMa
  */
 @AllArgsConstructor
 @EnableConfigurationProperties(ElasticsearchProperties.class)
-@ConditionalOnProperty(prefix = "elasticsearch", value = "enabled", havingValue = "true", matchIfMissing = true)
 public class ElasticsearchConfiguration {
 
     private final ElasticsearchProperties elasticsearchProperties;
