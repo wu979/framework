@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.framework.cloud.logging.configuration.AutoLoggingConfiguration
+com.framework.cloud.logging.LoggingAutoConfiguration

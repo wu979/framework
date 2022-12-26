@@ -35,6 +35,9 @@ public class HeaderConstant {
      * 用户权限头
      */
     public static final String X_AUTHORITIES_HEADER = "x-authorities-header";
-
+    /**
+     * 链路头
+     */
+    public static final String X_TRACE_ID_HERDER = "x-trace-id-header";
 
 }
