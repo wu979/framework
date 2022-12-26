@@ -17,6 +17,11 @@ framework:
     virtual-host: /
     delay:
       pay-order-output-channel: 1800000
+seata:
+  tx-service-group: pay-group
+  service:
+    vgroup-mapping:
+      pay-group: seata-cluster
 spring:
   shardingsphere:
     props:

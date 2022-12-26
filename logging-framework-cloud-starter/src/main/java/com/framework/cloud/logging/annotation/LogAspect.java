@@ -26,6 +26,5 @@ public class LogAspect {
         String s = TraceContext.traceId();
         int i = TraceContext.spanId();
         String s1 = TraceContext.segmentId();
-        System.out.println("11111111111111");
     }
 }
