@@ -75,33 +75,31 @@ spring:
   cloud:
     stream:
       bindings:
-        pay-order-ouput-channel:
-          destination: pay.order.delay.exchange
+        pay-order-output-channel:
+          destination: pay-order-delay-exchange
           content-type: application/json
-          group: pay-order-delay
-          consumer:
-            maxAttempts: 1
-            concurrency: 5
+          group: ${spring.application.name}
           producer:
-            required-groups: pay-order-delay
+            required-groups: pay-order
         pay-order-input-channel:
-          destination: pay.order.delay.exchange
+          destination: pay-order-delay-exchange
           content-type: application/json
-          group: pay-order-delay
-          consumer:
-            maxAttempts: 1
+          group: ${spring.application.name}
       binders:
         rabbit:
           type: rabbit
       rabbit:
         bindings:
-          pay-order-ouput-channel:
+          pay-order-output-channel:
             producer:
               delayed-exchange: true
+              #消息ms之后还没被消费，就会成为死信，这个参数生效的前提是spring.cloud.stream.bindings里边声明了producer.requiredGroups
               ttl: 120000
+              #开启死信
               auto-bind-dlq: true
+              dead-letter-exchange: pay-order-dead-exchange
+              dead-letter-queueName: pay-order-dead-queue.${spring.application.name}
           pay-order-input-channel:
             consumer:
               delayed-exchange: true
               ttl: 120000
-              auto-bind-dlq: true
