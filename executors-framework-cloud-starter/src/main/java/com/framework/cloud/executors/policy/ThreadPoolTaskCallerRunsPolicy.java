@@ -4,26 +4,29 @@ import com.framework.cloud.executors.decorator.ContextDecorator;
 import com.framework.cloud.executors.feature.ExecutorsFeature;
 import com.framework.cloud.executors.properties.ExecutorsProperties;
 import com.framework.cloud.executors.utils.ExecutorsUtil;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextListener;
 
 import javax.annotation.Resource;
 import java.util.Objects;
-import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
+ * 由调用线程（提交任务的线程）处理该任务，如果调用线程是主线程，那么主线程会调用执行器中的execute方法来执行改任务
+ *
  * @author wusiwei
  */
+@Component
+@RequiredArgsConstructor
 @EnableConfigurationProperties(ExecutorsProperties.class)
-public abstract class AbstractThreadPoolTaskPolicy implements ExecutorsFeature {
+public class ThreadPoolTaskCallerRunsPolicy implements ExecutorsFeature {
 
-    @Resource
-    private ExecutorsProperties executorsProperties;
-
-    @Resource
-    private RequestContextListener requestContextListener;
+    private final ExecutorsProperties executorsProperties;
+    private final RequestContextListener requestContextListener;
 
     @Override
     public ThreadPoolTaskExecutor executor(String threadNamePrefix) {
@@ -52,7 +55,7 @@ public abstract class AbstractThreadPoolTaskPolicy implements ExecutorsFeature {
         //队列大小
         executor.setQueueCapacity(executorsProperties.getQueueCapacity());
         //拒绝策略
-        executor.setRejectedExecutionHandler(policy());
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         //线程存活时间 秒
         executor.setKeepAliveSeconds(executorsProperties.getKeepAliveSeconds());
         //等待终止 毫秒
@@ -63,6 +66,4 @@ public abstract class AbstractThreadPoolTaskPolicy implements ExecutorsFeature {
         executor.setTaskDecorator(new ContextDecorator(requestContextListener));
         return executor;
     }
-
-    protected abstract RejectedExecutionHandler policy();
 }
