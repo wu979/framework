@@ -16,8 +16,8 @@
     <!-- 彩色日志格式 -->
     <property name="CONSOLE_LOG_PATTERN"
               value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%level){blue} %clr(${PID}){magenta} %clr([%X{traceId}]){yellow} %clr([%thread]){orange} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
-    <property name="CONSOLE_LOG_PATTERN_NO_COLOR"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %level ${PID} [%X{traceId}] [%thread] %-40.40logger{39} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+    <property name="GRPC_LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %level ${PID} [%tid] [%thread] %-5level %logger{36} -%msg%n"/>
     <!-- 控制台日志 -->
     <appender name="CONSOLE_LOG" class="ch.qos.logback.core.ConsoleAppender">
         <withJansi>true</withJansi>
@@ -33,7 +33,7 @@
     <appender name="GRPC_LOG" class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.log.GRPCLogClientAppender">
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
-                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%tid] [%thread] %-5level %logger{36} -%msg%n</Pattern>
+                <pattern>${GRPC_LOG_PATTERN}</pattern>
             </layout>
         </encoder>
     </appender>
