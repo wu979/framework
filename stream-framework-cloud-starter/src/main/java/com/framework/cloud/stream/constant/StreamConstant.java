@@ -8,4 +8,6 @@ public class StreamConstant {
     public static final Long TIMEOUT = 2000L;
 
     public static final String HEADER_DELAY = "x-delay";
+
+    public static final String CONTENT_KEY = "rabbit:content:";
 }
