@@ -13,6 +13,8 @@ public class DateConstant {
 
     public static final String FORMAT_SHORT = "yyyy-MM-dd";
 
+    public static final String FORMAT_MONTH = "yyyy-MM-dd";
+
     public static final String FORMAT_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
 
     public static final String FORMAT_DATE_TIME_SHORT = "yyyyMMddHHmmss";

@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -91,6 +92,15 @@ public class RedisCacheTemplate implements RedisCache {
     }
 
     @Override
+    public <T> List<T> getSet(String key, Class<T> clz) {
+        Set<Object> values = redisTemplate.opsForSet().members(key);
+        if (CacheUtil.isNullOrBlank(values)) {
+            return Lists.newArrayList();
+        }
+        return FastJsonUtil.toJavaList(Lists.newArrayList(values), clz);
+    }
+
+    @Override
     public <T> T safeGet(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader) {
         return safeGet(key, clz, cacheLoader, cacheAutoProperties.getCacheTimeout(), cacheAutoProperties.getCacheTimeoutUnit());
     }
@@ -154,6 +164,20 @@ public class RedisCacheTemplate implements RedisCache {
             return false;
         }
         redisTemplate.opsForValue().set(key, FastJsonUtil.toJSONString(value), timeout, unit);
+        return true;
+    }
+
+    @Override
+    public <T> boolean add(String key, T... values) {
+        redisTemplate.opsForSet().add(key, values);
+        redisTemplate.expire(key, cacheAutoProperties.getCacheTimeout(), cacheAutoProperties.getCacheTimeoutUnit());
+        return true;
+    }
+
+    @Override
+    public <T> boolean add(String key, long timeout, TimeUnit unit, T... values) {
+        redisTemplate.opsForSet().add(key, values);
+        redisTemplate.expire(key, timeout, unit);
         return true;
     }
 

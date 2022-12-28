@@ -58,6 +58,13 @@ public class DateUtil {
     }
 
     /**
+     * 根据用户格式返回当前月
+     */
+    public static String getMouth() {
+        return format(new Date(), DateConstant.FORMAT_MONTH);
+    }
+
+    /**
      * 使用预设格式格式化日期
      */
     public static String format(Date date) {

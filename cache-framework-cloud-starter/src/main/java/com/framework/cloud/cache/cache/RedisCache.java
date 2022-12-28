@@ -38,6 +38,11 @@ public interface RedisCache extends MultistageCache {
     <T> List<T> getAll(@NotBlank String key, Class<T> clz);
 
     /**
+     * 获取缓存
+     */
+    <T> List<T> getSet(@NotBlank String key, Class<T> clz);
+
+    /**
      * 以布隆、分布式锁 获取缓存
      *
      * @param cacheLoader 缓存加载
@@ -72,6 +77,16 @@ public interface RedisCache extends MultistageCache {
      * 批量缓存单个
      */
     <T> boolean putMap(@NotBlank String prefix, Map<String, T> map, long timeout, TimeUnit unit);
+
+    /**
+     * 缓存Set List
+     */
+    <T> boolean add(@NotBlank String key, T... values);
+
+    /**
+     * 缓存Set List
+     */
+    <T> boolean add(@NotBlank String key, long timeout, TimeUnit unit, T... values);
 
     /**
      * 设置缓存不过期

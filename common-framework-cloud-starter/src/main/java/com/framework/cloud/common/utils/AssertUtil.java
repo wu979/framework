@@ -82,8 +82,22 @@ public class AssertUtil {
         nonNull(object, result.getCode(), result.getMsg());
     }
 
-    public void notEmpty(Collection collection, Integer code, String msg) throws BizException {
+    public void isEmpty(Collection collection, Integer code, String msg) throws BizException {
         if (CollUtil.isEmpty(collection)) {
+            throw new BizException(code, msg);
+        }
+    }
+
+    public void isEmpty(Collection collection, String msg) throws BizException {
+        isEmpty(collection, GlobalMessage.FAIL.getCode(), msg);
+    }
+
+    public void isEmpty(Collection collection, Result result) throws BizException {
+        isEmpty(collection, result.getCode(), result.getMsg());
+    }
+
+    public void notEmpty(Collection collection, Integer code, String msg) throws BizException {
+        if (CollUtil.isNotEmpty(collection)) {
             throw new BizException(code, msg);
         }
     }
