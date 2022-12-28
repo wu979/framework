@@ -1,5 +1,6 @@
 package com.framework.cloud.cache.cache;
 
+import com.framework.cloud.cache.properties.CacheAutoProperties;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.NotBlank;
@@ -18,12 +19,7 @@ import java.util.stream.Stream;
  */
 public interface RedisCache extends MultistageCache {
 
-    /**
-     * 获取缓存
-     *
-     * @param cacheLoader 缓存加载
-     */
-    <T> T get(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader);
+    CacheAutoProperties properties();
 
     /**
      * 获取缓存
@@ -36,19 +32,6 @@ public interface RedisCache extends MultistageCache {
      * 获取缓存
      */
     <T> List<T> getAll(@NotBlank String key, Class<T> clz);
-
-    /**
-     * 获取缓存
-     */
-    <T> List<T> getSet(@NotBlank String key, Class<T> clz);
-
-    /**
-     * 以布隆、分布式锁 获取缓存
-     *
-     * @param cacheLoader 缓存加载
-     * @see "https://github.com/agentart"
-     */
-    <T> T safeGet(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader);
 
     /**
      * 以布隆、分布式锁 获取缓存
@@ -66,27 +49,12 @@ public interface RedisCache extends MultistageCache {
     /**
      * 缓存集合 Key -> List
      */
-    <T> boolean putAll(@NotBlank String key, List<T> value);
-
-    /**
-     * 缓存集合 Key -> List
-     */
-    <T> boolean putAll(@NotBlank String key, List<T> value, long timeout, TimeUnit unit);
+    <T> boolean putAll(@NotBlank String key, List<T> values, long timeout, TimeUnit unit);
 
     /**
      * 批量缓存单个
      */
     <T> boolean putMap(@NotBlank String prefix, Map<String, T> map, long timeout, TimeUnit unit);
-
-    /**
-     * 缓存Set List
-     */
-    <T> boolean add(@NotBlank String key, T... values);
-
-    /**
-     * 缓存Set List
-     */
-    <T> boolean add(@NotBlank String key, long timeout, TimeUnit unit, T... values);
 
     /**
      * 设置缓存不过期
@@ -98,16 +66,22 @@ public interface RedisCache extends MultistageCache {
      */
     long delete(@NotNull Collection<String> keys);
 
-    /**
-     * 加入缓存 默认时间秒
-     */
+    default <T> T get(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader) {
+        return get(key, clz, cacheLoader, properties().getCacheTimeout(), properties().getCacheTimeoutUnit());
+    }
+
+    default <T> T safeGet(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader) {
+        return safeGet(key, clz, cacheLoader, properties().getCacheTimeout(), properties().getCacheTimeoutUnit());
+    }
+
     default boolean put(@NotBlank String key, Object value, long timeout) {
         return put(key, value, timeout, TimeUnit.SECONDS);
     }
 
-    /**
-     * 删除缓存 返回成功数量
-     */
+    default <T> boolean putAll(@NotBlank String key, List<T> values) {
+        return putAll(key, values, properties().getCacheTimeout(), properties().getCacheTimeoutUnit());
+    }
+
     default long delete(@NotNull String... key) {
         return delete(Stream.of(key).filter(StringUtils::isNotBlank).collect(Collectors.toList()));
     }

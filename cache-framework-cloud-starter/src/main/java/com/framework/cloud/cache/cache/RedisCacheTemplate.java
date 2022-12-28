@@ -11,16 +11,14 @@ import lombok.RequiredArgsConstructor;
 import org.redisson.api.RBloomFilter;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 缓存模板
+ * 缓存代理
  *
  * @author wusiwei
  */
@@ -34,7 +32,12 @@ public class RedisCacheTemplate implements RedisCache {
     private final RBloomFilter<String> cachePenetrationBloomFilter;
 
     @Override
-    public <T> T get(@NotBlank String key, Class<T> clz) {
+    public CacheAutoProperties properties() {
+        return cacheAutoProperties;
+    }
+
+    @Override
+    public <T> T get(String key, Class<T> clz) {
         Object value = redisTemplate.opsForValue().get(key);
         if (CacheUtil.isNullOrBlank(value)) {
             return null;
@@ -46,12 +49,12 @@ public class RedisCacheTemplate implements RedisCache {
     }
 
     @Override
-    public <T> boolean put(@NotBlank String key, T value) {
+    public <T> boolean put(String key, T value) {
         return put(key, value, cacheAutoProperties.getCacheTimeout(), cacheAutoProperties.getCacheTimeoutUnit());
     }
 
     @Override
-    public boolean delete(@NotBlank String key) {
+    public boolean delete(String key) {
         Boolean delete = redisTemplate.delete(key);
         return null != delete && delete;
     }
@@ -63,18 +66,13 @@ public class RedisCacheTemplate implements RedisCache {
     }
 
     @Override
-    public boolean hasKey(@NotBlank String key) {
+    public boolean hasKey(String key) {
         Boolean has = redisTemplate.hasKey(key);
         return null != has && has;
     }
 
     @Override
-    public <T> T get(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader) {
-        return get(key, clz, cacheLoader, cacheAutoProperties.getCacheTimeout(), cacheAutoProperties.getCacheTimeoutUnit());
-    }
-
-    @Override
-    public <T> T get(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader, long timeout, TimeUnit timeUnit) {
+    public <T> T get(String key, Class<T> clz, CacheLoader<T> cacheLoader, long timeout, TimeUnit timeUnit) {
         T value = get(key, clz);
         if (!CacheUtil.isNullOrBlank(value)) {
             return value;
@@ -83,7 +81,7 @@ public class RedisCacheTemplate implements RedisCache {
     }
 
     @Override
-    public <T> List<T> getAll(@NotBlank String key, Class<T> clz) {
+    public <T> List<T> getAll(String key, Class<T> clz) {
         Object value = redisTemplate.opsForValue().get(key);
         if (CacheUtil.isNullOrBlank(value)) {
             return Lists.newArrayList();
@@ -92,21 +90,7 @@ public class RedisCacheTemplate implements RedisCache {
     }
 
     @Override
-    public <T> List<T> getSet(String key, Class<T> clz) {
-        Set<Object> values = redisTemplate.opsForSet().members(key);
-        if (CacheUtil.isNullOrBlank(values)) {
-            return Lists.newArrayList();
-        }
-        return FastJsonUtil.toJavaList(Lists.newArrayList(values), clz);
-    }
-
-    @Override
-    public <T> T safeGet(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader) {
-        return safeGet(key, clz, cacheLoader, cacheAutoProperties.getCacheTimeout(), cacheAutoProperties.getCacheTimeoutUnit());
-    }
-
-    @Override
-    public <T> T safeGet(@NotBlank String key, Class<T> clz, CacheLoader<T> cacheLoader, long timeout, TimeUnit timeUnit) {
+    public <T> T safeGet(String key, Class<T> clz, CacheLoader<T> cacheLoader, long timeout, TimeUnit timeUnit) {
         T result = get(key, clz);
         if (!CacheUtil.isNullOrBlank(result)) {
             return result;
@@ -128,7 +112,7 @@ public class RedisCacheTemplate implements RedisCache {
     }
 
     @Override
-    public <T> boolean put(@NotBlank String key, T value, long timeout, TimeUnit unit) {
+    public <T> boolean put(String key, T value, long timeout, TimeUnit unit) {
         if (CacheUtil.isTarget(value)) {
             if (timeout < 0) {
                 redisTemplate.opsForValue().set(key, FastJsonUtil.toJSONString(value));
@@ -146,12 +130,7 @@ public class RedisCacheTemplate implements RedisCache {
     }
 
     @Override
-    public <T> boolean putAll(@NotBlank String key, List<T> value) {
-        return putAll(key, value, cacheAutoProperties.getCacheTimeout(), cacheAutoProperties.getCacheTimeoutUnit());
-    }
-
-    @Override
-    public <T> boolean putMap(@NotBlank String prefix, Map<String, T> map, long timeout, TimeUnit unit) {
+    public <T> boolean putMap(String prefix, Map<String, T> map, long timeout, TimeUnit unit) {
         for (Map.Entry<String, T> row : map.entrySet()) {
             put(prefix + row.getKey(), row.getValue(), timeout, unit);
         }
@@ -159,30 +138,16 @@ public class RedisCacheTemplate implements RedisCache {
     }
 
     @Override
-    public <T> boolean putAll(@NotBlank String key, List<T> value, long timeout, TimeUnit unit) {
-        if (CollectionUtil.isEmpty(value)) {
+    public <T> boolean putAll(String key, List<T> values, long timeout, TimeUnit unit) {
+        if (CollectionUtil.isEmpty(values)) {
             return false;
         }
-        redisTemplate.opsForValue().set(key, FastJsonUtil.toJSONString(value), timeout, unit);
+        redisTemplate.opsForValue().set(key, FastJsonUtil.toJSONString(values), timeout, unit);
         return true;
     }
 
     @Override
-    public <T> boolean add(String key, T... values) {
-        redisTemplate.opsForSet().add(key, values);
-        redisTemplate.expire(key, cacheAutoProperties.getCacheTimeout(), cacheAutoProperties.getCacheTimeoutUnit());
-        return true;
-    }
-
-    @Override
-    public <T> boolean add(String key, long timeout, TimeUnit unit, T... values) {
-        redisTemplate.opsForSet().add(key, values);
-        redisTemplate.expire(key, timeout, unit);
-        return true;
-    }
-
-    @Override
-    public boolean persist(@NotBlank String key) {
+    public boolean persist(String key) {
         Boolean persist = redisTemplate.persist(key);
         return null != persist && persist;
     }

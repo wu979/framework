@@ -3,6 +3,8 @@ package com.framework.cloud.cache.configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.framework.cloud.cache.cache.RedisCache;
 import com.framework.cloud.cache.cache.RedisCacheTemplate;
+import com.framework.cloud.cache.cache.RedisSetCache;
+import com.framework.cloud.cache.cache.RedisSetCacheTemplate;
 import com.framework.cloud.cache.configuration.redis.ClusterConfiguration;
 import com.framework.cloud.cache.configuration.redis.SentinelConfiguration;
 import com.framework.cloud.cache.configuration.redis.StandaloneConfiguration;
@@ -105,6 +107,11 @@ public class RedisConfiguration {
     @Bean
     public RedisCache redisCache(RedisTemplate<String, Object> redisTemplate, RedisDistributedLock redisDistributedLock, RBloomFilter<String> bloomFilter) {
         return new RedisCacheTemplate(redisTemplate, redisDistributedLock, cacheAutoProperties, bloomFilter);
+    }
+
+    @Bean
+    public RedisSetCache redisSetCache(RedisTemplate<String, Object> redisTemplate) {
+        return new RedisSetCacheTemplate(redisTemplate, cacheAutoProperties);
     }
 
     @Bean

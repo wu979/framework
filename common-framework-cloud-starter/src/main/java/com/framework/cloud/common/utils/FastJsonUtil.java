@@ -14,10 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -147,6 +144,10 @@ public class FastJsonUtil {
 
     public static <E> List<E> toJavaList(Object node, Class<E> clazz) {
         return toJavaObject(node, makeJavaType(List.class, clazz));
+    }
+
+    public static <E> Set<E> toJavaSet(Object node, Class<E> clazz) {
+        return toJavaObject(node, makeJavaType(Set.class, clazz));
     }
 
     public static List<Object> toJavaList(Object node) {
