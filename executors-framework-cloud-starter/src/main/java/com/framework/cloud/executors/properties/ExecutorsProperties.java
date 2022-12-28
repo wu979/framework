@@ -1,5 +1,6 @@
 package com.framework.cloud.executors.properties;
 
+import com.framework.cloud.executors.enums.RejectedType;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -16,11 +17,14 @@ public class ExecutorsProperties {
      * 核心线程数量
      */
     private Integer corePoolSize;
-
     /**
      * 线程池维护线程的最大数量
      */
     private Integer maxPoolSize;
+    /**
+     * 拒绝策略
+     */
+    private RejectedType rejectedType = RejectedType.CallerRunsPolicy;
     /**
      * 队列最大长度
      */
