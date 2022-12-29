@@ -14,7 +14,7 @@ framework:
     host: 127.0.0.1
     password: 123456
   elasticsearch:
-    uris: 162.14.111.104:9200,162.14.111.104:9201
+    uris: 127.0.0.1:9200,127.0.0.1:9201
     username: elastic
     password: 123456
 seata:

@@ -12,8 +12,8 @@ feign:
     config:
       #默认的超时时间 可以在指定服务配置文件 指定单个Feign的超时时间 default改为@FeignClient(contextId = "***")
       default:
-        connectTimeout: ${framework.feign.client.connect-timeout:3000}
-        readTimeout: ${framework.feign.client.read-timeout:5000}
+        connectTimeout: ${framework.feign.client.connect-timeout:8000}
+        readTimeout: ${framework.feign.client.read-timeout:12000}
   compression:
     request:
       #开启请求压缩

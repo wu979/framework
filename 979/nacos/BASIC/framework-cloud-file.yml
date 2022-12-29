@@ -1,0 +1,65 @@
+framework:
+  swagger:
+    title: 文件
+    basePackage: com.framework.cloud.file.api.controller
+  mybatis:
+    tenant:
+      is-open: true
+  redis:
+    prefix: file
+    host: 127.0.0.1
+    password: 123456
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: dev
+    password: 123456
+    virtual-host: /
+  file:
+    env: OFFLINE
+    prefix: D:/upload/
+    max-size: 524288000
+    oss:
+      endpoint: 111111
+      access-key: 2222222222222222
+      access-secret: 222222222222222222222222
+      bucket-name: 222222222222
+      maxKeys: 3
+    not-allow-extension:
+      - .exe
+      - .msi
+spring:
+  shardingsphere:
+    props:
+      sql-show: true
+    datasource:
+      names: file
+      file:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/framework-file?characterEncoding=utf8&useSSL=false&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&serverTimezone=Asia/Shanghai
+        username: dev
+        password: 123456
+    rules:
+      sharding:
+        tables:
+          t_file:
+            #定义表表名区间
+            actualDataNodes: file.t_file_$->{2022..2023}_0$->{1..9},file.t_file_$->{2022..2023}_$->{10..12}
+            #分片算法
+            tableStrategy:
+              standard:
+                #分片键
+                shardingColumn: create_time
+                #分片策略
+                shardingAlgorithmName: file_create_time
+        #分片策略
+        sharding-algorithms:
+          #策略名称
+          file_create_time:
+            #采用哪种类型
+            type: CLASS_BASED
+            props:
+              #STANDARD、COMPLEX、HINT （org.apache.shardingsphere.sharding.algorithm.sharding.classbased.ClassBasedShardingAlgorithmStrategyType）
+              strategy: STANDARD
+              algorithmClassName: com.framework.cloud.file.api.application.shading.FileTimePreciseShardingAlgorithm

@@ -10,13 +10,13 @@ seata:
     type: nacos
     nacos:
       namespace: 1146878a-9fec-4f49-947f-987f44bf5c78
-      server-addr: 139.155.11.84:8848
+      server-addr: 127.0.0.1:8848
       group: SEATA
   registry:
     type: nacos
     nacos:
       application: seata-server
-      server-addr: 139.155.11.84:8848
+      server-addr: 127.0.0.1:8848
       group : SEATA
       namespace: 1146878a-9fec-4f49-947f-987f44bf5c78
       cluster: seata-cluster

@@ -25,3 +25,8 @@ management:
 #日志
 logging:
   config: classpath:logback-spring.xml
+
+#trace
+skywalking:
+  traceId:
+    header: ${framework.skywalking.traceId:true}
