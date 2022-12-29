@@ -24,6 +24,7 @@
         <module>holder-framework-cloud-starter</module>
         <module>job-framework-cloud-starter</module>
         <module>logging-framework-cloud-starter</module>
+        <module>mongodb-framework-cloud-starter</module>
         <module>mybatis-framework-cloud-starter</module>
         <module>pom-framework-cloud-starter</module>
         <module>seata-framework-cloud-starter</module>
