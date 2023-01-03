@@ -10,14 +10,14 @@
     <description>event</description>
 
     <properties>
-        <common.framework.cloud.starter.version>1.0.0</common.framework.cloud.starter.version>
+        <holder.framework.cloud.starter.version>1.0.0</holder.framework.cloud.starter.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.framework.cloud</groupId>
-            <artifactId>common-framework-cloud-starter</artifactId>
-            <version>${common.framework.cloud.starter.version}</version>
+            <artifactId>holder-framework-cloud-starter</artifactId>
+            <version>${holder.framework.cloud.starter.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -26,10 +26,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.skywalking</groupId>
-            <artifactId>apm-toolkit-trace</artifactId>
         </dependency>
     </dependencies>
 

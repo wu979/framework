@@ -1,7 +1,8 @@
 package com.framework.cloud.stream.interceptor;
 
+import com.framework.cloud.holder.constant.HeaderConstant;
+import com.framework.cloud.holder.utils.TraceUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.slf4j.MDC;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -35,12 +36,12 @@ public class StreamRabbitMqTraceIdChannelInterceptor implements ChannelIntercept
 
     private Message<?> doPreSend(Message<?> message, MessageChannel channel) {
         Map<String, Object> headersMap = (Map<String, Object>) ReflectionUtils.getField(this.headerField, message.getHeaders());
-        Object traceId = headersMap.get("tid");
+        Object traceId = headersMap.get(HeaderConstant.TRACE_ID);
         if (traceId != null && !StringUtils.isEmpty(traceId.toString())) {
-            MDC.put("tid", traceId.toString());
+            MDC.put(HeaderConstant.TRACE_ID, traceId.toString());
             return message;
         }
-        MDC.put("tid", TraceContext.traceId());
+        MDC.put(HeaderConstant.TRACE_ID, TraceUtil.traceId());
         return message;
     }
 }

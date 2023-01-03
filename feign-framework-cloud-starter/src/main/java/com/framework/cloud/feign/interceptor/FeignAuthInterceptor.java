@@ -15,6 +15,7 @@ import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import io.seata.core.context.RootContext;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.MDC;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -70,10 +71,15 @@ public class FeignAuthInterceptor implements RequestInterceptor {
         if (StringUtils.isBlank(xid)) {
             xid = RootContext.getXID();
         }
+        String traceId = request.getHeader(HeaderConstant.TRACE_ID);
+        if (StringUtils.isBlank(traceId)) {
+            traceId = MDC.get(HeaderConstant.TRACE_ID);
+        }
         requestTemplate.header(HeaderConstant.AUTHORIZATION, token);
         requestTemplate.header(HeaderConstant.X_USER_HEADER, user);
         requestTemplate.header(HeaderConstant.X_TENANT_HEADER, tenant);
         requestTemplate.header(HeaderConstant.X_AUTHORITIES_HEADER, role);
+        requestTemplate.header(HeaderConstant.TRACE_ID, traceId);
         requestTemplate.header(RootContext.KEY_XID, Lists.newArrayList(xid));
     }
 

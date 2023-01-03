@@ -20,6 +20,10 @@ public class HeaderConstant {
      */
     public static final String AUTHORIZATION = "Authorization";
     /**
+     * 链路
+     */
+    public static final String TRACE_ID = "traceId";
+    /**
      * 租户信息头
      */
     public static final String X_TENANT_HEADER = "x-tenant-header";
@@ -38,6 +42,9 @@ public class HeaderConstant {
     /**
      * 链路头
      */
+    public static final String X_T_ID_HERDER = "x-tid-header";
+    /**
+     * 链路头
+     */
     public static final String X_TRACE_ID_HERDER = "x-trace-id-header";
-
 }

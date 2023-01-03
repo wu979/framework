@@ -1,8 +1,7 @@
 package com.framework.cloud.logging;
 
 import com.framework.cloud.logging.annotation.LogAspect;
-import com.framework.cloud.logging.filter.TraceFilter;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -13,15 +12,9 @@ import org.springframework.context.annotation.Bean;
 public class LoggingAutoConfiguration {
 
     @Bean
+    @ConditionalOnProperty(value = "skywalking.traceId.header", havingValue = "true")
     public LogAspect logAspect() {
         return new LogAspect();
     }
 
-    @Bean
-    public FilterRegistrationBean traceInterceptor() {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(new TraceFilter());
-        registration.addUrlPatterns("/*");
-        return registration;
-    }
 }

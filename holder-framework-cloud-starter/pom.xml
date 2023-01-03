@@ -45,6 +45,10 @@
             <artifactId>transmittable-thread-local</artifactId>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.skywalking</groupId>
+            <artifactId>apm-toolkit-trace</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

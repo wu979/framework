@@ -14,9 +14,9 @@ import org.springframework.integration.config.GlobalChannelInterceptor;
 @Import(RabbitStreamConfiguration.class)
 public class StreamAutoConfiguration {
 
-    //@Bean
-    //@GlobalChannelInterceptor
-    //public StreamRabbitMqTraceIdChannelInterceptor streamRabbitMqTraceIdChannelInterceptor() {
-    //    return new StreamRabbitMqTraceIdChannelInterceptor();
-    //}
+    @Bean
+    @GlobalChannelInterceptor
+    public StreamRabbitMqTraceIdChannelInterceptor streamRabbitMqTraceIdChannelInterceptor() {
+        return new StreamRabbitMqTraceIdChannelInterceptor();
+    }
 }
