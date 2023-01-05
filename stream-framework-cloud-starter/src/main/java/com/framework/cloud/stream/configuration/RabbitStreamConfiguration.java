@@ -42,6 +42,7 @@ public class RabbitStreamConfiguration {
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+        rabbitTemplate.addBeforePublishPostProcessors(new TraceIdMessagePostProcessor());
         return rabbitTemplate;
     }
 
@@ -67,12 +68,6 @@ public class RabbitStreamConfiguration {
         factory.setConnectionFactory(connectionFactory);
         factory.setMessageConverter(new Jackson2JsonMessageConverter());
         return factory;
-    }
-
-
-    @Bean
-    public TraceIdMessagePostProcessor traceIdMessagePostProcessor() {
-        return new TraceIdMessagePostProcessor();
     }
 
     @Bean

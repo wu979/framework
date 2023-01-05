@@ -10,7 +10,7 @@ import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.core.MessageProperties;
 
 /**
- *
+ * rabbit header post processor
  *
  * @author wusiwei
  */
@@ -30,7 +30,7 @@ public class TraceIdMessagePostProcessor implements MessagePostProcessor {
 
     private void putTraceIdInMessageHeader(Message message) {
         String traceId = MDC.get(HeaderConstant.TRACE_ID);
-        if (StringUtils.isEmpty(traceId)) {
+        if (StringUtils.isNotEmpty( traceId)) {
             MessageProperties properties = message.getMessageProperties();
             properties = properties != null ? properties : new MessageProperties();
             properties.setHeader(HeaderConstant.TRACE_ID, traceId);
