@@ -59,17 +59,24 @@ public abstract class AbstractListener<T extends StreamMessage> extends StreamCo
             return false;
         }
         MessageProperties properties = message.getMessageProperties();
-        String queue = properties.getConsumerQueue();
         String messageId = properties.getMessageId();
-        String retryKey = String.format(RETRY, queue, messageId);
+        String retryKey = String.format(RETRY, messageId);
         Long retryCounted = numberOperations.increment(retryKey, 1);
         redisTemplate.expire(retryKey, RETRY_TIME, TimeUnit.MINUTES);
         if (Objects.equals(retryCounted, retryCount)) {
             return false;
         }
-        //删除消费者Key 保证重试
         redisTemplate.delete(getConsumeKey(messageId));
         return true;
+    }
+
+    /**
+     * 是否能消费，防止重复消费
+     */
+    protected boolean canConsume(String messageId) {
+        String consumeKey = getConsumeKey(messageId);
+        Boolean lock = redisTemplate.opsForValue().setIfAbsent(consumeKey, messageId, CONSUME_TIME, TimeUnit.MINUTES);
+        return Boolean.TRUE.equals(lock);
     }
 
     /**
@@ -89,15 +96,6 @@ public abstract class AbstractListener<T extends StreamMessage> extends StreamCo
             throw new RabbitException(com.framework.cloud.stream.enums.StreamMessage.MQ_TYPE.getMsg());
         }
         return JSON.parseObject(body, contentClass);
-    }
-
-    /**
-     * 是否能消费，防止重复消费
-     */
-    protected boolean canConsume(String messageId) {
-        String consumeKey = getConsumeKey(messageId);
-        Boolean lock = redisTemplate.opsForValue().setIfAbsent(consumeKey, messageId, CONSUME_TIME, TimeUnit.MINUTES);
-        return Boolean.TRUE.equals(lock);
     }
 
     /**
