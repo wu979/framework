@@ -1,5 +1,8 @@
 package com.framework.cloud.stream.configuration;
 
+import com.framework.cloud.stream.producer.StreamProducer;
+import com.framework.cloud.stream.rabbit.RabbitProducer;
+import com.framework.cloud.stream.rabbit.processor.TraceIdMessagePostProcessor;
 import org.springframework.amqp.rabbit.config.DirectRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -66,4 +69,14 @@ public class RabbitStreamConfiguration {
         return factory;
     }
 
+
+    @Bean
+    public TraceIdMessagePostProcessor traceIdMessagePostProcessor() {
+        return new TraceIdMessagePostProcessor();
+    }
+
+    @Bean
+    public StreamProducer rabbitProducer(RabbitTemplate rabbitTemplate) {
+        return new RabbitProducer(rabbitTemplate);
+    }
 }

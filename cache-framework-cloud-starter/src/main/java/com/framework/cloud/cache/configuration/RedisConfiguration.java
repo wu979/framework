@@ -16,8 +16,10 @@ import lombok.AllArgsConstructor;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RedissonClient;
 import org.redisson.spring.data.connection.RedissonConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
@@ -27,10 +29,7 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SetOperations;
+import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
@@ -87,17 +86,20 @@ public class RedisConfiguration {
     }
 
     @Bean
-    public RedissonConnectionFactory redissonConnectionFactory(RedissonClient redissonClient) {
+    @ConditionalOnBean(RedissonClient.class)
+    public RedissonConnectionFactory redissonConnectionFactory(@Autowired RedissonClient redissonClient) {
         return new RedissonConnectionFactory(redissonClient);
     }
 
     @Bean
-    public RedisDistributedLock redisDistributedLock(RedissonClient redissonClient) {
+    @ConditionalOnBean(RedissonClient.class)
+    public RedisDistributedLock redisDistributedLock(@Autowired RedissonClient redissonClient) {
         return new RedisDistributedLockImpl(redissonClient);
     }
 
     @Bean
-    public RBloomFilter<String> bloomFilter(RedissonClient redissonClient) {
+    @ConditionalOnBean(RedissonClient.class)
+    public RBloomFilter<String> bloomFilter(@Autowired RedissonClient redissonClient) {
         CacheAutoProperties.BloomFilterProperties bloomFilterProperties = cacheAutoProperties.getBloomFilter();
         RBloomFilter<String> bloomFilter = redissonClient.getBloomFilter(bloomFilterProperties.getName());
         bloomFilter.tryInit(bloomFilterProperties.getExpectedInsertions(), bloomFilterProperties.getFalseProbability());
@@ -112,6 +114,11 @@ public class RedisConfiguration {
     @Bean
     public RedisSetCache redisSetCache(RedisTemplate<String, Object> redisTemplate) {
         return new RedisSetCacheTemplate(redisTemplate, cacheAutoProperties);
+    }
+
+    @Bean(value = {"valueOperations", "stringOperations", "numberOperations"})
+    public ValueOperations<String, Object> valueOperations(RedisTemplate<String, Object> redisTemplate) {
+        return redisTemplate.opsForValue();
     }
 
     @Bean

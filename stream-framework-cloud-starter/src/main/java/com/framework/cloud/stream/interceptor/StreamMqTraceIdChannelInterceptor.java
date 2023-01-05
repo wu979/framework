@@ -20,11 +20,11 @@ import java.util.Map;
  * @author wusiwei
  */
 @SuppressWarnings("all")
-public class StreamRabbitMqTraceIdChannelInterceptor implements ChannelInterceptor {
+public class StreamMqTraceIdChannelInterceptor implements ChannelInterceptor {
 
     private final Field headerField;
 
-    public StreamRabbitMqTraceIdChannelInterceptor() {
+    public StreamMqTraceIdChannelInterceptor() {
         this.headerField = ReflectionUtils.findField(MessageHeaders.class, "headers");
         this.headerField.setAccessible(true);
     }
