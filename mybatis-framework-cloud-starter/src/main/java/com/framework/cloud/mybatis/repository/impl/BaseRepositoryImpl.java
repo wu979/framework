@@ -3,7 +3,7 @@ package com.framework.cloud.mybatis.repository.impl;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.framework.cloud.mybatis.enums.MybatisMessage;
-import com.framework.cloud.mybatis.exception.NotFoundException;
+import com.framework.cloud.common.exception.NotFoundException;
 
 import java.io.Serializable;
 import java.util.Objects;

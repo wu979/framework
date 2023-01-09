@@ -1,4 +1,4 @@
-package com.framework.cloud.mybatis.exception;
+package com.framework.cloud.common.exception;
 
 import java.io.Serializable;
 

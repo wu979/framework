@@ -1,6 +1,6 @@
 package com.framework.cloud.mybatis.annotation;
 
-import com.framework.cloud.mybatis.MyBatisConfiguration;
+import com.framework.cloud.mybatis.MyBatisAutoConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -15,6 +15,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Import(MyBatisConfiguration.class)
+@Import(MyBatisAutoConfiguration.class)
 public @interface EnableMybatis {
 }

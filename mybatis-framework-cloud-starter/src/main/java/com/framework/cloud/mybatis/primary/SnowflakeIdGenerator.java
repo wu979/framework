@@ -1,17 +1,19 @@
 package com.framework.cloud.mybatis.primary;
 
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
-import com.framework.cloud.mybatis.utils.SnowflakeUtil;
+import com.framework.cloud.mybatis.utils.IdUtil;
+import org.springframework.stereotype.Component;
 
 /**
  * 自定义雪花
  *
  * @author wusiwei
  */
-public class IdGenerator implements IdentifierGenerator {
+@Component
+public class SnowflakeIdGenerator implements IdentifierGenerator {
 
     @Override
     public Long nextId(Object entity) {
-        return SnowflakeUtil.nextId();
+        return IdUtil.getId();
     }
 }

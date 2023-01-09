@@ -2,7 +2,6 @@ package com.framework.cloud.mybatis;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
@@ -11,13 +10,12 @@ import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerIntercept
 import com.framework.cloud.mybatis.annotation.MapperScanner;
 import com.framework.cloud.mybatis.hander.MybatisMetaObjectHandler;
 import com.framework.cloud.mybatis.hander.MybatisTenantLineHandler;
-import com.framework.cloud.mybatis.primary.IdGenerator;
 import com.framework.cloud.mybatis.properties.TenantProperties;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 
 /**
  * mybatis configuration initializing
@@ -25,9 +23,10 @@ import org.springframework.context.annotation.Bean;
  * @author wusiwei
  */
 @AllArgsConstructor
+@Import(SnowflakeIdConfiguration.class)
 @EnableConfigurationProperties(TenantProperties.class)
-@MapperScanner(basePackages = {"${mybatisPlus.mapperScanner}"}, sqlSessionTemplateRef = "sqlSessionTemplate")
-public class MyBatisConfiguration implements BeanPostProcessor {
+@MapperScanner(basePackages = {"${mybatisPlus.mapperScanner}", "com.framework.cloud.mybatis.mapper"}, sqlSessionTemplateRef = "sqlSessionTemplate")
+public class MyBatisAutoConfiguration implements BeanPostProcessor {
 
     private final TenantProperties tenantProperties;
 
@@ -53,14 +52,6 @@ public class MyBatisConfiguration implements BeanPostProcessor {
         //防止全表更新与删除拦截器
         interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
         return interceptor;
-    }
-
-    @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if (bean instanceof IdentifierGenerator) {
-            bean = new IdGenerator();
-        }
-        return bean;
     }
 
 }

@@ -16,10 +16,8 @@ import lombok.AllArgsConstructor;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RedissonClient;
 import org.redisson.spring.data.connection.RedissonConnectionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
@@ -86,20 +84,17 @@ public class RedisConfiguration {
     }
 
     @Bean
-    @ConditionalOnBean(RedissonClient.class)
-    public RedissonConnectionFactory redissonConnectionFactory(@Autowired RedissonClient redissonClient) {
+    public RedissonConnectionFactory redissonConnectionFactory(RedissonClient redissonClient) {
         return new RedissonConnectionFactory(redissonClient);
     }
 
     @Bean
-    @ConditionalOnBean(RedissonClient.class)
-    public RedisDistributedLock redisDistributedLock(@Autowired RedissonClient redissonClient) {
+    public RedisDistributedLock redisDistributedLock(RedissonClient redissonClient) {
         return new RedisDistributedLockImpl(redissonClient);
     }
 
     @Bean
-    @ConditionalOnBean(RedissonClient.class)
-    public RBloomFilter<String> bloomFilter(@Autowired RedissonClient redissonClient) {
+    public RBloomFilter<String> bloomFilter(RedissonClient redissonClient) {
         CacheAutoProperties.BloomFilterProperties bloomFilterProperties = cacheAutoProperties.getBloomFilter();
         RBloomFilter<String> bloomFilter = redissonClient.getBloomFilter(bloomFilterProperties.getName());
         bloomFilter.tryInit(bloomFilterProperties.getExpectedInsertions(), bloomFilterProperties.getFalseProbability());

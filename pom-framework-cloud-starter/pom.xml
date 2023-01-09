@@ -481,7 +481,7 @@
     <!-- 仓库 -->
     <repositories>
         <repository>
-            <id>aliyun-repos</id>
+            <id>aliyunmaven</id>
             <url>https://maven.aliyun.com/repository/public</url>
             <snapshots>
                 <enabled>false</enabled>

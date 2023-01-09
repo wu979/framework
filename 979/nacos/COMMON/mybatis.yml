@@ -1,4 +1,11 @@
 mybatisPlus:
+  #雪花ID
+  snowflake:
+    type: ${framework.mybatis.snowflake.type:cached}
+    time-bits: ${framework.mybatis.snowflake.time:32}
+    worker-bits: ${framework.mybatis.snowflake.worker:22}
+    seq-bits: ${framework.mybatis.snowflake.seq:9}
+    boost-power: ${framework.mybatis.snowflake.boost:3}
   #Mapper 扫描路径
   mapperScanner: ${framework.mybatis.mapperScanner:com.framework.cloud.**.infrastructure.mapper}
   #Mapper Xml 扫描路径

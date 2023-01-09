@@ -1,4 +1,4 @@
-package com.framework.cloud.core.spring;
+package com.framework.cloud.common.utils;
 
 import lombok.SneakyThrows;
 import org.springframework.beans.BeansException;
@@ -86,7 +86,15 @@ public class ApplicationContextHolder implements BeanFactoryPostProcessor {
     }
 
     /**
-     * Find annotations.
+     * register bean to factory
+     */
+    public static <T> boolean destroyBean(String beanName, T bean) {
+        beanFactory.destroyBean(beanName, bean);
+        return true;
+    }
+
+    /**
+     * find annotations.
      */
     public static <A extends Annotation> A findAnnotationOnBean(String beanName, Class<A> annotationType) {
         return beanFactory.findAnnotationOnBean(beanName, annotationType);
