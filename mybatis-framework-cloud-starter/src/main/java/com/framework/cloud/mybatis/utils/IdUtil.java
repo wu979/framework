@@ -9,7 +9,7 @@ import com.baidu.fsg.uid.UidGenerator;
  */
 public final class IdUtil {
 
-    protected static UidGenerator uidGenerator;
+    private static UidGenerator uidGenerator;
 
     public static long getId() {
         return uidGenerator.getUID();
