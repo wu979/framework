@@ -1,25 +1,27 @@
 package com.framework.cloud.mybatis.utils;
 
 import com.baidu.fsg.uid.UidGenerator;
+import lombok.experimental.UtilityClass;
 
 /**
  * 临时的雪花ID生成
  *
  * @author wusiwei
  */
+@UtilityClass
 public final class IdUtil {
 
-    private static UidGenerator uidGenerator;
+    private UidGenerator uidGenerator;
 
-    public static long getId() {
+    public long getId() {
         return uidGenerator.getUID();
     }
 
-    public static String getIdStr() {
+    public String getIdStr() {
         return Long.toString(uidGenerator.getUID());
     }
 
-    public static String parseId(long id) {
+    public String parseId(long id) {
         return uidGenerator.parseUID(id);
     }
 }
