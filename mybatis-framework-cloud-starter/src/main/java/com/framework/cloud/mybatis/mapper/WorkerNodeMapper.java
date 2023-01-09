@@ -29,18 +29,12 @@ public interface WorkerNodeMapper extends BaseMapper<WorkerNodeEntity> {
 
     /**
      * Get {@link WorkerNodeEntity} by node host
-     * 
-     * @param host
-     * @param port
-     * @return
      */
     @InterceptorIgnore(tenantLine = "true")
     WorkerNodeEntity getWorkerNodeByHostPort(@Param("host") String host, @Param("port") String port);
 
     /**
      * Add {@link WorkerNodeEntity}
-     * 
-     * @param workerNodeEntity
      */
     @InterceptorIgnore(tenantLine = "true")
     void addWorkerNode(WorkerNodeEntity workerNodeEntity);
