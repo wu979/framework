@@ -1,6 +1,7 @@
 package com.framework.cloud.mybatis.utils;
 
 import com.baidu.fsg.uid.UidGenerator;
+import com.framework.cloud.mybatis.SnowflakeIdConfiguration;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -11,6 +12,9 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public final class IdUtil {
 
+    /**
+     * spring init reflect uidGenerator {@link SnowflakeIdConfiguration.AbstractIdChoose#create()}  }
+     */
     private UidGenerator uidGenerator;
 
     public long getId() {
