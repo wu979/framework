@@ -91,9 +91,9 @@ public class LogAspect {
 
     private String getNote(String note, Method method) {
         if (StringUtil.isBlank(note)) {
-            ApiOperation apiOperation = method.getAnnotation(ApiOperation.class);
-            if (Objects.nonNull(apiOperation)) {
-                note = StringUtil.isBlank(apiOperation.value()) ? apiOperation.notes() : apiOperation.value();
+            ApiOperation operation = method.getAnnotation(ApiOperation.class);
+            if (Objects.nonNull(operation)) {
+                note = StringUtil.isBlank(operation.value()) ? operation.notes() : operation.value();
             }
         }
         return note;
