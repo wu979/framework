@@ -18,6 +18,11 @@ import java.lang.reflect.Method;
 public @interface Log {
 
     /**
+     * "" 默认打印 {@link ApiOperation#value() } -> {@link ApiOperation#notes() } -> {@link Method#getName() }
+     */
+    String note() default "";
+
+    /**
      * 打印入参
      */
     boolean request() default true;
@@ -27,8 +32,4 @@ public @interface Log {
      */
     boolean response() default true;
 
-    /**
-     * "" 默认打印 {@link ApiOperation#value() } -> {@link ApiOperation#notes() } -> {@link Method#getName() }
-     */
-    String notes() default "";
 }

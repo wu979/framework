@@ -85,7 +85,11 @@ public class FastJsonUtil {
     }
 
     public static String toPrettyString(Object value) {
-        return JSON.toJSONString(value, JSONWriter.Feature.PrettyFormat);
+        return toJSONString(value, JSONWriter.Feature.PrettyFormat);
+    }
+
+    public static String toJSONString(Object value, JSONWriter.Feature feature) {
+        return JSON.toJSONString(value, feature);
     }
 
     public static Object fromJavaObject(Object value) {
