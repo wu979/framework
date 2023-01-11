@@ -144,7 +144,7 @@ public class OauthUtil {
                 }
             }
         }
-        Result<AuthorizationLoginVO> result = oauthHolderFeignService.loginUser(authorization);
+        Result<AuthorizationLoginVO> result = oauthHolderFeignService.converterAuthorization(authorization);
         if (!result.success()) {
             return false;
         }
@@ -152,6 +152,7 @@ public class OauthUtil {
         if (null == data) {
             return false;
         }
+        TokenContextHolder.getInstance().setToken(authorization);
         UserContextHolder.getInstance().setUser(data.getLoginUser());
         TenantContextHolder.getInstance().setTenant(data.getLoginTenant());
         UserRoleContextHolder.getInstance().setRoleList(data.getRoleList());

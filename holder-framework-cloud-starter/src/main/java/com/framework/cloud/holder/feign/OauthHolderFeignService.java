@@ -12,6 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(contextId = "OauthHolderFeignService", value = "${client.oauth}", path = "/oauth", decode404 = true)
 public interface OauthHolderFeignService {
 
-    @PostMapping("/login")
-    Result<AuthorizationLoginVO> loginUser(@RequestParam("authorization") String authorization);
+    @PostMapping("/converter/authorization")
+    Result<AuthorizationLoginVO> converterAuthorization(@RequestParam("authorization") String authorization);
 }
