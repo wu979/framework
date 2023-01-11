@@ -15,8 +15,10 @@ framework:
     username: dev
     password: 123456
     virtual-host: /
+  stream:
     delay:
-      pay-order-output-channel: 1800000
+      #1800000
+      pay-order-output-channel: 2000
 seata:
   tx-service-group: pay-group
   service:

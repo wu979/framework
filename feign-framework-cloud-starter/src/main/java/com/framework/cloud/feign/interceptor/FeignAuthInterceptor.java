@@ -5,9 +5,11 @@ import cn.hutool.core.util.ObjectUtil;
 import com.framework.cloud.common.utils.FastJsonUtil;
 import com.framework.cloud.common.utils.StringUtil;
 import com.framework.cloud.holder.TenantContextHolder;
+import com.framework.cloud.holder.TokenContextHolder;
 import com.framework.cloud.holder.UserContextHolder;
 import com.framework.cloud.holder.UserRoleContextHolder;
 import com.framework.cloud.holder.constant.HeaderConstant;
+import com.framework.cloud.holder.constant.OauthConstant;
 import com.framework.cloud.holder.model.LoginTenant;
 import com.framework.cloud.holder.model.LoginUser;
 import com.google.common.collect.Lists;
@@ -40,7 +42,10 @@ public class FeignAuthInterceptor implements RequestInterceptor {
         HttpServletRequest request = attributes.getRequest();
         String token = request.getHeader(HeaderConstant.AUTHORIZATION);
         if (StringUtil.isBlank(token)) {
-            token = request.getParameter(HeaderConstant.AUTHORIZATION);
+            token = request.getParameter(OauthConstant.ACCESS_TOKEN);
+            if (StringUtil.isBlank(token)) {
+                token = TokenContextHolder.getInstance().getToken();
+            }
         }
         //传递 用户
         String user = request.getHeader(HeaderConstant.X_USER_HEADER);

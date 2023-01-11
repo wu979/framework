@@ -10,7 +10,16 @@
     <description>线程池管理</description>
     <packaging>jar</packaging>
 
+    <properties>
+        <holder.framework.cloud.starter.version>1.0.0</holder.framework.cloud.starter.version>
+    </properties>
+
     <dependencies>
+        <dependency>
+            <groupId>com.framework.cloud</groupId>
+            <artifactId>holder-framework-cloud-starter</artifactId>
+            <version>${holder.framework.cloud.starter.version}</version>
+        </dependency>
         <dependency>
             <groupId>cn.hippo4j</groupId>
             <artifactId>hippo4j-spring-boot-starter</artifactId>

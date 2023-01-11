@@ -8,6 +8,7 @@ import com.framework.cloud.executors.utils.ExecutorsUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
@@ -27,10 +28,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Component
 @RequiredArgsConstructor
 @EnableConfigurationProperties(ExecutorsProperties.class)
-public class ThreadPoolTaskCallerRunsPolicy implements ExecutorsFeature {
+public class ThreadPoolTaskCallerRunsPolicy implements ExecutorsFeature, InitializingBean {
 
     private final ExecutorsProperties executorsProperties;
     private final RequestContextListener requestContextListener;
+    private final Map<String, RejectedExecutionHandler> rejectedExecutionHandlerMap = new HashMap<>(4);
 
     @Override
     public ThreadPoolTaskExecutor executor(@NonNull String threadNamePrefix) {
@@ -88,12 +90,14 @@ public class ThreadPoolTaskCallerRunsPolicy implements ExecutorsFeature {
      * @return RejectedExecutionHandler 实例对象，没有匹配的策略时，默认取 CallerRunsPolicy 实例
      */
     public RejectedExecutionHandler getRejectedExecutionHandler(RejectedType rejectedType) {
-        Map<String, RejectedExecutionHandler> rejectedExecutionHandlerMap = new HashMap<>(16);
+        return rejectedExecutionHandlerMap.getOrDefault(rejectedType.name(), new ThreadPoolExecutor.CallerRunsPolicy());
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
         rejectedExecutionHandlerMap.put(RejectedType.CallerRunsPolicy.name(), new ThreadPoolExecutor.CallerRunsPolicy());
         rejectedExecutionHandlerMap.put(RejectedType.AbortPolicy.name(), new ThreadPoolExecutor.AbortPolicy());
         rejectedExecutionHandlerMap.put(RejectedType.DiscardPolicy.name(), new ThreadPoolExecutor.DiscardPolicy());
         rejectedExecutionHandlerMap.put(RejectedType.DiscardOldestPolicy.name(), new ThreadPoolExecutor.DiscardOldestPolicy());
-        return rejectedExecutionHandlerMap.getOrDefault(rejectedType.name(), new ThreadPoolExecutor.CallerRunsPolicy());
     }
-
 }

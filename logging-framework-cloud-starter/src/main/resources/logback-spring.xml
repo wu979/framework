@@ -48,6 +48,11 @@
         <appender-ref ref="GRPC_LOG"/>
     </logger>
 
+    <logger name="com.baidu.fsg.uid.buffer.RingBuffer" level="ERROR" additivity="false">
+        <appender-ref ref="CONSOLE_LOG"/>
+        <appender-ref ref="GRPC_LOG"/>
+    </logger>
+
     <logger name="com.atomikos.icatch.provider.imp.AssemblerImp" level="ERROR" additivity="false">
         <appender-ref ref="CONSOLE_LOG"/>
         <appender-ref ref="GRPC_LOG"/>

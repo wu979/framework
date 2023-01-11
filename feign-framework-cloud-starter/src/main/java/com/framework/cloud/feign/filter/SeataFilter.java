@@ -37,7 +37,7 @@ public class SeataFilter extends OncePerRequestFilter implements Ordered {
 
     @Override
     public int getOrder() {
-        return Ordered.HIGHEST_PRECEDENCE + 3;
+        return Ordered.HIGHEST_PRECEDENCE + 4;
     }
 
 }

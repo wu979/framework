@@ -6,6 +6,7 @@ import com.framework.cloud.common.exception.OauthException;
 import com.framework.cloud.common.result.Result;
 import com.framework.cloud.common.utils.StringUtil;
 import com.framework.cloud.holder.TenantContextHolder;
+import com.framework.cloud.holder.TokenContextHolder;
 import com.framework.cloud.holder.UserContextHolder;
 import com.framework.cloud.holder.UserRoleContextHolder;
 import com.framework.cloud.holder.constant.HeaderConstant;
@@ -132,11 +133,15 @@ public class OauthUtil {
             return false;
         }
         HttpServletRequest request = requestAttributes.getRequest();
-        String authorization = request.getHeader(HeaderConstant.AUTHORIZATION);
+
+        String authorization = TokenContextHolder.getInstance().getToken();
         if (StringUtil.isBlank(authorization)) {
-            authorization = request.getParameter(OauthConstant.ACCESS_TOKEN);
+            authorization = request.getHeader(HeaderConstant.AUTHORIZATION);
             if (StringUtil.isBlank(authorization)) {
-                return false;
+                authorization = request.getParameter(OauthConstant.ACCESS_TOKEN);
+                if (StringUtil.isBlank(authorization)) {
+                    return false;
+                }
             }
         }
         Result<AuthorizationLoginVO> result = oauthHolderFeignService.loginUser(authorization);

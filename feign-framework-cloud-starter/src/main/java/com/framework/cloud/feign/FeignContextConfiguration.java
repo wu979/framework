@@ -3,6 +3,7 @@ package com.framework.cloud.feign;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.framework.cloud.feign.filter.SeataFilter;
 import com.framework.cloud.feign.filter.TenantFilter;
+import com.framework.cloud.feign.filter.TokenFilter;
 import com.framework.cloud.feign.filter.UserFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -22,6 +23,14 @@ import org.springframework.context.annotation.Bean;
 public class FeignContextConfiguration {
 
     private final ObjectMapper objectMapper;
+
+    @Bean("tokenFilter")
+    public FilterRegistrationBean tokenFilter() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(new TokenFilter());
+        registration.addUrlPatterns("/*");
+        return registration;
+    }
 
     @Bean("tenantFilter")
     public FilterRegistrationBean tenantFilter() {

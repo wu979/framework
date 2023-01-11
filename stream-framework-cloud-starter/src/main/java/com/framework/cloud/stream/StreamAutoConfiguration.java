@@ -1,7 +1,7 @@
 package com.framework.cloud.stream;
 
 import com.framework.cloud.stream.configuration.RabbitStreamConfiguration;
-import com.framework.cloud.stream.interceptor.StreamMqTraceIdChannelInterceptor;
+import com.framework.cloud.stream.interceptor.StreamMqChannelInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.config.GlobalChannelInterceptor;
@@ -16,8 +16,8 @@ public class StreamAutoConfiguration {
 
     @Bean
     @GlobalChannelInterceptor
-    public StreamMqTraceIdChannelInterceptor streamMqTraceIdChannelInterceptor() {
-        return new StreamMqTraceIdChannelInterceptor();
+    public StreamMqChannelInterceptor streamMqChannelInterceptor() {
+        return new StreamMqChannelInterceptor();
     }
 
 }
