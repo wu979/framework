@@ -1,8 +1,7 @@
-package com.framework.cloud.stream.interceptor;
+package com.framework.cloud.stream.extend;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.framework.cloud.common.utils.FastJsonUtil;
 import com.framework.cloud.common.utils.StringUtil;
@@ -11,10 +10,7 @@ import com.framework.cloud.holder.TokenContextHolder;
 import com.framework.cloud.holder.UserContextHolder;
 import com.framework.cloud.holder.UserRoleContextHolder;
 import com.framework.cloud.holder.constant.HeaderConstant;
-import com.framework.cloud.holder.model.LoginTenant;
-import com.framework.cloud.holder.model.LoginUser;
 import com.framework.cloud.holder.utils.TraceUtil;
-import com.google.common.collect.Sets;
 import org.slf4j.MDC;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -37,14 +33,14 @@ import java.util.function.Supplier;
  * @author wusiwei
  */
 @SuppressWarnings("all")
-public class StreamMqChannelInterceptor implements ChannelInterceptor {
+public class StreamChannelInterceptor implements ChannelInterceptor {
 
     private final Field headerField;
 
     @Resource
     private ObjectMapper objectMapper;
 
-    public StreamMqChannelInterceptor() {
+    public StreamChannelInterceptor() {
         this.headerField = ReflectionUtils.findField(MessageHeaders.class, "headers");
         this.headerField.setAccessible(true);
     }
@@ -52,11 +48,6 @@ public class StreamMqChannelInterceptor implements ChannelInterceptor {
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         return message instanceof ErrorMessage ? message : this.doPreSend(message, channel);
-    }
-
-    @Override
-    public Message<?> postReceive(Message<?> message, MessageChannel channel) {
-        return message instanceof ErrorMessage ? message : this.doPostReceive(message, channel);
     }
 
     private Message<?> doPreSend(Message<?> message, MessageChannel channel) {
@@ -101,41 +92,12 @@ public class StreamMqChannelInterceptor implements ChannelInterceptor {
         return message;
     }
 
-    private Message<?> doPostReceive(Message<?> message, MessageChannel channel) {
-        Map<String, Object> headersMap = (Map<String, Object>) ReflectionUtils.getField(this.headerField, message.getHeaders());
-        Optional<String> token = converterContent(headersMap.get(HeaderConstant.AUTHORIZATION), String::valueOf);
-        if (token.isPresent()) {
-            TokenContextHolder.getInstance().setToken(token.get());
-        }
-        Optional<String> traceId = converterContent(headersMap.get(HeaderConstant.TRACE_ID), String::valueOf);
-        if (traceId.isPresent()) {
-            MDC.put(HeaderConstant.TRACE_ID, traceId.get());
-        }
-        Optional<String> user = converterContent(headersMap.get(HeaderConstant.X_USER_HEADER), Base64::decodeStr);
-        if (user.isPresent()) {
-            UserContextHolder.getInstance().setUser(FastJsonUtil.toJavaObject(user.get(), LoginUser.class));
-        }
-        Optional<String> tenant = converterContent(headersMap.get(HeaderConstant.X_TENANT_HEADER), Base64::decodeStr);
-        if (tenant.isPresent()) {
-            TenantContextHolder.getInstance().setTenant(FastJsonUtil.toJavaObject(tenant.get(), LoginTenant.class));
-        }
-        Optional<String> role = converterContent(headersMap.get(HeaderConstant.X_AUTHORITIES_HEADER), Base64::decodeStr);
-        if (role.isPresent()) {
-            UserRoleContextHolder.getInstance().setRoleList(Sets.newHashSet(StrUtil.splitTrim(role.get(), ",")));
-        }
-        return message;
-    }
-
     private <T> Optional<String> getContent(Supplier<T> supplier) {
         return Optional.ofNullable(supplier.get()).filter(Objects::nonNull).map(String::valueOf).filter(StringUtil::isNotEmpty);
     }
 
     private <T> Optional<String> getContent(T data, Function<T, String> function) {
         return Optional.ofNullable(function.apply(data)).filter(Objects::nonNull).map(String::valueOf).filter(StringUtil::isNotEmpty);
-    }
-
-    private <R> Optional<R> converterContent(Object obj, Function<String, R> function) {
-        return Optional.ofNullable(obj).filter(Objects::nonNull).map(String::valueOf).filter(StringUtil::isNotEmpty).map(function::apply);
     }
 
 }

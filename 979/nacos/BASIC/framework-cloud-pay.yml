@@ -99,8 +99,8 @@ spring:
               ttl: 120000
               #开启死信
               auto-bind-dlq: true
-              dead-letter-exchange: pay-order-dead-exchange
-              dead-letter-queueName: pay-order-dead-queue.${spring.application.name}
+              #dead-letter-exchange: pay-order-dead-exchange
+              #dead-letter-queueName: pay-order-dead-queue.${spring.application.name}
           pay-order-input-channel:
             consumer:
               delayed-exchange: true

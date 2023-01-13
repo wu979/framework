@@ -14,6 +14,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Field;
 
 /**
  * baidu uid
@@ -40,16 +43,17 @@ public class SnowflakeIdConfiguration {
         return new AbstractIdChoose.CachedIdChoose(frameworkWorkerIdAssigner, snowflakeProperties).create();
     }
 
+    @SuppressWarnings("all")
     public abstract static class AbstractIdChoose {
-        private static final String UID_FIELD = "uidGenerator";
         protected WorkerIdAssigner frameworkWorkerIdAssigner;
         protected static final String EPOCH = "2021-01-01";
         protected SnowflakeProperties snowflakeProperties;
+        private final Field headerField;
 
         @SneakyThrows
         public UidGenerator create() {
             UidGenerator generator = uidGenerator();
-            FieldUtils.writeStaticField(IdUtil.class, UID_FIELD, generator, true);
+            FieldUtils.writeStaticField(headerField, generator, true);
             return generator;
         }
 
@@ -58,6 +62,8 @@ public class SnowflakeIdConfiguration {
         public AbstractIdChoose(WorkerIdAssigner frameworkWorkerIdAssigner, SnowflakeProperties snowflakeProperties) {
             this.frameworkWorkerIdAssigner = frameworkWorkerIdAssigner;
             this.snowflakeProperties = snowflakeProperties;
+            this.headerField = ReflectionUtils.findField(IdUtil.class, "uidGenerator");
+            this.headerField.setAccessible(true);
         }
 
         public static final class DefaultIdChoose extends AbstractIdChoose {
