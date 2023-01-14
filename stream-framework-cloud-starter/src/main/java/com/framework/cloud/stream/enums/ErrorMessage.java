@@ -8,9 +8,10 @@ import lombok.AllArgsConstructor;
  * @author wusiwei
  */
 @AllArgsConstructor
-public enum StreamMessage {
+public enum ErrorMessage {
 
     MQ_T("消息通道异常,缺失泛型"),
+    MQ_BODY_NULL("消息体为空"),
     MQ_TYPE("消息通道异常,请指定相应的消息类型"),
 
     ;

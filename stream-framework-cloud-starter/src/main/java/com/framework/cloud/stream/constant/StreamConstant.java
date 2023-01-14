@@ -17,4 +17,6 @@ public class StreamConstant {
 
     public static final long CONSUME_TIME = 30;
 
+    public static final String CONSUME_POOL = "consumePool";
+    public static final String CONSUME_FORMAT = "[{}] Rabbit Message Consume Fail，MessageId：[{}]，Message：{}，Error：{}";
 }

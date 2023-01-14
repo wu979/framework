@@ -1,11 +1,16 @@
 package com.framework.cloud.stream.rabbit.listener;
 
-import com.alibaba.fastjson2.JSON;
-import com.framework.cloud.common.exception.RabbitException;
+import com.alibaba.fastjson2.TypeReference;
+import com.framework.cloud.common.base.BaseMessage;
+import com.framework.cloud.common.base.RabbitMessage;
+import com.framework.cloud.common.exception.StreamException;
+import com.framework.cloud.common.utils.FastJsonUtil;
 import com.framework.cloud.stream.constant.StreamConstant;
-import com.framework.cloud.stream.message.StreamMessage;
+import com.framework.cloud.stream.enums.ErrorMessage;
+import com.framework.cloud.stream.enums.PersistenceType;
 import com.framework.cloud.stream.properties.StreamProperties;
 import com.rabbitmq.client.Channel;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
@@ -21,14 +26,17 @@ import java.nio.charset.Charset;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import static org.springframework.amqp.core.MessageProperties.*;
+
 /**
  * default abstract listener, responsible for processing message public methods
  *
  * @author wusiwei
  */
 @Slf4j
+@SuppressWarnings("all")
 @EnableConfigurationProperties(StreamProperties.class)
-public abstract class AbstractListener<T extends StreamMessage> extends StreamConstant {
+public abstract class AbstractListener<T> extends StreamConstant implements RabbitListener<T> {
 
     protected static final SerializerMessageConverter SERIALIZER_MESSAGE_CONVERTER = new SerializerMessageConverter();
     protected static final String ENCODING = Charset.defaultCharset().name();
@@ -45,12 +53,46 @@ public abstract class AbstractListener<T extends StreamMessage> extends StreamCo
     /**
      * pre message proxy
      */
-    protected abstract void receiveMessage(Message message, Channel channel) throws IOException;
+    protected abstract void receiveMessage(Message message, Channel channel);
+
+    /**
+     * fail
+     */
+    @Override
+    public void fail(Message message, RabbitMessage<T> rabbitMessage) {
+        fail(PersistenceType.DATASOURCE, message, rabbitMessage);
+    }
+
+    /**
+     * fail
+     */
+    @Override
+    public final void fail(PersistenceType persistenceType, Message message, RabbitMessage<T> rabbitMessage) {
+        if (PersistenceType.DATASOURCE.equals(persistenceType)) {
+            persistenceDataSource(message, rabbitMessage);
+        } else {
+            persistenceCache(message, rabbitMessage);
+        }
+    }
+
+    /**
+     * 持久化-数据库
+     */
+    protected final void persistenceDataSource(Message message, RabbitMessage<T> rabbitMessage) {
+
+    }
+
+    /**
+     * 持久化-缓存
+     */
+    protected final void persistenceCache(Message message, RabbitMessage<T> rabbitMessage) {
+
+    }
 
     /**
      * fail ACK
      */
-    protected boolean dealFailAck(Message message) throws IOException {
+    protected final boolean dealFailAck(Message message) throws IOException {
         if (!streamProperties.isEnableRetry()) {
             return false;
         }
@@ -73,60 +115,62 @@ public abstract class AbstractListener<T extends StreamMessage> extends StreamCo
     /**
      * 是否能消费，防止重复消费
      */
-    protected boolean canConsume(String messageId) {
+    protected final boolean canConsume(String messageId) {
         String consumeKey = getConsumeKey(messageId);
         Boolean lock = redisTemplate.opsForValue().setIfAbsent(consumeKey, messageId, CONSUME_TIME, TimeUnit.MINUTES);
-        return Boolean.TRUE.equals(lock);
+        //return Boolean.TRUE.equals(lock);
+        return true;
     }
 
     /**
      * 获取消息体
      */
-    protected T getContent(Message message) {
-        String body = getBodyContentAsString(message);
-        Class<T> contentClass = null;
+    protected final RabbitMessage<T> getContent(Message message) {
+        RabbitMessage<T> rabbitMessage = null;
         try {
+            String body = getBodyContentAsString(message);
+            if (null == body) {
+                return null;
+            }
             ParameterizedType genericSuperclass = (ParameterizedType) this.getClass().getGenericSuperclass();
-            contentClass = (Class<T>) genericSuperclass.getActualTypeArguments()[0];
+            Class<T> messageType = (Class<T>) genericSuperclass.getActualTypeArguments()[0];
+            rabbitMessage = FastJsonUtil.toJavaObject(body, new TypeReference<RabbitMessage<T>>(messageType) {});
         } catch (Exception e) {
-            throw new RabbitException(com.framework.cloud.stream.enums.StreamMessage.MQ_T.getMsg());
+            throw new StreamException(ErrorMessage.MQ_T.getMsg());
         }
-
-        if (contentClass != null && contentClass.getName().equals(StreamMessage.class.getCanonicalName())) {
-            throw new RabbitException(com.framework.cloud.stream.enums.StreamMessage.MQ_TYPE.getMsg());
+        if (rabbitMessage != null && rabbitMessage.getClass().getName().equals(BaseMessage.class.getCanonicalName())) {
+            throw new StreamException(ErrorMessage.MQ_TYPE.getMsg());
         }
-        return JSON.parseObject(body, contentClass);
+        return rabbitMessage;
     }
 
     /**
      * 消费者Key
      */
-    protected String getConsumeKey(String messageId) {
+    protected final String getConsumeKey(String messageId) {
         return String.format(CONSUME, messageId);
     }
 
     /**
      * 转换body
      */
-    protected String getBodyContentAsString(Message message) {
+    @SneakyThrows
+    protected final String getBodyContentAsString(Message message) {
         if (message.getBody() == null) {
             return null;
         }
-        try {
-            MessageProperties properties = message.getMessageProperties();
-            String contentType = (properties != null) ? properties.getContentType() : null;
-            if (MessageProperties.CONTENT_TYPE_SERIALIZED_OBJECT.equals(contentType)) {
+        MessageProperties properties = message.getMessageProperties();
+        String contentType = (properties != null) ? properties.getContentType() : null;
+        switch (contentType) {
+            case CONTENT_TYPE_SERIALIZED_OBJECT:
                 return SERIALIZER_MESSAGE_CONVERTER.fromMessage(message).toString();
-            }
-            if (MessageProperties.CONTENT_TYPE_TEXT_PLAIN.equals(contentType)
-                    || MessageProperties.CONTENT_TYPE_JSON.equals(contentType)
-                    || MessageProperties.CONTENT_TYPE_JSON_ALT.equals(contentType)
-                    || MessageProperties.CONTENT_TYPE_XML.equals(contentType)) {
+            case CONTENT_TYPE_TEXT_PLAIN:
+            case CONTENT_TYPE_JSON:
+            case CONTENT_TYPE_JSON_ALT:
+            case CONTENT_TYPE_XML:
                 return new String(message.getBody(), ENCODING);
-            }
-        } catch (Exception e) {
-            log.error("Rabbit MQ Content Type Error");
+            default:
+                return message.getBody().toString() + "(byte[" + message.getBody().length + "])";
         }
-        return message.getBody().toString() + "(byte[" + message.getBody().length + "])";
     }
 }

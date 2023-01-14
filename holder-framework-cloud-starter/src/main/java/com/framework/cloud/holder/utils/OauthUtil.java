@@ -128,14 +128,13 @@ public class OauthUtil {
     }
 
     private static boolean oauth() {
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (null == requestAttributes) {
-            return false;
-        }
-        HttpServletRequest request = requestAttributes.getRequest();
-
         String authorization = TokenContextHolder.getInstance().getToken();
         if (StringUtil.isBlank(authorization)) {
+            ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            if (null == requestAttributes) {
+                return false;
+            }
+            HttpServletRequest request = requestAttributes.getRequest();
             authorization = request.getHeader(HeaderConstant.AUTHORIZATION);
             if (StringUtil.isBlank(authorization)) {
                 authorization = request.getParameter(OauthConstant.ACCESS_TOKEN);

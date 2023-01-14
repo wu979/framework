@@ -1,6 +1,6 @@
 package com.framework.cloud.stream.producer;
 
-import com.framework.cloud.stream.message.StreamMessage;
+import com.framework.cloud.common.base.RabbitMessage;
 
 /**
  * 消息生产者接口
@@ -16,6 +16,6 @@ public interface StreamProducer {
      * @param exchangeName 交换机
      * @param routingKey   路由键
      */
-    void send(StreamMessage content, String exchangeName, String routingKey);
+    <T> void send(RabbitMessage<T> content, String exchangeName, String routingKey);
 
 }
