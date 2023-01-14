@@ -54,11 +54,13 @@ public class StreamListenerHandlerMethodFactoryPostProcessor implements BeanPost
      * 7、{@link HandlerMethodArgumentResolver } 继承无效，因为组合器会选择第一个解析器 并缓存
      * 8、{@link BinderFactoryAutoConfiguration#messageHandlerMethodFactory } 初始化时 多个解析器未公开 只能本包访问
      * 9、{@link StreamListenerAnnotationBeanPostProcessor#afterSingletonsInstantiated }
-     *        9.1、初始化对于 {@link InvocableHandlerMethod } {@link StreamListenerMessageHandler }
-     *        9.2、是通过 {@link DefaultMessageHandlerMethodFactory#createInvocableHandlerMethod } new的方式
-     *        9.3、同时 {@link BinderFactoryAutoConfiguration#messageHandlerMethodFactory } 初始化9.2时 也是new的方式
-     *        9.4、所以只能通过继承 {@link DefaultMessageHandlerMethodFactory } 来实现 并且由于8初始化的多个解析器只能本包访问
-     *        9.5、在 {@link StreamListenerHandlerMethodFactory#afterPropertiesSet() } 反射原Bean的组合解析器
+     *        9.1、初始化 {@link InvocableHandlerMethod } {@link StreamListenerMessageHandler }
+     *             是通过 {@link DefaultMessageHandlerMethodFactory#createInvocableHandlerMethod } new的方式
+     *             同时 {@link DefaultMessageHandlerMethodFactory }
+     *             也是 {@link BinderFactoryAutoConfiguration#messageHandlerMethodFactory } 也是new的方式
+     *        9.2、所以只能通过继承 {@link DefaultMessageHandlerMethodFactory } 来实现
+     *        9.3、并且由于第8步在初始化的时候多个解析器只能本包访问
+     *        9.3、so {@link StreamListenerHandlerMethodFactory#afterPropertiesSet() } 反射原Bean的组合解析器
      *
      */
     @Override

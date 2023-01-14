@@ -1,5 +1,6 @@
 package com.framework.cloud.stream.annotation;
 
+import lombok.Data;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -45,5 +46,12 @@ public class StreamAspect {
             }
         }
         return printArgs;
+    }
+
+    @Data
+    public static class Print {
+
+
+
     }
 }
