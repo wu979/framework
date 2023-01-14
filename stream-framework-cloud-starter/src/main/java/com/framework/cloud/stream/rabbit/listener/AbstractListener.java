@@ -118,8 +118,7 @@ public abstract class AbstractListener<T> extends StreamConstant implements Rabb
     protected final boolean canConsume(String messageId) {
         String consumeKey = getConsumeKey(messageId);
         Boolean lock = redisTemplate.opsForValue().setIfAbsent(consumeKey, messageId, CONSUME_TIME, TimeUnit.MINUTES);
-        //return Boolean.TRUE.equals(lock);
-        return true;
+        return Boolean.TRUE.equals(lock);
     }
 
     /**
