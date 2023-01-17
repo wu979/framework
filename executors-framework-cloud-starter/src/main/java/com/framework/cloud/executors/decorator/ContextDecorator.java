@@ -25,26 +25,20 @@ public class ContextDecorator implements TaskDecorator {
 
     private final ServletRequestListener servletRequestListener;
 
-    /**
-     * 线程装饰 包装上下文等信息
-     * 使用Skywalking线程包装器执行 传递tid {@link RunnableWrapper }
-     * 未使用此装饰器 并且需要传递tid
-     * executorPool.execute(RunnableWrapper.of(() -> method() ));
-     *
-     * @param runnable 线程
-     */
+
     @Override
     public Runnable decorate(Runnable runnable) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        Optional<ServletRequestEvent> eventOptional = requestEvent(attributes);
+        Optional<ServletRequestEvent> serlvet = requestEvent(attributes);
         String traceId = TraceUtil.traceId();
         return () -> {
+            Optional<ServletRequestEvent> childThreadSerlvet = serlvet;
             try {
-                eventOptional.ifPresent(servletRequestListener::requestInitialized);
+                childThreadSerlvet.ifPresent(servletRequestListener::requestInitialized);
                 MDC.put(HeaderConstant.TRACE_ID, traceId);
                 RunnableWrapper.of(runnable).run();
             } finally {
-                eventOptional.ifPresent(servletRequestListener::requestDestroyed);
+                childThreadSerlvet.ifPresent(servletRequestListener::requestDestroyed);
                 MDC.remove(HeaderConstant.TRACE_ID);
             }
         };
